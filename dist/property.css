@@ -111,7 +111,35 @@ body.property-resident-preview .main { max-width: none; padding: 0; }
 .property-receipt-callout strong { font-size: 11px; }
 .property-receipt-callout p { font-size: 10px; line-height: 1.8; margin: 5px 0 0; }
 .property-warning { color: #966937; font-size: 11px; background: #fff4df; padding: 12px; border-radius: 5px; margin-top: 15px; }
+.property-service-kpis { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.property-service-kpis article { padding: 18px 15px; gap: 11px; }
+.property-service-kpis .property-kpi-icon { width: 35px; height: 35px; }
+.property-service-kpis small .text-button { font-size: 9px; }
+.property-service-kpis small .icon { width: 11px; height: 11px; }
+.property-service-flow { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+.property-business-separation { display: flex; align-items: center; gap: 12px; padding: 16px 18px; margin-top: 23px; background: #edf3f5; border-radius: 7px; color: #718896; }
+.property-business-separation > .icon { color: #4c7f84; width: 23px; height: 23px; }
+.property-business-separation p { font-size: 10px; margin: 0; }
+.property-business-separation strong { color: #416475; }
+.property-status-submitted, .property-status-handling { color: #236672; background: #e6f1f2; }
+.property-status-needs_info { color: #886324; background: #fff4dc; }
+.property-status-confirmed { color: #367656; background: #e8f3e9; }
+.property-list-toolbar .field { flex: 1; }
+.property-list-toolbar .field:nth-child(2) { max-width: 245px; }
+.property-shared-activity { margin-top: 20px; }
+.property-service-choice, .property-authority-choice { font-size: 11px; color: #6b8490; line-height: 1.8; }
+.property-service-choice > strong, .property-authority-choice > strong { font-size: 12px; color: #3c6275; }
+.property-service-choice > p, .property-authority-choice > p { margin: 7px 0 13px; }
+.property-authority-choice { padding-top: 19px; margin-top: 20px; border-top: 1px solid #e3ebee; }
+.property-test-check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; line-height: 1.8; }
+.property-test-check > input { margin: 3px 0 0; width: 16px; height: 16px; flex: none; accent-color: #006d73; }
+.property-review-check { margin-top: 19px; }
+.property-decline { margin-top: 22px; font-size: 10px; text-align: left; line-height: 1.7; }
+.property-steps { gap: 19px; }
+.property-steps li { font-size: 9px; gap: 6px; }
+.property-steps li:not(:last-child)::after { width: 13px; right: -16px; }
 @media(max-width:1100px) {
+  .property-service-kpis { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .property-workspace-grid { grid-template-columns: minmax(0,1fr); }
   .property-share-card { display: grid; grid-template-columns: 38px minmax(0,1fr); gap: 0 14px; }
   .property-share-card .property-kpi-icon { grid-row: span 2; }
@@ -122,6 +150,7 @@ body.property-resident-preview .main { max-width: none; padding: 0; }
   .property-resident-intro h1 { font-size: 34px; }
 }
 @media(max-width:760px) {
+  .property-service-flow { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 23px 18px; }
   .property-hero { grid-template-columns: minmax(0,1fr); }
   .property-hero-photo { min-height: 180px; }
   .property-hero-copy { padding: 23px; }
@@ -170,4 +199,15 @@ body.property-resident-preview .main { max-width: none; padding: 0; }
   .property-registration-detail dl { grid-template-columns: minmax(0,1fr); }
   .property-list-toolbar { align-items: flex-start; gap: 12px; }
   .property-list-toolbar .pill { margin-top: 27px; }
+}
+@media(max-width:760px) {
+  .property-service-kpis { grid-template-columns: minmax(0,1fr); }
+  .property-list-toolbar { flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .property-list-toolbar .field, .property-list-toolbar .field:nth-child(2) { max-width: none; width: 100%; flex-basis: 100%; }
+  .property-list-toolbar .pill { margin-top: 0; }
+  .property-steps { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .property-steps li { font-size: 10px; gap: 8px; }
+  .property-steps li:not(:last-child)::after { display: none; }
+  .property-service-flow { grid-template-columns: minmax(0,1fr); }
+  .property-business-separation { align-items: flex-start; }
 }

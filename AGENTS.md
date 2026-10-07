@@ -5,7 +5,7 @@
 - Ludwig Rosenberg är teamchef för B2B-sälj på Kraftringen Kundcenter sedan juni 2026. Håkan Rusk är hans chef; någon ytterligare titel för Håkan är inte angiven.
 - Användaren har valt aktiv säljpartner som arbetar vidare med affären och hela partnerarbetsplatsens frontend utifrån referensbildernas marinblå och petrolfärgade design. Backend ingår inte i denna etapp.
 - Den interna Kraftringen-vyn är nu huvudvy och ska fokusera på kommersiellt resultat för alla partners eller vald partner. Partnerresan är endast intern och följs separat per partner.
-- Användaren har bekräftat att Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter. De ska ha separata, uppgiftsanpassade arbetsytor. Savera behåller företag/BRF-underlag; Face2face har konsumentunderlag. Fastighetsbolagens nya upplägg väntar på användarens beskrivning; denna etapp ändrar inte deras tidigare demo. Fastighetsbolag har en separat arbetsyta med inflyttningssida där nya bostadshyresgäster kan registrera testintresse i elhandel. Detta bostadsspår är godkänt; fiber och andra produktområden är fortsatt utanför scope.
+- Användaren har bekräftat att Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter. De ska ha separata, uppgiftsanpassade arbetsytor. Savera behåller företag/BRF-underlag; Face2face har konsumentunderlag. Fastighetspartner erbjuder nu inflyttningsservice vid hyresavtal. Hyresgästen väljer tjänsten och lämnar underlag/fullmakt; partnern förmedlar; Kraftringen hanterar elhandel, behövlig elnätshantering och bekräftelser. Partnerns egen elförbrukning är en separat affär. Fastighetsbolag har en separat arbetsyta med inflyttningssida där nya bostadshyresgäster kan lämna fiktiva serviceunderlag. Detta bostadsspår är godkänt; fiber och andra produktområden är fortsatt utanför scope.
 - Partnerregistret använder `syd` = Savera (namnet är verkligt nämnt, alla resultat och statusar är exempel), `vast` = Face2face (bekräftad partner för konsumentförsäljning, alla resultat/statusar/kanaler är exempel), `estate1` = Exempelfastigheter AB och `estate2` = Exempelbo Förvaltning.
 - Arbetsflöden, pipelinesteg, partnerresans åtta steg, utbildningsinnehåll, befogenheter, informationsdelning och plattformsval är förslag eller öppna beslut.
 - B2B Veckokollen är ett tidigare separat verktyg. Integration med det eller Dynamics är inte beslutad.
@@ -28,10 +28,10 @@
 ## Teknik och verifiering
 
 - Bevara prototypens statiska portabilitet: körbara filer ligger i `dist/` och ska kunna serveras utan paketinstallation eller byggsteg.
-- `app.js` tillhandahåller `window.Portal`, partnerregistret och navigationen. `studio.js`, `academy.js`, `partner.js`, `commercial.js`, `property.js`, `business.js` och `consumer.js` registrerar sina vyer mot samma objekt. Behåll en gemensam lokal datamodell.
+- `app.js` tillhandahåller `window.Portal`, partnerregistret och navigationen. `studio.js`, `academy.js`, `partner.js`, `commercial.js`, `property.js`, `movein-service.js`, `business.js` och `consumer.js` registrerar sina vyer mot samma objekt. Behåll en gemensam lokal datamodell.
 - Bevara kunddata och migreringen från `partnerlabb.active.v1` till `partnerlabb.portal.v2`. Giltig v2-data har företräde. Återställning ska fortsatt vara ett tydligt användarval.
 - Nya dataområden `commercial.management`, `moveins` och `propertySettings` ska behålla befintliga kunddata och annan v2-data. De fasta ekonomiska exemplen i `commercial.js` ska hållas åtskilda från hyresgästers intresseregistreringar.
-- Inflyttningsflödet har tre steg: Inflyttning, Kontakt och Granska. Bekräftelse gäller fiktivt testintresse, inget elavtal. Skapa en separat `moveins`-post och ett TXT-testkvitto; skapa inte kundrecord, offert, avtal eller ekonomiskt utfall från formuläret.
+- Inflyttningsflödet har fyra steg: Inflyttning, Kontakt, Tjänst & fullmakt och Granska. Fullmakt är en demomarkering utan rättsverkan; godkänd fullmaktsmall saknas. Registreringen skapar ett underlag som partnern kan förmedla i test, inte ett elavtal. Skapa en separat `moveins`-post och ett TXT-testkvitto; skapa inte kundrecord, offert, avtal eller ekonomiskt utfall från formuläret.
 - Bevara responsiv layout, tangentbordsanvändning, formuläretiketter och tydliga sparmeddelanden.
 - Dokumentera bildkällor i ASSETS.md. Anta inte att externa illustrationer eller referensbilder är godkända varumärkestillgångar från Kraftringen.
 - Efter funktionella ändringar, kontrollera berörda användarflöden. Den nya huvudkedjan är intern resultatöversikt → vald partner → aktiv säljpartners arbetsyta → fastighetsbolag → hyresgästförhandsvisning → testregistrering → intern uppföljning utan ny verklig intäkt eller nytt avtal. Kontrollera också att partnerresan endast finns internt och är separat per partner.
@@ -46,3 +46,13 @@
 - Gamla `vast`-record med företag/BRF bevaras i lokal data men visas inte i de nya företags- eller konsumentflödena. Nya konsumentexempel ska inte konverteras från dessa företag.
 - Partnerinterna kostnader/nettobidrag visas i Kraftringens vy, inte i partnerarbetsytorna. Statusdefinitioner, handläggningssteg, kanaler och utbildningsinnehåll är testförslag tills verkligt underlag lämnats.
 - Direktlänkar `?workspace=syd#overview` och `?workspace=vast#overview` öppnar respektive demovy; det är visningsval, inget åtkomstskydd.
+
+## Inflyttningsservice – senaste affärsmodell
+
+- Fastighetsbolag, BRF:er och förvaltare är partners och väg till hyresgästen vid hyresavtal/inflyttning. Kraftringen står för elkompetens och avtalshantering.
+- Tjänsten är frivillig. Hyresgästen blir elhandelskund när hen väljer erbjudandet; användning av service eller registrering är inte automatiskt avtal, kund eller kommersiellt resultat.
+- `movein-service.js` tillhandahåller ärende-API och intern `movein-cases`. `moveins` kompletteras med serviceRequested, authorityDemo, handoverStatus, processing och events. Gamla intressen behålls och får inte tillskrivas samtycke, fullmakt eller överlämning.
+- Överlämning och statusar är lokala testförslag. Elhandel, elnät och hyresgästens erbjudandeval följs separat. Inga riktiga elnätsbolag kontaktas; bekräftelser och fullmaktsteg är simuleringar.
+- Inflyttningsärenden ingår inte i företagspartnernas eller Face2faces kunddata. Finansiella fixtures är fortsatt fristående, även vid bekräftat demoärende.
+- Egen elförbrukning hos partnern behandlas som en separat B2B-affär och skapas inte från hyresgästärendet.
+- Regelbakgrunden används inte som ett produktlöfte. Eventuella laguppgifter ska ha officiell källa och ikraftträdandedatum; undvik att beskriva framtida regler som redan gällande.
