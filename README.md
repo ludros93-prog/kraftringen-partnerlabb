@@ -2,7 +2,7 @@
 
 En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för aktiva säljpartners och fastighetsbolag. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
 
-Aktiva säljpartners arbetar vidare med företags- och BRF-affärer inom elhandel. Fastighetsbolag får ett inflyttningsflöde där nya bostadshyresgäster kan lämna testintresse i elhandel. Fiber och andra produktområden ingår inte.
+Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Arbetsytorna är nu anpassade till dessa två segment. Fastighetsbolagens tidigare demo finns kvar; nästa upplägg väntar på användarens beskrivning. Fiber och andra produktområden ingår inte.
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, utbildningar och partnerresan är förslag att testa. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
@@ -22,8 +22,8 @@ python -m http.server 8000 --directory dist
 | --- | --- |
 | Kraftringens resultatöversikt | Resultatbidrag före partnerkostnad, partnerkostnad, nettobidrag, nya avtal och avtalad årsvolym i MWh. Välj månad eller kvartal, filtrera partnertyp, jämför utfall och exportera ekonomiska exempel som CSV. Framtida potential visas separat. |
 | Partners & partnerprofil | Sök och sortera partners efter exempelutfall. Granska en partner, redigera intern ansvarig, nästa steg, uppföljningsdatum och intern anteckning samt öppna partnerns arbetsyta. |
-| Säljpartnerns översikt & pipeline | Nyckeltal från kundernas exempeldata, nästa steg, aktivitetshistorik och affärer per föreslaget steg. |
-| Kunder | Registrera företag eller BRF, söka och filtrera, dokumentera kontakt och nästa steg. Internt team tilldelar demoansvarig, ändrar status eller pipelinesteg och delar återkoppling. |
+| Saveras översikt & pipeline | Nyckeltal från kundernas exempeldata, nästa steg, aktivitetshistorik och affärer per föreslaget steg. |
+| Företagskunder | Registrera företag eller BRF, söka och filtrera, dokumentera kontakt och nästa steg. Internt team tilldelar demoansvarig, ändrar status eller pipelinesteg och delar återkoppling. |
 | Offerter & avtal | Offertstudion har fyra steg: **Välj område → Beskriv behov → Välj kund → Granska & spara**. Sparade behovsunderlag kan öppnas igen, hämtas som TXT och markeras som skickade i en simulering. |
 | Avtal & dokument | Prova lokala demosteg för fullmakt, avtal och signering samt öppna dokumentbiblioteket. |
 | Kundsidor | Skapa och redigera kundsidans rubrik, introduktion, bild och kontaktknapp. Förhandsgranska och prova kontaktformuläret. |
@@ -41,8 +41,8 @@ Vid vanlig öppning visas den interna Kraftringen-vyn först. En inflyttningslä
 
 | Partner i registret | Hur namnet används |
 | --- | --- |
-| Savera (`syd`) | Aktiv säljpartners arbetsyta. Namnet har nämnts av användaren; status, resultat och övriga uppgifter är exempel. |
-| Face-to-face · exempelupplägg (`vast`) | Exempel på säljupplägg, inte ett bekräftat partnerbolag. |
+| Savera (`syd`) | Bekräftad partner för företagsförsäljning. Företagsaffärer och offertunderlag; alla statusar och resultat är exempel. |
+| Face2face (`vast`) | Bekräftad partner för konsumentförsäljning. Separata konsumentunderlag med återkoppling; alla statusar, kanaler och resultat är exempel. |
 | Exempelfastigheter AB (`estate1`) | Fiktivt fastighetsbolag med inflyttningsflöde. |
 | Exempelbo Förvaltning (`estate2`) | Fiktivt fastighetsbolag med separat inflyttningsflöde. |
 
@@ -86,6 +86,8 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 - `dist/partner.js`: säljpartnerns kundsidor, material och support.
 - `dist/commercial.js`: intern resultatöversikt och partneruppföljning med ekonomisk exempeldata.
 - `dist/property.js`: fastighetsbolagens arbetsyta och hyresgästers testintresse.
+- `dist/business.js`: Saveras översikt och affärsunderlag för företagskunder.
+- `dist/consumer.js`: Face2faces konsumentaffärer, återkoppling, säljstöd och försäljningsrapport.
 - [ASSETS.md](ASSETS.md): bildkällor. Bilderna är illustrationer, inte antagna godkända Kraftringen-bilder.
 
 ## Förslag för att bygga tillsammans
@@ -100,3 +102,16 @@ Officiella källor kontrollerade 7 oktober 2026:
 - [Lovable: Collaboration](https://docs.lovable.dev/features/collaboration) och [Drafts](https://docs.lovable.dev/features/drafts)
 - [ChatGPT Sites: Creating and using Sites](https://help.openai.com/en/articles/20001339-creating-and-using-chatgpt-sites)
 - [Codex: Git worktrees](https://learn.chatgpt.com/docs/environments/git-worktrees) och [Cloud](https://learn.chatgpt.com/docs/cloud)
+
+## Anpassade partnersidor
+
+- **Savera:** översikt för företagsförsäljning, kunder/pipeline, offertstudio och nytt affärsunderlag med årsvolym, antal anläggningar, avtalsdatum, önskad start, underlagsfrågor och nästa steg. Underlaget sparas i `businessDetails` per kund. Det är inte en prisberäkning.
+- **Face2face:** separat översikt för konsumentförsäljning, registrering och uppföljning av fiktiva konsumentunderlag, kompletteringsärenden, säljstöd och rapport över exempelantal. `consumerSales` hålls åtskilt från företagsrecord. Kraftringens interna vy kan användas för att simulera återkoppling.
+- **Kraftringen:** ekonomiskt utfall först på respektive partnerprofil, därefter segmentanpassad operativ översikt. Intern partnerresa är fortsatt separat. Alla finansiella fixtures är oförändrade och påverkas inte av nya underlag.
+- Academy anpassas till vald partners kundsegment och behåller lokala utbildningsframsteg.
+
+Direktlänkar till arbetsytorna: `?workspace=syd#overview` och `?workspace=vast#overview`. Dessa väljer demovy och bevarar perspektivet efter omladdning. De ger inga nya behörigheter.
+
+Befintlig v2-data behålls. Äldre Face2face-exempel med företag/BRF finns kvar i lagringen men visas inte som konsumenter och ingår inte i de nya företagsvyerna. Registrering av konsumentunderlag innebär varken ett ingånget avtal eller finansiellt utfall. Statuser, kanaler, underlagschecklistor och återkopplingsprocess är testförslag, inte fastställda affärsregler.
+
+Testa: Savera → Affärsunderlag → spara nästa steg → kontrollera samma kunddialog. Face2face → registrera konsumentunderlag → Kraftringen/Konsumentaffärer → simulera återkoppling → Face2face/Återkoppling. Ladda om för att kontrollera lokal lagring och säkerställ att ekonomiskt utfall för samma period är oförändrat.

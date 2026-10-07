@@ -237,6 +237,20 @@
     const items = offers();
     return `${heading('Dokument', 'Samla dina kundunderlag och se vad som återstår.')}<div class="studio-document-library"><section class="card studio-saved"><div class="studio-card-head studio-list-head"><div><span class="studio-eyebrow">DINA TESTUNDERLAG</span><h2>Offertutkast & demodokument</h2></div><span class="pill">${items.length} underlag</span></div>${items.length ? `<div class="studio-offer-table">${items.map(item => `<div class="studio-offer-row"><span class="studio-file-icon">${icon('file')}</span><div class="studio-offer-info"><strong>${esc(name(item))}</strong><small>Demounderlag · TXT · ${esc(formatDate(item.updatedAt))}</small></div><span class="studio-tag">Exempeldata</span><div class="studio-row-actions"><button type="button" class="btn btn-secondary btn-small" data-open-offer="${esc(item.id)}">Granska</button><button type="button" class="btn btn-primary btn-small" data-export-offer="${esc(item.id)}">${icon('download')} Hämta</button></div></div>`).join('')}</div>` : `<div class="studio-empty"><span class="studio-file-icon">${icon('file')}</span><div><strong>Inga sparade underlag ännu.</strong><p>Skapa ett utkast i offertstudion för att testa dokumentbiblioteket.</p><button type="button" class="btn btn-primary btn-small" data-go="offers">Skapa offertutkast</button></div></div>`}<p class="studio-list-foot">Textfilerna är demounderlag. De innehåller inga priser, bindande villkor eller juridiska avtals- eller fullmaktstexter.</p></section><aside class="card studio-template-list"><div class="studio-card-head"><span class="studio-eyebrow">ATT FYLLA MED ERT UNDERLAG</span><h2>Godkända mallar</h2></div>${['Offertmall & produktvillkor', 'Fullmaktsmall', 'Avtalsmall', 'Partnerns befogenheter'].map(title => `<div class="studio-template-row">${icon('file')}<div><strong>${title}</strong><small>Underlag saknas</small></div></div>`).join('')}<p class="studio-small-note">Material läggs till när ni lämnar godkänt underlag.</p></aside></div>`;
   }
+  P.prepareBusinessOffer = recordId => {
+    currentContext();
+    const record = P.getRecords().find(item => item.id === recordId && item.partner === 'syd');
+    if (!record) return;
+    const detail = P.state.businessDetails?.[recordId] || {};
+    activeDraft = {
+      ...freshDraft(), partner: record.partner, customerId: record.id,
+      interest: (detail.topics || []).find(topic => interests[topic]) || 'contract',
+      need: detail.questions || record.need || '', volume: detail.annualVolume || '',
+      start: detail.start || '', note: detail.facilities ? `Antal anläggningar i exempelunderlag: ${detail.facilities}.` : ''
+    };
+    step = 2;
+    P.go('offers');
+  };
   P.register('offers', { render: renderOffers, bind: bindOffers });
   P.register('agreements', { render: renderAgreements, bind: bindAgreements });
   P.register('documents', { render: renderDocuments, bind: bindShared });

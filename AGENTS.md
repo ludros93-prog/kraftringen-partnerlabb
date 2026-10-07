@@ -5,8 +5,8 @@
 - Ludwig Rosenberg är teamchef för B2B-sälj på Kraftringen Kundcenter sedan juni 2026. Håkan Rusk är hans chef; någon ytterligare titel för Håkan är inte angiven.
 - Användaren har valt aktiv säljpartner som arbetar vidare med affären och hela partnerarbetsplatsens frontend utifrån referensbildernas marinblå och petrolfärgade design. Backend ingår inte i denna etapp.
 - Den interna Kraftringen-vyn är nu huvudvy och ska fokusera på kommersiellt resultat för alla partners eller vald partner. Partnerresan är endast intern och följs separat per partner.
-- Aktiva säljpartners behåller arbetsytan för företag och BRF inom elhandel. Fastighetsbolag har en separat arbetsyta med inflyttningssida där nya bostadshyresgäster kan registrera testintresse i elhandel. Detta bostadsspår är godkänt; fiber och andra produktområden är fortsatt utanför scope.
-- Partnerregistret använder `syd` = Savera (namnet är verkligt nämnt, alla resultat och statusar är exempel), `vast` = Face-to-face · exempelupplägg (inte ett bekräftat partnerbolag), `estate1` = Exempelfastigheter AB och `estate2` = Exempelbo Förvaltning.
+- Användaren har bekräftat att Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter. De ska ha separata, uppgiftsanpassade arbetsytor. Savera behåller företag/BRF-underlag; Face2face har konsumentunderlag. Fastighetsbolagens nya upplägg väntar på användarens beskrivning; denna etapp ändrar inte deras tidigare demo. Fastighetsbolag har en separat arbetsyta med inflyttningssida där nya bostadshyresgäster kan registrera testintresse i elhandel. Detta bostadsspår är godkänt; fiber och andra produktområden är fortsatt utanför scope.
+- Partnerregistret använder `syd` = Savera (namnet är verkligt nämnt, alla resultat och statusar är exempel), `vast` = Face2face (bekräftad partner för konsumentförsäljning, alla resultat/statusar/kanaler är exempel), `estate1` = Exempelfastigheter AB och `estate2` = Exempelbo Förvaltning.
 - Arbetsflöden, pipelinesteg, partnerresans åtta steg, utbildningsinnehåll, befogenheter, informationsdelning och plattformsval är förslag eller öppna beslut.
 - B2B Veckokollen är ett tidigare separat verktyg. Integration med det eller Dynamics är inte beslutad.
 - Skilj i gränssnitt och dokumentation mellan användarens beslut, våra förslag och sådant som behöver verifieras. Hitta inte på kommersiella regler eller Kraftringens interna processer.
@@ -28,7 +28,7 @@
 ## Teknik och verifiering
 
 - Bevara prototypens statiska portabilitet: körbara filer ligger i `dist/` och ska kunna serveras utan paketinstallation eller byggsteg.
-- `app.js` tillhandahåller `window.Portal`, partnerregistret och navigationen. `studio.js`, `academy.js`, `partner.js`, `commercial.js` och `property.js` registrerar sina vyer mot samma objekt. Behåll en gemensam lokal datamodell.
+- `app.js` tillhandahåller `window.Portal`, partnerregistret och navigationen. `studio.js`, `academy.js`, `partner.js`, `commercial.js`, `property.js`, `business.js` och `consumer.js` registrerar sina vyer mot samma objekt. Behåll en gemensam lokal datamodell.
 - Bevara kunddata och migreringen från `partnerlabb.active.v1` till `partnerlabb.portal.v2`. Giltig v2-data har företräde. Återställning ska fortsatt vara ett tydligt användarval.
 - Nya dataområden `commercial.management`, `moveins` och `propertySettings` ska behålla befintliga kunddata och annan v2-data. De fasta ekonomiska exemplen i `commercial.js` ska hållas åtskilda från hyresgästers intresseregistreringar.
 - Inflyttningsflödet har tre steg: Inflyttning, Kontakt och Granska. Bekräftelse gäller fiktivt testintresse, inget elavtal. Skapa en separat `moveins`-post och ett TXT-testkvitto; skapa inte kundrecord, offert, avtal eller ekonomiskt utfall från formuläret.
@@ -38,3 +38,11 @@
 - Bevara kundregistrering och återkoppling, offertstudions fyra steg, dokumentdemosteg, kundsideförhandsvisning och Academy för aktiva säljpartners. Kontrollera relevant lagring efter omladdning och perspektivbyten mellan partnertyper. Breda kontroller behövs när gemensam navigation eller data ändras.
 - Uppdatera README när verkliga funktioner eller begränsningar ändras. Dokumentationsändringar behöver inte egna tester.
 - Lova inte samtidig kodredigering eller parallellt AI-arbete utan aktuellt officiellt underlag för vald miljö. Skilj på att bygga samma projekt och att använda den publicerade portalen tillsammans.
+
+## Bekräftad segmentering och nya dataområden
+
+- Savera (`syd`) har `business-overview` och `business-brief`; affärsunderlag i `businessDetails` är kopplat till befintliga företagsrecord. Sparat nästa steg/datum följer kunddialogen.
+- Face2face (`vast`) har `consumer-overview`, `consumer-sales`, `consumer-followup`, `consumer-material` och `consumer-reports`. Fiktiva privatpersoner ligger i separat `consumerSales`. Konsumentregistrering skapar underlag, aldrig verkliga avtal eller finansiellt utfall.
+- Gamla `vast`-record med företag/BRF bevaras i lokal data men visas inte i de nya företags- eller konsumentflödena. Nya konsumentexempel ska inte konverteras från dessa företag.
+- Partnerinterna kostnader/nettobidrag visas i Kraftringens vy, inte i partnerarbetsytorna. Statusdefinitioner, handläggningssteg, kanaler och utbildningsinnehåll är testförslag tills verkligt underlag lämnats.
+- Direktlänkar `?workspace=syd#overview` och `?workspace=vast#overview` öppnar respektive demovy; det är visningsval, inget åtkomstskydd.

@@ -75,6 +75,9 @@ small { font-size: 11px; }
 .role-picker { display: flex; gap: 8px; align-items: center; }
 .role-picker label { font-size: 10px; color: #80909c; }
 .role-picker select { font-size: 11px; background: #f8fafb; padding: 7px 24px 7px 9px; max-width: 170px; }
+.breadcrumb { min-width: 0; }
+.breadcrumb > strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-actions { flex-shrink: 0; }
 .profile { display: flex; align-items: center; gap: 9px; font-size: 11px; }
 .profile strong { display: block; font-weight: 650; }
 .profile small { display: block; color: #82919c; font-size: 10px; margin-top: 1px; }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Kraftringens partneröversikt – kommersiellt resultat, partnerprofiler och inflyttningssidor. Enbart exempeldata.">
+  <meta name="description" content="Kraftringens partneröversikt – kommersiellt resultat, Savera företagsförsäljning och Face2face konsumentförsäljning. Enbart exempeldata.">
   <meta name="theme-color" content="#071b30">
   <title>Kraftringen · Partnerportal</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071b30'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23099b98' stroke-width='5'/%3E%3Ccircle cx='34' cy='28' r='11' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
@@ -13,11 +13,15 @@
   <link rel="stylesheet" href="partner.css">
   <link rel="stylesheet" href="property.css">
   <link rel="stylesheet" href="commercial.css">
+  <link rel="stylesheet" href="business.css">
+  <link rel="stylesheet" href="consumer.css">
   <script src="app.js" defer></script>
   <script src="studio.js" defer></script>
   <script src="academy.js" defer></script>
   <script src="partner.js" defer></script>
   <script src="property.js" defer></script>
+  <script src="business.js" defer></script>
+  <script src="consumer.js" defer></script>
   <script src="commercial.js" defer></script>
 </head>
 <body>
@@ -33,7 +37,7 @@
     <header class="topbar"><div class="breadcrumb"><button class="icon-button" id="menu-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Öppna menyn"></button><span>Partnerportal</span><span class="crumb-separator">/</span><strong id="current-page">Kraftringens översikt</strong></div><div class="top-actions"><div class="role-picker"><label for="role">Demovy</label><select id="role"><option value="internal">Kraftringen</option><option value="partner">Partner · förhandsvisning</option></select><select id="partner" aria-label="Exempelpartner" hidden></select></div><button class="icon-button" id="notifications" aria-label="Visa senaste aktiviteter"></button><div class="profile"><span class="avatar">DE</span><div><strong>Demoanvändare</strong><small id="profile-role">Kraftringen · intern demovy</small></div></div></div></header>
     <div class="demo-banner"><span class="demo-badge">PROTOTYP</span><span>Exempeldata · Sparas i denna webbläsare</span><button class="text-button" id="return-internal" hidden>Till Kraftringens översikt <span aria-hidden="true">→</span></button><button class="text-button" data-go="settings">Om testmiljön <span aria-hidden="true">→</span></button></div>
     <main class="main" id="view" tabindex="-1"></main>
-    <footer class="footer"><span>Kraftringen Partnerportal · Arbetsprototyp</span><span>Partners & inflyttning · Enbart exempeldata</span></footer>
+    <footer class="footer"><span>Kraftringen Partnerportal · Arbetsprototyp</span><span>Företag & konsument · Enbart exempeldata</span></footer>
   </div>
   <dialog id="portal-dialog" aria-labelledby="dialog-title"><div class="modal-head"><h2 id="dialog-title"></h2><button type="button" id="close-dialog" class="icon-button" aria-label="Stäng dialog">×</button></div><div id="dialog-body"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
