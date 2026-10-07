@@ -226,7 +226,7 @@ input[type="date"] { min-height: 36px; }
 .search-field > .icon { position: absolute; top: 10px; left: 11px; width: 15px; height: 15px; color: #93a4af; }
 .search-field input { width: 100%; padding-left: 35px; font-size: 11px; }
 .toolbar select { font-size: 11px; max-width: 180px; }
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; min-width: 0; }
+.table-wrap { position: relative; overflow-x: auto; -webkit-overflow-scrolling: touch; min-width: 0; }
 table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
 th { font-size: 9px; font-weight: 600; color: #8193a0; background: #f6f8fa; padding: 12px 13px; white-space: nowrap; border-top: 1px solid #e7edf1; border-bottom: 1px solid #e7edf1; }
 td { border-bottom: 1px solid #edf1f4; padding: 14px 13px; color: #5e7686; vertical-align: middle; }
@@ -444,7 +444,8 @@ dialog::backdrop { background: #071b308a; backdrop-filter: blur(3px); }
   .toast { font-size: 11px; padding: 12px 16px; bottom: 18px; }
 }
 @media (max-width: 380px) {
-  .breadcrumb { display: none; }
+  .breadcrumb { display: flex; }
+  .breadcrumb > strong { display: none; }
   .topbar { gap: 6px; }
   .top-actions { margin-left: auto; }
   .kpi { flex-direction: column; align-items: flex-start; gap: 10px; }

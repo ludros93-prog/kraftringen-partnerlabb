@@ -1,0 +1,317 @@
+(() => {
+  'use strict';
+  const P = window.Portal;
+  if (!P) return;
+  const e = P.e;
+  const icon = P.icon;
+  const ids = ['syd', 'vast', 'estate1', 'estate2'];
+  const fallback = {
+    syd: { name: 'Savera', type: 'sales', typeLabel: 'Aktiv säljpartner', initials: 'SA', description: 'Partner för aktivt säljarbete. Affärer och resultat i denna vy är fiktiva.' },
+    vast: { name: 'Face-to-face', type: 'field', typeLabel: 'Face-to-face · exempelupplägg', initials: 'FF', description: 'Exempel på ett försäljningsupplägg. Organisation, partner och arbetssätt är inte bekräftade.' },
+    estate1: { name: 'Exempelfastigheter AB', type: 'property', typeLabel: 'Fastighetsbolag · fiktivt', initials: 'EF', description: 'Fiktivt fastighetsbolag för att testa inflyttningssidor och elhandelsanmälningar.' },
+    estate2: { name: 'Exempelbo Förvaltning', type: 'property', typeLabel: 'Fastighetsbolag · fiktivt', initials: 'EB', description: 'Fiktivt fastighetsbolag för att testa inflyttningssidor och elhandelsanmälningar.' }
+  };
+  const partner = id => {
+    const registry = P.getPartner?.(id) || (Array.isArray(P.partnerRegistry) ? P.partnerRegistry.find(item => item.id === id) : P.partnerRegistry?.[id]) || {};
+    return { ...fallback[id], ...registry, name: registry.name || P.partners?.[id] || fallback[id]?.name || 'Exempelpartner', id };
+  };
+  const journeySteps = ['Rekrytera', 'Onboarda', 'Certifiera', 'Aktivera', 'Sälja', 'Leverera', 'Utveckla', 'Behålla'];
+  const journeyDescriptions = [
+    'Samla en bild av ett möjligt samarbete och vad parterna vill uppnå.',
+    'Förbered introduktion, kontaktvägar och vilka arbetsuppgifter partnern ska ha.',
+    'Diskutera vilket kunskapsunderlag som behövs. Inga certifieringskrav är beslutade.',
+    'Förbered partnerns arbetsyta och material för det första testet.',
+    'Följ affärsarbetet och hjälp partnern vidare i kunddialogen.',
+    'Följ överlämning och kundens nästa steg. Leveransprocessen behöver eget underlag.',
+    'Utvärdera kommersiellt bidrag och välj förbättringar tillsammans.',
+    'Följ värdet över tid och diskutera fortsatt samarbete.'
+  ];
+  const journeyTasks = [
+    ['Beskriva syftet med samarbetet', 'Dokumentera ett första gemensamt möte'],
+    ['Utse en intern kontakt', 'Förbereda partnerns introduktion'],
+    ['Stämma av kunskapsbehov', 'Testa ett utbildningsmoment'],
+    ['Förhandsgranska partnerns arbetsyta', 'Planera det första kundflödet'],
+    ['Följa upp affärer och nästa steg', 'Samla partnerns återkoppling'],
+    ['Stämma av nästa steg för kunden', 'Följa upp överlämningen'],
+    ['Gå igenom utfall och kostnader', 'Välja en förbättring att testa'],
+    ['Utvärdera fortsatt kommersiellt värde', 'Planera nästa gemensamma uppföljning']
+  ];
+  // Separate, manually entered fixtures. No pricing, remuneration rate or conversion rule.
+  // Arrays: economic contribution, partner cost, new contracts, annual MWh, registrations.
+  const fixtures = {
+    '2026-04': { syd:[170000,48000,20,780,0], vast:[78000,28000,44,180,0], estate1:[16000,7000,12,44,22], estate2:[6500,5000,5,18,11] },
+    '2026-05': { syd:[184000,50500,22,860,0], vast:[85000,30000,47,192,0], estate1:[18500,7600,14,50,25], estate2:[8200,5400,6,23,13] },
+    '2026-06': { syd:[195000,54000,24,930,0], vast:[92000,32000,51,210,0], estate1:[20500,8300,16,56,29], estate2:[9600,5900,7,26,16] },
+    '2026-07': { syd:[201000,56000,24,970,0], vast:[93500,33500,52,220,0], estate1:[24000,9200,18,65,33], estate2:[11000,6300,8,29,18] },
+    '2026-08': { syd:[218000,59000,26,1050,0], vast:[99000,35500,55,235,0], estate1:[26500,9800,20,71,36], estate2:[13700,7500,10,36,24] },
+    '2026-09': { syd:[252000,66000,31,1320,0], vast:[109000,39000,61,260,0], estate1:[31200,11400,24,86,43], estate2:[12100,15100,9,32,27] },
+    '2026-10': { syd:[48000,12500,6,250,0], vast:[22000,8000,12,50,0], estate1:[7100,2300,5,18,11], estate2:[2900,3500,2,7,6] }
+  };
+  const partialComparison = {
+    // Both periods cover the first seven calendar days, not a full previous month/quarter.
+    month: { syd:[42000,11000,5,210,0], vast:[21000,7400,11,46,0], estate1:[6300,2200,4,15,9], estate2:[3100,3600,2,7,6] },
+    quarter: { syd:[39000,10900,5,190,0], vast:[18700,6700,10,43,0], estate1:[4800,1800,4,13,8], estate2:[2200,1260,2,6,5] }
+  };
+  const potential = {
+    syd:{ count:19, contribution:142000, volume:710, label:'Öppna affärer' },
+    vast:{ count:28, contribution:47000, volume:110, label:'Öppna affärer' },
+    estate1:{ count:13, contribution:10500, volume:39, label:'Anmälningar att följa upp' },
+    estate2:{ count:11, contribution:7200, volume:27, label:'Anmälningar att följa upp' }
+  };
+  const periods = {
+    month: [
+      { id:'2026-09', label:'September 2026', current:['2026-09'], previous:['2026-08'], comparison:'augusti 2026', range:'1–30 september 2026' },
+      { id:'2026-08', label:'Augusti 2026', current:['2026-08'], previous:['2026-07'], comparison:'juli 2026', range:'1–31 augusti 2026' },
+      { id:'2026-10', label:'Oktober 2026 · 1–7 okt', current:['2026-10'], partial:'month', comparison:'1–7 september 2026', range:'1–7 oktober 2026 · delperiod' }
+    ],
+    quarter: [
+      { id:'2026-q3', label:'Kvartal 3 · 2026', current:['2026-07','2026-08','2026-09'], previous:['2026-04','2026-05','2026-06'], comparison:'kvartal 2 · 2026', range:'1 juli–30 september 2026' },
+      { id:'2026-q4', label:'Kvartal 4 · till 7 okt', current:['2026-10'], partial:'quarter', comparison:'1–7 juli 2026', range:'1–7 oktober 2026 · delperiod av Q4' }
+    ]
+  };
+  let periodKind = 'month';
+  let periodId = '2026-09';
+  let typeFilter = 'all';
+  let partnerQuery = '';
+  let sortBy = 'net-desc';
+  let selectedJourneyStep;
+  const num = (value, decimals = 0) => new Intl.NumberFormat('sv-SE', { maximumFractionDigits:decimals, minimumFractionDigits:decimals }).format(value);
+  const money = value => `${num(value / 1000, value % 1000 ? 1 : 0)} <small>tkr</small>`;
+  const moneyText = value => `${num(value / 1000, value % 1000 ? 1 : 0)} tkr`;
+  const currentPeriod = () => periods[periodKind].find(p => p.id === periodId) || periods[periodKind][0];
+  const empty = () => ({ contribution:0, cost:0, net:0, agreements:0, volume:0, registrations:0 });
+  const fromArray = values => ({ contribution:values[0], cost:values[1], net:values[0]-values[1], agreements:values[2], volume:values[3], registrations:values[4] });
+  const sum = items => items.reduce((total, item) => { Object.keys(total).forEach(key => total[key] += item[key] || 0); return total; }, empty());
+  function valuesFor(id, previous = false) {
+    const p = currentPeriod();
+    if (previous && p.partial) return fromArray(partialComparison[p.partial][id]);
+    return sum((previous ? p.previous : p.current).map(month => fromArray(fixtures[month][id])));
+  }
+  function change(current, previous, invert = false) {
+    if (!previous) return '<span class="commercial-delta neutral">Ingen jämförbar bas</span>';
+    const amount = (current-previous)/Math.abs(previous)*100;
+    const positive = invert ? amount <= 0 : amount >= 0;
+    return `<span class="commercial-delta ${positive ? 'up' : 'down'}">${amount >= 0 ? '+' : '−'}${num(Math.abs(amount),1)} %</span>`;
+  }
+  function initManagement() {
+    if (!P.state.commercial || typeof P.state.commercial !== 'object') P.state.commercial = {};
+    if (!P.state.commercial.management || typeof P.state.commercial.management !== 'object') P.state.commercial.management = {};
+    ids.forEach((id,index) => {
+      if (!P.state.commercial.management[id] || typeof P.state.commercial.management[id] !== 'object') {
+        P.state.commercial.management[id] = {
+          stage:[6,4,3,1][index], owner:['Demoansvarig A','Demoansvarig B','Demoansvarig A','Ej tilldelad'][index],
+          next:['Stämma av bidrag och nästa gemensamma insats','Gå igenom det tänkta säljarbetet','Testa inflyttningssidan med en fiktiv hyresgäst','Planera introduktionen'][index],
+          date:['2026-10-12','2026-10-13','2026-10-15','2026-10-19'][index],
+          note:'Exempelanteckning. Partnerns placering och uppgifter är ett testförslag.', checks:[], events:[]
+        };
+      }
+    });
+  }
+  const management = id => { initManagement(); return P.state.commercial.management[id]; };
+  const selectedPartner = () => ids.includes(P.selectedPartnerId) ? P.selectedPartnerId : 'syd';
+  function selectPartner(id, page = 'partner-detail') {
+    if (!ids.includes(id)) return;
+    P.selectedPartnerId = id;
+    selectedJourneyStep = undefined;
+    P.go(page);
+  }
+  function partnersMatching() {
+    return ids.filter(id => {
+      const p = partner(id);
+      return (typeFilter === 'all' || fallback[id].type === typeFilter) && (!partnerQuery || `${p.name} ${p.typeLabel}`.toLocaleLowerCase('sv-SE').includes(partnerQuery.toLocaleLowerCase('sv-SE')));
+    });
+  }
+  function sortedPartners() {
+    return partnersMatching().sort((a,b) => {
+      if (sortBy === 'name') return partner(a).name.localeCompare(partner(b).name,'sv-SE');
+      if (sortBy === 'contracts') return valuesFor(b).agreements-valuesFor(a).agreements;
+      const delta = valuesFor(b).net-valuesFor(a).net;
+      return sortBy === 'net-asc' ? -delta : delta;
+    });
+  }
+  const header = (title, subtitle, action = '') => `<div class="page-head commercial-head"><div><span class="commercial-eyebrow">KRAFTRINGEN / INTERN PARTNERSTYRNING</span><h1>${e(title)}</h1><p class="muted">${e(subtitle)}</p></div>${action}</div>`;
+  const note = () => `<p class="commercial-demo-note">${icon('shield')}<span>Alla belopp och resultat är manuella exempel. Resultatbidrag före partnerkostnad minus exempelkostnad visas som nettobidrag. Kraftringens ekonomiska definition är inte beslutad. Årsvolym avser periodens nya avtal, inte levererad el.</span></p>`;
+  function periodControls(includeType = true) {
+    const p = currentPeriod();
+    return `<div class="commercial-filter-bar"><div class="commercial-period-controls"><label class="commercial-filter-label">Periodtyp<select id="commercial-period-kind"><option value="month"${periodKind==='month'?' selected':''}>Månad</option><option value="quarter"${periodKind==='quarter'?' selected':''}>Kvartal</option></select></label><label class="commercial-filter-label">Period<select id="commercial-period">${periods[periodKind].map(item => `<option value="${item.id}"${item.id===p.id?' selected':''}>${e(item.label)}</option>`).join('')}</select></label>${includeType ? `<label class="commercial-filter-label">Partnertyp<select id="commercial-type"><option value="all"${typeFilter==='all'?' selected':''}>Alla partnertyper</option><option value="sales"${typeFilter==='sales'?' selected':''}>Aktiv säljpartner</option><option value="field"${typeFilter==='field'?' selected':''}>Face-to-face</option><option value="property"${typeFilter==='property'?' selected':''}>Fastighetsbolag</option></select></label>` : ''}</div><span class="commercial-example-badge">${icon('file')} Ekonomiska exempel</span></div>`;
+  }
+  function kpis(selectedIds) {
+    const current = sum(selectedIds.map(id=>valuesFor(id)));
+    const previous = sum(selectedIds.map(id=>valuesFor(id,true)));
+    const metrics = [
+      ['Nettobidrag',current.net,previous.net,'money','Efter exempelkostnad',true],
+      ['Resultatbidrag',current.contribution,previous.contribution,'chart','Före partnerkostnad',false],
+      ['Partnerkostnad',current.cost,previous.cost,'briefcase','Separat angivna exempel',false],
+      ['Nya avtal',current.agreements,previous.agreements,'file','Avtal i periodens exempel',false],
+      ['Avtalad årsvolym',current.volume,previous.volume,'bolt','För periodens nya avtal',false]
+    ];
+    return `<div class="commercial-kpis">${metrics.map(([label,value,old,ic,explain,featured],index) => `<article class="commercial-kpi${featured?' commercial-kpi-featured':''}"><div class="commercial-kpi-top"><span>${e(label)}</span>${icon(ic)}</div><strong class="commercial-kpi-value">${index<3?money(value):`${num(value)} <small>${index===4?'MWh':'st'}</small>`}</strong><span class="commercial-kpi-description">${explain} · exempel</span><div class="commercial-kpi-compare">${change(value,old,index===2)}<small>mot ${e(currentPeriod().comparison)}</small></div></article>`).join('')}</div>`;
+  }
+  function trendChart(selectedIds) {
+    const period=currentPeriod();
+    let rows;
+    if(periodKind==='quarter'||period.partial) {
+      rows=[
+        {label:periodKind==='quarter'?(period.partial?'1–7 juli':'Q2 2026'):'1–7 sep', value:sum(selectedIds.map(id=>valuesFor(id,true)))},
+        {label:periodKind==='quarter'?(period.partial?'1–7 okt':'Q3 2026'):'1–7 okt', value:sum(selectedIds.map(id=>valuesFor(id)))}
+      ];
+    } else {
+      const last=Object.keys(fixtures).indexOf(period.current[0]);
+      const months=Object.keys(fixtures).slice(Math.max(0,last-2),last+1);
+      const labels={'2026-06':'Juni','2026-07':'Juli','2026-08':'Augusti','2026-09':'September'};
+      rows=months.map(month=>({label:labels[month]||month,value:sum(selectedIds.map(id=>fromArray(fixtures[month][id])))}));
+    }
+    const maximum=Math.max(1,...rows.flatMap(row=>[row.value.cost,Math.max(0,row.value.net)]));
+    const minimum=Math.max(0,...rows.map(row=>Math.abs(Math.min(0,row.value.net))));
+    const scale=140/(maximum+minimum);
+    const baseline=12+maximum*scale;
+    const width=480;
+    const column=(width-54)/rows.length;
+    const description=rows.map(row=>`${row.label}: nettobidrag ${moneyText(row.value.net)}, partnerkostnad ${moneyText(row.value.cost)}`).join('. ');
+    const chart=selectedIds.length ? `<svg class="commercial-signed-chart" viewBox="0 0 ${width} 205" role="img" aria-labelledby="commercial-chart-title commercial-chart-desc"><title id="commercial-chart-title">Nettobidrag och partnerkostnad, ekonomiska exempel</title><desc id="commercial-chart-desc">${e(description)}. Negativt nettobidrag visas under nollinjen.</desc><line x1="30" y1="${baseline}" x2="${width-12}" y2="${baseline}" stroke="#d0ddd4" stroke-width="1"/><text x="25" y="${baseline+3}" text-anchor="end" fill="#90a28f" font-size="8">0</text>${rows.map((row,index)=>{
+      const x=50+column*index+column/2;
+      const net=row.value.net;
+      const height=Math.abs(net)*scale;
+      const netY=net>=0?baseline-height:baseline;
+      const costHeight=row.value.cost*scale;
+      return `<g><text x="${x}" y="${net>=0?Math.max(8,netY-9):netY+height+12}" text-anchor="middle" fill="${net<0?'#ad7545':'#3f7563'}" font-size="10" font-weight="650">${e(moneyText(net))}</text><rect x="${x-31}" y="${netY}" width="26" height="${height}" rx="3" fill="${net<0?'#c99968':index===rows.length-1?'#107c74':'#285969'}"><title>${e(row.label)} · nettobidrag ${e(moneyText(net))}</title></rect><rect x="${x+2}" y="${baseline-costHeight}" width="26" height="${costHeight}" rx="3" fill="#cedfd3"><title>${e(row.label)} · partnerkostnad ${e(moneyText(row.value.cost))}</title></rect><text x="${x}" y="190" text-anchor="middle" fill="#8a9d84" font-size="10">${e(row.label)}</text></g>`;
+    }).join('')}</svg>` : '<div class="empty commercial-chart-empty">Inga partners i urvalet.</div>';
+    return `<section class="card commercial-trend"><div class="panel-heading"><div><h2>Kommersiellt bidrag över tid</h2><p class="commercial-subtitle">${period.partial?'Motsvarande delperioder':periodKind==='quarter'?'Två hela kvartal':'Senaste tre hela månader'} · samma partnerurval · exempel</p></div><span class="commercial-example-badge">tkr</span></div><div class="commercial-chart-legend"><span><i class="net"></i>Nettobidrag</span><span><i class="cost"></i>Partnerkostnad</span></div>${chart}<p class="commercial-chart-note">${period.partial?`Delperioden jämförs med ${e(period.comparison)}. Inga hela månader eller kvartal blandas in.`:'Nettobidrag och partnerkostnad visas som separata staplar. Negativt bidrag visas under nollinjen.'}</p></section>`;
+  }
+  function ranking(selectedIds) {
+    const ranked = [...selectedIds].sort((a,b)=>valuesFor(b).net-valuesFor(a).net);
+    const max = Math.max(1,...ranked.map(id=>Math.abs(valuesFor(id).net)));
+    return `<section class="card commercial-ranking"><div class="panel-heading"><div><h2>Bidrag per partner</h2><p class="commercial-subtitle">Nettobidrag · ${e(currentPeriod().label)}</p></div></div><div class="commercial-ranking-list">${ranked.map((id,index)=>{ const p=partner(id), v=valuesFor(id);return `<button class="commercial-ranking-row" data-commercial-partner="${id}"><span class="commercial-rank">${index+1}</span><div><div class="commercial-ranking-name"><strong>${e(p.name)}</strong><span class="${v.net<0?'commercial-negative':''}">${moneyText(v.net)}</span></div><span class="commercial-ranking-track"><i class="${v.net<0?'negative':''}" style="width:${Math.max(3,Math.abs(v.net)/max*100)}%"></i></span><small>${e(p.typeLabel)}</small></div>${icon('arrow')}</button>`; }).join('')||'<p class="empty">Inga partners i urvalet.</p>'}</div><p class="commercial-chart-note">Öppna en partner för att se utfall, aktivitet och ert nästa steg.</p></section>`;
+  }
+  function partnerRows() {
+    const rows = sortedPartners();
+    return rows.map(id=>{
+      const p=partner(id),m=management(id),v=valuesFor(id);
+      return `<tr><td><button class="commercial-partner-name" data-commercial-partner="${id}"><span class="commercial-avatar commercial-avatar-${fallback[id].type}">${e(p.initials||fallback[id].initials)}</span><span><strong>${e(p.name)}</strong><small>${e(p.typeLabel)}</small></span></button></td><td class="commercial-number commercial-net ${v.net<0?'commercial-negative':''}">${moneyText(v.net)}</td><td class="commercial-number">${moneyText(v.contribution)}</td><td class="commercial-number">${moneyText(v.cost)}</td><td class="commercial-number">${num(v.agreements)}</td><td class="commercial-number">${num(v.volume)}</td><td><span class="commercial-stage">${e(journeySteps[m.stage]||journeySteps[0])}</span><small class="commercial-stage-note">Exempelplacering</small></td><td><button class="icon-button" data-commercial-partner="${id}" aria-label="Öppna ${e(p.name)}">${icon('arrow')}</button></td></tr>`;
+    }).join('')||'<tr><td colspan="8"><p class="empty">Inga partners matchar. Ändra sökning eller partnertyp.</p></td></tr>';
+  }
+  function partnerTable(heading = 'Alla partners') {
+    return `<section class="card commercial-partner-table"><div class="panel-heading"><div><h2>${heading}</h2><p class="commercial-subtitle" id="commercial-partner-count">${partnersMatching().length} partners · kommersiella exempel för ${e(currentPeriod().label)}</p></div><span class="pill">Utfall</span></div><div class="toolbar commercial-table-toolbar"><label class="search-field">${icon('search')}<input id="commercial-search" type="search" value="${e(partnerQuery)}" placeholder="Sök partner" aria-label="Sök partner"></label><label class="commercial-sort-label">Sortera<select id="commercial-sort"><option value="net-desc"${sortBy==='net-desc'?' selected':''}>Högst nettobidrag</option><option value="net-asc"${sortBy==='net-asc'?' selected':''}>Lägst nettobidrag</option><option value="contracts"${sortBy==='contracts'?' selected':''}>Flest nya avtal</option><option value="name"${sortBy==='name'?' selected':''}>Partnernamn</option></select></label></div><div class="table-wrap"><table class="commercial-table"><thead><tr><th>Partner</th><th class="commercial-number">Nettobidrag</th><th class="commercial-number">Resultatbidrag</th><th class="commercial-number">Kostnad</th><th class="commercial-number">Nya avtal</th><th class="commercial-number">Årsvolym MWh</th><th>Partnerresa</th><th><span class="sr-only">Öppna</span></th></tr></thead><tbody id="commercial-table-body">${partnerRows()}</tbody></table></div><div class="panel-foot commercial-table-foot"><span>Belopp i tkr · manuella exempel</span><span>Partnerresan är Kraftringens interna testprocess.</span></div></section>`;
+  }
+  function potentialCard(selectedIds) {
+    const items = selectedIds.map(id=>potential[id]);
+    const total = items.reduce((acc,item)=>({contribution:acc.contribution+item.contribution,volume:acc.volume+item.volume}),{contribution:0,volume:0});
+    return `<section class="card commercial-potential"><div><span class="commercial-eyebrow">FRAMTIDA POTENTIAL / SEPARAT FRÅN UTFALLET</span><h2>Vad kan bli nästa affär?</h2><p>Öppna affärer och inflyttningsanmälningar att följa upp. Exempelbild från 7 oktober, oberoende av periodvalet.</p></div><div class="commercial-potential-metric"><strong>${money(total.contribution)}</strong><span>Indikativt bidrag · exempel</span></div><div class="commercial-potential-metric"><strong>${num(total.volume)} <small>MWh</small></strong><span>Indikativ årsvolym · exempel</span></div><button class="text-button" id="commercial-show-potential">Visa underlaget ${icon('arrow')}</button></section>`;
+  }
+  function nextActions(selectedIds) {
+    const attention = [...selectedIds].sort((a,b)=>valuesFor(a).net-valuesFor(b).net).slice(0,3);
+    return `<section class="card commercial-next-actions"><div class="panel-heading"><div><h2>Vad behöver er uppmärksamhet?</h2><p class="commercial-subtitle">Uppföljningsförslag i testmiljön</p></div>${icon('target')}</div><div class="commercial-action-grid">${attention.map(id=>{ const p=partner(id),m=management(id),v=valuesFor(id);return `<button class="commercial-action" data-commercial-partner="${id}"><span class="commercial-action-tag${v.net<0?' caution':''}">${v.net<0?'Negativt exempelbidrag':'Planerad uppföljning'}</span><strong>${e(p.name)}</strong><p>${e(m.next)}</p><span class="commercial-action-meta">${icon('calendar')} ${P.date(m.date)} · ${e(m.owner)}</span>${icon('arrow')}</button>`; }).join('')||'<p class="empty">Inga partners i urvalet.</p>'}</div></section>`;
+  }
+  function renderOverview() {
+    initManagement();
+    const selected = partnersMatching();
+    return `<div class="commercial-page">${header('Vad ger partnersamarbetena?', 'Se det kommersiella utfallet och välj var ni lägger nästa insats.', `<button class="btn btn-secondary" id="commercial-export">${icon('download')} Exportera exempel</button>`)}${periodControls()}<div class="commercial-period-caption"><span>${e(currentPeriod().range)}</span><span>${selected.length} partners i urvalet · utfall i exempeldata</span></div>${kpis(selected)}<div class="commercial-dashboard-grid">${trendChart(selected)}${ranking(selected)}</div>${partnerTable()}${potentialCard(selected)}${nextActions(selected)}${note()}</div>`;
+  }
+  function renderPartners() {
+    initManagement();
+    return `<div class="commercial-page">${header('Partners och kommersiellt resultat','Jämför värdet av samarbetena. Öppna en partner för uppföljning och intern partnerresa.')}${periodControls()}${kpis(partnersMatching())}${partnerTable('Partnerregister')}${note()}</div>`;
+  }
+  function renderReports() {
+    initManagement();
+    return `<div class="commercial-page">${header('Kommersiell resultatrapport','Välj period och partnerurval. Exportera samma ekonomiska exempel som visas här.',`<button class="btn btn-secondary" id="commercial-export">${icon('download')} Exportera exempel · CSV</button>`)}${periodControls()}<div class="commercial-period-caption"><span>${e(currentPeriod().range)}</span><span>Jämförs med ${e(currentPeriod().comparison)}</span></div>${kpis(partnersMatching())}${partnerTable('Resultat per partner')}<section class="card commercial-report-definition"><span class="commercial-eyebrow">UNDERLAGET I DENNA RAPPORT</span><h2>Ekonomiska exempel med samma period och urval</h2><p>Belopp är angivna separat. Nettobidraget är exempelbidraget före partnerkostnad minus den angivna exempelkostnaden. Nya avtal och deras beräknade årsvolym är separata exempelvärden.</p><p>Inflyttningsanmälningar, offertutkast och framtida potential ingår inte i utfallet. CSV-filen innehåller det valda partnerurvalet och den period som visas.</p></section>${note()}</div>`;
+  }
+  function activityFor(id) {
+    const customerEvents = (P.state.records||[]).filter(r=>r.partner===id).flatMap(r=>(r.events||[]).map(ev=>({...ev,company:r.company})));
+    const adminEvents = (management(id).events||[]).map(ev=>({...ev,company:'Intern partneruppföljning'}));
+    const moving = (P.state.moveins||P.state.moveInApplications||P.state.applications||[]).filter(a=>a.partner===id||a.partnerId===id).map(a=>({at:a.created||a.createdAt||'2026-10-07',company:a.propertyName||a.property||'Inflyttningsanmälan · exempel',text:'En lokal testanmälan har registrerats.',actor:'Inflyttningsdemo'}));
+    return [...customerEvents,...adminEvents,...moving].sort((a,b)=>String(b.at).localeCompare(String(a.at))).slice(0,6);
+  }
+  function journeySummary(id) {
+    const m=management(id);
+    return `<section class="card commercial-journey-summary"><div class="panel-heading"><div><span class="commercial-eyebrow">KRAFTRINGENS PROCESS FÖR PARTNERN</span><h2>Var är samarbetet nu?</h2></div><span class="pill">Testförslag</span></div><ol class="commercial-mini-journey">${journeySteps.map((title,index)=>`<li class="${index===m.stage?'current':index<m.stage?'passed':''}"><span>${index+1}</span><strong>${e(title)}</strong></li>`).join('')}</ol><div class="commercial-journey-current"><div><small>EXEMPELPLACERING</small><strong>${e(journeySteps[m.stage]||journeySteps[0])}</strong><p>${e(journeyDescriptions[m.stage]||journeyDescriptions[0])}</p></div><button class="btn btn-secondary btn-small" data-commercial-journey="${id}">Öppna partnerresan ${icon('arrow')}</button></div></section>`;
+  }
+  function renderPartnerDetail() {
+    initManagement();
+    const id=selectedPartner(),p=partner(id),m=management(id),v=valuesFor(id),events=activityFor(id);
+    const isEstate=fallback[id].type==='property';
+    return `<div class="commercial-page"><button class="commercial-back text-button" data-go="partners">← Alla partners</button>${header(p.name,'Resultatet först. Därefter affärsarbetet och ert nästa steg.',`<button class="btn btn-primary" data-commercial-preview="${id}">Förhandsgranska arbetsyta ${icon('arrow')}</button>`)}<div class="commercial-partner-intro"><span class="commercial-avatar commercial-avatar-${fallback[id].type}">${e(p.initials||fallback[id].initials)}</span><div><strong>${e(p.typeLabel)}</strong><p>${e(p.description||fallback[id].description)}</p></div><span class="commercial-example-badge">Exempeldata</span></div>${periodControls(false)}${kpis([id])}<div class="commercial-detail-grid"><section class="card commercial-result-detail"><div class="panel-heading"><div><h2>Vad får Kraftringen ut?</h2><p class="commercial-subtitle">${e(currentPeriod().range)} · exempel</p></div>${icon('chart')}</div><div class="commercial-waterfall"><div><span>Resultatbidrag före partnerkostnad</span><strong>${moneyText(v.contribution)}</strong></div><div><span>Partnerkostnad · separat exempel</span><strong>− ${moneyText(v.cost)}</strong></div><div class="commercial-waterfall-total"><span>Nettobidrag · demomodell</span><strong class="${v.net<0?'commercial-negative':''}">${moneyText(v.net)}</strong></div></div><p class="commercial-result-explanation">Inga belopp räknas från elpris, volym, avtalslängd eller ersättningssats. De är separata testvärden.</p>${isEstate?`<div class="commercial-conversion"><div><strong>${num(v.registrations)}</strong><span>Inflyttningsanmälningar · exempel</span></div><span>→</span><div><strong>${num(v.agreements)}</strong><span>Nya avtal · separat exempel</span></div></div><p class="commercial-chart-note">En anmälan räknas inte automatiskt som ett avtal. Här visas två separata mängder i samma period.</p>`:''}</section><section class="card commercial-owner-card"><div class="panel-heading"><div><h2>Ansvar & nästa steg</h2><p class="commercial-subtitle">Interna lokala utkast</p></div><button class="text-button" id="commercial-edit-management">${icon('edit')} Redigera</button></div><dl><dt>Intern ansvarig</dt><dd>${e(m.owner)}</dd><dt>Nästa uppföljning · ${P.date(m.date)}</dt><dd>${e(m.next)}</dd></dl><div class="commercial-internal-note"><small>INTERN ANTECKNING · DEMOVY</small><p>${e(m.note||'Ingen anteckning ännu.')}</p></div></section></div>${potentialCard([id])}${journeySummary(id)}<section class="card commercial-detail-activity"><div class="panel-heading"><div><h2>Vad gör partnern?</h2><p class="commercial-subtitle">Senaste lokala testaktiviteter · alla datum</p></div><button class="text-button" data-commercial-preview="${id}">Öppna arbetsytan ${icon('arrow')}</button></div><div class="activity-list">${events.length?events.map(ev=>`<div class="activity-row"><span class="activity-icon">${icon('file')}</span><span><small>${P.date(ev.at)} · ${e(ev.actor||'Exempelaktivitet')}</small><strong>${e(ev.company)}</strong><span>${e(ev.text)}</span></span></div>`).join(''):`<div class="commercial-empty-activity">${icon(isEstate?'home':'users')}<div><strong>Ingen lokal testaktivitet ännu.</strong><p>Förhandsgranska arbetsytan och testa ${isEstate?'en inflyttningsanmälan':'en kunddialog'}.</p></div></div>`}</div><p class="commercial-chart-note">Lokala aktiviteter och ekonomiska exempelvärden är separata. Ett demosteg ändrar inte periodens ekonomiska exempel.</p></section>${note()}</div>`;
+  }
+  function editManagement(id) {
+    const p=partner(id),m=management(id);
+    P.openDialog(`Intern uppföljning · ${p.name}`,`<form id="commercial-management-form" class="commercial-management-form"><p class="muted">Spara ett internt testutkast för denna partner. Uppgifterna stannar i din webbläsare.</p><div class="form-grid"><label class="field">Intern ansvarig<input name="owner" required maxlength="80" value="${e(m.owner)}" placeholder="Demoansvarig A"></label><label class="field">Exempelplacering i partnerresan<select name="stage">${journeySteps.map((title,index)=>`<option value="${index}"${m.stage===index?' selected':''}>${index+1}. ${e(title)}</option>`).join('')}</select></label></div><label class="field">Nästa gemensamma steg<input name="next" required maxlength="200" value="${e(m.next)}"></label><label class="field">Datum för uppföljning<input type="date" name="date" value="${e(m.date)}"></label><label class="field">Intern anteckning · använd exempel<textarea name="note" rows="4" maxlength="1200">${e(m.note||'')}</textarea></label><div class="modal-actions"><button type="button" class="btn btn-secondary" id="commercial-cancel-management">Avbryt</button><button type="submit" class="btn btn-primary">Spara lokalt utkast</button></div></form>`,()=>{
+      const form=document.querySelector('#commercial-management-form');
+      document.querySelector('#commercial-cancel-management').onclick=P.closeDialog;
+      form.onsubmit=event=>{
+        event.preventDefault();
+        if(!P.validText(form.elements.owner)||!P.validText(form.elements.next))return;
+        Object.assign(m,{owner:form.elements.owner.value.trim(),stage:Number(form.elements.stage.value),next:form.elements.next.value.trim(),date:form.elements.date.value,note:form.elements.note.value.trim()});
+        m.events.unshift({at:new Date().toISOString(),actor:'Kraftringen · intern demovy',text:`Intern uppföljning sparad. Nästa steg: ${m.next}`,visibility:'internal'});
+        P.save();P.closeDialog();P.render();P.toast('Partnerns interna testutkast är sparat i denna webbläsare.');
+      };
+    });
+  }
+  function showPotential(selectedIds) {
+    P.openDialog('Framtida potential · exempel',`<div class="commercial-potential-dialog"><span class="pill">Manuellt exempel · 7 oktober 2026</span><p class="muted">Dessa testvärden ligger utanför periodens utfall. Inga vinstsannolikheter eller ersättningsregler används.</p><div class="table-wrap"><table><thead><tr><th>Partner</th><th>Öppet underlag</th><th>Indikativt bidrag</th><th>Årsvolym</th></tr></thead><tbody>${selectedIds.map(id=>`<tr><td>${e(partner(id).name)}</td><td>${potential[id].count} ${e(potential[id].label.toLocaleLowerCase('sv-SE'))}</td><td>${moneyText(potential[id].contribution)}</td><td>${num(potential[id].volume)} MWh</td></tr>`).join('')}</tbody></table></div><p class="commercial-demo-note">Anmälningar är inte avtal. Potentialen är ett separat ekonomiskt exempel, inte ett verifierat eller viktat prognosvärde.</p></div>`);
+  }
+  function exportExamples() {
+    const p=currentPeriod();
+    const escapeCsv=value=>`"${String(value).replace(/"/g,'""')}"`;
+    const lines=[['DEMO – manuella exempel, ekonomiskt mått ej beslutat'],['Period',p.label],['Jämförelse',p.comparison],['Partner','Nettobidrag kr – exempel','Resultatbidrag kr – exempel','Partnerkostnad kr – exempel','Nya avtal – exempel','Årsvolym MWh – exempel']];
+    sortedPartners().forEach(id=>{const v=valuesFor(id);lines.push([partner(id).name,v.net,v.contribution,v.cost,v.agreements,v.volume]);});
+    P.download(`partnerutfall-exempel-${p.id}.csv`,'\uFEFF'+lines.map(row=>row.map(escapeCsv).join(';')).join('\n'),'text/csv;charset=utf-8');
+    P.toast('Periodens ekonomiska exempel har exporterats.');
+  }
+  function bindPartnerLinks(scope = document) {
+    scope.querySelectorAll('[data-commercial-partner]').forEach(button=>{button.onclick=()=>selectPartner(button.dataset.commercialPartner);});
+    scope.querySelectorAll('[data-commercial-preview]').forEach(button=>{button.onclick=()=>P.previewPartner?.(button.dataset.commercialPreview);});
+    scope.querySelectorAll('[data-commercial-journey]').forEach(button=>{button.onclick=()=>selectPartner(button.dataset.commercialJourney,'journey');});
+  }
+  function bindControls() {
+    document.querySelector('#commercial-period-kind')?.addEventListener('change',event=>{periodKind=event.target.value;periodId=periods[periodKind][0].id;P.render();});
+    document.querySelector('#commercial-period')?.addEventListener('change',event=>{periodId=event.target.value;P.render();});
+    document.querySelector('#commercial-type')?.addEventListener('change',event=>{typeFilter=event.target.value;P.render();});
+    const search=document.querySelector('#commercial-search');
+    if(search) search.oninput=()=>{
+      partnerQuery=search.value;
+      // Keep the search field and its caret in place while updating the financial scope.
+      const start=search.selectionStart,end=search.selectionEnd;
+      P.render();
+      const next=document.querySelector('#commercial-search');
+      next?.focus();
+      try { next?.setSelectionRange(start,end); } catch {}
+    };
+    document.querySelector('#commercial-sort')?.addEventListener('change',event=>{sortBy=event.target.value;const tbody=document.querySelector('#commercial-table-body');tbody.innerHTML=partnerRows();bindPartnerLinks(tbody);});
+    document.querySelector('#commercial-export')?.addEventListener('click',exportExamples);
+    const potentialIds=P.page==='partner-detail'?[selectedPartner()]:partnersMatching();
+    document.querySelector('#commercial-show-potential')?.addEventListener('click',()=>showPotential(potentialIds));
+    document.querySelector('#commercial-edit-management')?.addEventListener('click',()=>editManagement(selectedPartner()));
+    bindPartnerLinks();
+  }
+  function renderJourney() {
+    initManagement();
+    const id=selectedPartner(),p=partner(id),m=management(id);
+    const chosen=Number.isInteger(selectedJourneyStep)?selectedJourneyStep:m.stage;
+    const checklist=m.checks||[];
+    return `<div class="commercial-page"><button class="commercial-back text-button" data-commercial-partner="${id}">← ${e(p.name)} · partneröversikt</button>${header(`Partnerresan · ${p.name}`,'Kraftringens interna process för att starta, följa upp och utveckla samarbetet.',`<label class="commercial-journey-partner-select">Välj partner<select id="commercial-journey-partner">${ids.map(value=>`<option value="${value}"${id===value?' selected':''}>${e(partner(value).name)}</option>`).join('')}</select></label>`)}<div class="commercial-journey-banner"><div>${icon('target')}<div><strong>Det här är er resa med partnern.</strong><p>Kundernas affärsflöde ligger i partnerns arbetsyta. Stegen nedan är interna testförslag, inte en beslutad process.</p></div></div><span class="commercial-example-badge">Exempelplacering: ${e(journeySteps[m.stage])}</span></div><nav class="commercial-journey-navigation" aria-label="Intern partnerresa">${journeySteps.map((title,index)=>`<button class="commercial-journey-step${chosen===index?' selected':''}${m.stage===index?' actual':''}" data-commercial-step="${index}" aria-current="${chosen===index?'step':'false'}"><span>${index+1}</span><strong>${e(title)}</strong><small>${m.stage===index?'Nu · exempel':'Testförslag'}</small></button>`).join('')}</nav><div class="commercial-detail-grid"><section class="card commercial-journey-step-detail"><span class="commercial-eyebrow">STEG ${chosen+1} AV 8 / INTERN TESTPROCESS</span><h2>${e(journeySteps[chosen])}</h2><p>${e(journeyDescriptions[chosen])}</p><h3>Möjliga interna aktiviteter</h3><div class="commercial-journey-checks">${journeyTasks[chosen].map((task,index)=>`<label><input type="checkbox" data-commercial-check="${chosen}-${index}"${checklist.includes(`${chosen}-${index}`)?' checked':''}><span>${e(task)}</span><small>Demomoment</small></label>`).join('')}</div><div class="commercial-journey-step-actions">${chosen===m.stage?'<span class="pill">Partnerns nuvarande exempelplacering</span>':`<button class="btn btn-primary" id="commercial-place-stage" data-stage="${chosen}">Sätt som exempelplacering</button>`}<button class="btn btn-secondary" id="commercial-edit-management">${icon('edit')} Ansvar & nästa steg</button></div></section><aside class="card commercial-journey-followup"><span class="commercial-eyebrow">KOMMERSIELL UPPFÖLJNING</span><h2>${e(p.name)}</h2><strong class="commercial-journey-net ${valuesFor(id).net<0?'commercial-negative':''}">${money(valuesFor(id).net)}</strong><p class="commercial-subtitle">Nettobidrag · ${e(currentPeriod().label)} · exempel</p><dl><dt>Intern ansvarig</dt><dd>${e(m.owner)}</dd><dt>Nästa steg · ${P.date(m.date)}</dt><dd>${e(m.next)}</dd></dl><button class="text-button" data-commercial-partner="${id}">Till partnerns resultat ${icon('arrow')}</button></aside></div><p class="commercial-demo-note">${icon('shield')}<span>Placering, checklistor och anteckningar sparas lokalt per partner. Demovyn är inget behörighetsskydd. Krav, mandat och ekonomisk uppföljningsmodell behöver ni besluta.</span></p></div>`;
+  }
+  function bindJourney() {
+    bindControls();
+    document.querySelector('#commercial-journey-partner').onchange=event=>selectPartner(event.target.value,'journey');
+    document.querySelectorAll('[data-commercial-step]').forEach(button=>{button.onclick=()=>{selectedJourneyStep=Number(button.dataset.commercialStep);P.render();};});
+    document.querySelectorAll('[data-commercial-check]').forEach(input=>{input.onchange=()=>{
+      const m=management(selectedPartner());
+      if(!Array.isArray(m.checks))m.checks=[];
+      m.checks=m.checks.filter(key=>key!==input.dataset.commercialCheck);
+      if(input.checked)m.checks.push(input.dataset.commercialCheck);
+      P.save();P.toast('Det interna demomomentet är sparat för denna partner.');
+    };});
+    document.querySelector('#commercial-place-stage')?.addEventListener('click',event=>{
+      const id=selectedPartner(),m=management(id);
+      m.stage=Number(event.currentTarget.dataset.stage);
+      m.events.unshift({at:new Date().toISOString(),actor:'Kraftringen · intern demovy',text:`Exempelplacering ändrad till ${journeySteps[m.stage]}.`,visibility:'internal'});
+      P.save();P.render();P.toast('Partnerns exempelplacering är sparad lokalt.');
+    });
+  }
+  const internalOnly = render => () => P.role==='internal'?render():`<div class="empty">Denna vy tillhör Kraftringens interna demovy.</div>`;
+  P.register('internal-overview',{render:internalOnly(renderOverview),bind:()=>{if(P.role==='internal')bindControls();}});
+  P.register('internal-reports',{render:internalOnly(renderReports),bind:()=>{if(P.role==='internal')bindControls();}});
+  P.register('partners',{render:internalOnly(renderPartners),bind:()=>{if(P.role==='internal')bindControls();}});
+  P.register('partner-detail',{render:internalOnly(renderPartnerDetail),bind:()=>{if(P.role==='internal')bindControls();}});
+  P.register('journey',{render:internalOnly(renderJourney),bind:()=>{if(P.role==='internal')bindJourney();}});
+  P.commercial = { selectPartner, fixtures, valuesFor, currentPeriod, renderOverview, partnerIds:ids };
+})();

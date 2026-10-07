@@ -26,20 +26,26 @@
     { id: 'demo-001', company: 'Exempelbrf Solgläntan', kind: 'BRF', city: 'Lund', partner: 'syd', contact: 'Kim Exempel', email: 'kim@solglantan.example', need: 'Vill diskutera sitt elavtal och vilket underlag som behövs inför en fortsatt dialog.', next: 'Föreslå ett gemensamt första möte', date: '2026-10-12', status: 'pagar', owner: 'Demoansvarig A', events: [
       { at: '2026-10-06T13:30:00Z', actor: 'Internt team', text: 'Vi kan delta i ett första möte. Återkom gärna med förslag på tid.', visibility: 'shared' },
       { at: '2026-10-06T09:00:00Z', actor: 'Internt team', text: 'Exempel på intern anteckning: stäm av vem som deltar från teamet.', visibility: 'internal' },
-      { at: '2026-10-05T10:00:00Z', actor: 'Exempelpartner Syd', text: 'Första kontakt dokumenterad. Kunden vill fortsätta dialogen.', visibility: 'shared' }
+      { at: '2026-10-05T10:00:00Z', actor: 'Savera · demo', text: 'Första kontakt dokumenterad. Kunden vill fortsätta dialogen.', visibility: 'shared' }
     ] },
     { id: 'demo-002', company: 'Exempelbolaget Verkstad AB', kind: 'Företag', city: 'Malmö', partner: 'syd', contact: 'Alex Exempel', email: 'alex@verkstad.example', need: 'Vill diskutera elhandel för sin verksamhet. Inga produktval eller priser är överenskomna.', next: 'Stäm av vilka frågor kunden vill ta upp', date: '2026-10-14', status: 'ny', owner: 'Ej tilldelad', events: [
-      { at: '2026-10-07T08:00:00Z', actor: 'Exempelpartner Syd', text: 'Affären registrerad med exempeluppgifter.', visibility: 'shared' }
+      { at: '2026-10-07T08:00:00Z', actor: 'Savera · demo', text: 'Affären registrerad med exempeluppgifter.', visibility: 'shared' }
     ] },
     { id: 'demo-003', company: 'Exempelbrf Boklunden', kind: 'BRF', city: 'Helsingborg', partner: 'syd', contact: 'Sam Exempel', email: 'sam@boklunden.example', need: 'Styrelsen vill diskutera sin kommande avtalsperiod. Underlag behöver klargöras i dialogen.', next: 'Följa upp förslag på mötestid', date: '', status: 'vantar', owner: 'Demoansvarig B', events: [
-      { at: '2026-10-06T15:00:00Z', actor: 'Exempelpartner Syd', text: 'Väntar på besked om vilken mötestid som passar styrelsen.', visibility: 'shared' }
+      { at: '2026-10-06T15:00:00Z', actor: 'Savera · demo', text: 'Väntar på besked om vilken mötestid som passar styrelsen.', visibility: 'shared' }
     ] },
     { id: 'demo-004', company: 'Exempelbolaget Hamnkontor AB', kind: 'Företag', city: 'Göteborg', partner: 'vast', contact: 'Robin Exempel', email: 'robin@hamnkontor.example', need: 'En fiktiv affär för att testa en annan partners vy och geografisk räckvidd.', next: 'Boka ett inledande samtal', date: '2026-10-15', status: 'ny', owner: 'Ej tilldelad', events: [
-      { at: '2026-10-07T07:30:00Z', actor: 'Exempelpartner Väst', text: 'Exempel på affär från en annan partner.', visibility: 'shared' }
+      { at: '2026-10-07T07:30:00Z', actor: 'Face-to-face · demo', text: 'Exempel på affär från en annan partner.', visibility: 'shared' }
     ] }
   ];
   const STORAGE = 'partnerlabb.portal.v2';
-  const partners = {syd:'Exempelpartner Syd',vast:'Exempelpartner Väst'};
+  const partnerRegistry = [
+    {id:'syd',name:'Savera',type:'sales',typeLabel:'Säljpartner'},
+    {id:'vast',name:'Face-to-face · exempelupplägg',type:'field',typeLabel:'Face-to-face'},
+    {id:'estate1',name:'Exempelfastigheter AB',type:'property',typeLabel:'Fastighetsbolag'},
+    {id:'estate2',name:'Exempelbo Förvaltning',type:'property',typeLabel:'Fastighetsbolag'}
+  ];
+  const partners = Object.fromEntries(partnerRegistry.map(p=>[p.id,p.name]));
   const statuses = {ny:'Ny',pagar:'Pågår',vantar:'Väntar',avslutad:'Avslutad'};
   const stages = {lead:'Kunddialog',offer:'Offertutkast',authority:'Fullmakt · demo',agreement:'Avtal · demo',active:'Aktiv kund · demo'};
   function seed() {
@@ -47,7 +53,7 @@
     records.forEach((r,i)=>r.stage=['offer','lead','authority','lead'][i]);
     const extra=[['demo-005','Exempelbolaget Bryggan AB','Företag','Landskrona','syd','agreement'],['demo-006','Exempelbrf Eklövet','BRF','Lund','syd','active'],['demo-007','Exempelbolaget Grönska AB','Företag','Kristianstad','syd','lead']];
     for(const [id,company,kind,city,partner,stage] of extra) records.push({id,company,kind,city,partner,stage,contact:'Taylor Exempel',email:'taylor@kund.example',need:'Fiktiv kunddialog om elhandel. Produktval och villkor behöver underlag.',next:'Stämma av nästa steg tillsammans',date:'2026-10-16',status:'pagar',owner:'Demoansvarig A',events:[{at:'2026-10-05T09:30:00Z',actor:partners[partner],text:'Exempel för att visa ett möjligt steg i partnerflödet.',visibility:'shared'}]});
-    return {records,offers:[],training:{},sites:[],journey:{},support:[]};
+    return {records,offers:[],training:{},sites:[],journey:{},support:[],moveins:[],commercial:{}};
   }
   function readState() {
     try { const value=JSON.parse(localStorage.getItem(STORAGE)); if(value && Array.isArray(value.records) && value.records.every(r=>r && partners[r.partner] && statuses[r.status] && typeof r.company==='string' && Array.isArray(r.events))) return {...seed(),...value}; } catch {}
@@ -55,11 +61,14 @@
     try { const old=JSON.parse(localStorage.getItem('partnerlabb.active.v1'));if(Array.isArray(old)&&old.every(r=>r && partners[r.partner] && statuses[r.status] && Array.isArray(r.events))){state.records=old.map(r=>({...r,stage:r.stage||'lead'}));} } catch {}
     return state;
   }
-  const P=window.Portal={state:readState(),role:'partner',partner:'syd',page:'overview',routes:{},partners,e,escape:e,icon};
+  const P=window.Portal={state:readState(),role:'internal',partner:'syd',page:'overview',routes:{},partners,partnerRegistry,e,escape:e,icon};
   let selectedId,toastTimer,storageFailed=false;
   P.register=(id,route)=>{P.routes[id]=route;};
   P.getRecords=()=>P.role==='internal'?P.state.records:P.state.records.filter(r=>r.partner===P.partner);
   P.getView=()=>({role:P.role,partner:P.partner});
+  P.getPartner=(id=P.partner)=>partnerRegistry.find(p=>p.id===id);
+  P.previewPartner=id=>{if(!P.getPartner(id))return;P.role='partner';P.partner=id;selectedId=undefined;P.go('overview');};
+  P.returnInternal=()=>{P.role='internal';selectedId=undefined;P.go('overview');};
   P.save=()=>{try{localStorage.setItem(STORAGE,JSON.stringify(P.state));storageFailed=false;return true;}catch{storageFailed=true;P.toast('Webbläsaren kunde inte spara. Ändringarna finns i denna flik; exportera innan du stänger.');return false;}};
   P.toast=message=>{if(storageFailed&&!message.includes('kunde inte'))message+=' · Kunde inte sparas i webbläsaren.';$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,6000);};
   P.download=(filename,content,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);};
@@ -68,15 +77,25 @@
   P.date=value=>value&&!Number.isNaN(new Date(value).getTime())?new Intl.DateTimeFormat('sv-SE',{day:'numeric',month:'short'}).format(new Date(value)):'Ej planerat';
   P.event=(record,text,visibility='shared')=>record.events.unshift({at:new Date().toISOString(),actor:P.role==='internal'?'Internt team':partners[record.partner],text,visibility});
   P.validText=(input)=>{input.setCustomValidity(input.value.trim()?'':'Fyll i text, inte enbart blanksteg.');input.addEventListener('input',()=>input.setCustomValidity(''),{once:true});return input.reportValidity();};
-  const nav=[['overview','Översikt','home'],['pipeline','Pipeline','chart'],['customers','Kunder','users'],['offers','Offerter & avtal','file'],['sites','Kundsidor','link'],['academy','Utbildning','graduation'],['material','Material & kampanjer','megaphone'],['commission','Provision','money'],['reports','Rapporter','chart'],['journey','Partnerresan','target']];
-  const titles=Object.fromEntries([...nav,['agreements','Avtal & fullmakter'],['documents','Dokument'],['support','Hjälp & support'],['settings','Test & beslut'],['certs','Certifieringar']].map(a=>[a[0],a[1]]));
+  const salesNav=[['overview','Översikt','home'],['pipeline','Pipeline','chart'],['customers','Kunder','users'],['offers','Offerter & avtal','file'],['sites','Kundsidor','link'],['academy','Utbildning','graduation'],['material','Material & kampanjer','megaphone'],['commission','Provision','money'],['reports','Rapporter','chart']];
+  const internalNav=[['overview','Kraftringens översikt','home'],['partners','Partners','users'],['journey','Partnerresan','target'],['reports','Resultatrapport','chart'],['customers','Kunddialoger','briefcase'],['pipeline','Affärspipeline','layers']];
+  const propertyNav=[['overview','Partneröversikt','home'],['movein','Inflyttningssida','link'],['property-registrations','Registreringar','users']];
+  const titles=Object.fromEntries([...salesNav,...internalNav,...propertyNav,['partner-detail','Partnerprofil'],['agreements','Avtal & fullmakter'],['documents','Dokument'],['support','Hjälp & support'],['settings','Test & beslut'],['certs','Certifieringar']].map(a=>[a[0],a[1]]));
+  const internalPages=['partners','partner-detail','journey','internal-overview','internal-reports'];
+  const propertyPages=['property-overview','movein','property-registrations'];
+  function navForView(){return P.role==='internal'?internalNav:P.getPartner()?.type==='property'?propertyNav:salesNav;}
+  function routeForView(){if(P.page==='overview')return P.routes[P.role==='internal'?'internal-overview':P.getPartner()?.type==='property'?'property-overview':'overview'];if(P.page==='reports'&&P.role==='internal'&&P.routes['internal-reports'])return P.routes['internal-reports'];return P.routes[P.page];}
   function closeMenu(){$('#sidebar').classList.remove('open');$('#sidebar-backdrop').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');}
-  P.go=P.navigate=id=>{const alias={affarer:'customers',test:'settings'};id=alias[id]||id;if($('#portal-dialog')?.open)P.closeDialog();P.page=P.routes[id]?id:'overview';history.replaceState(null,'','#'+P.page);P.render();closeMenu();window.scrollTo({top:0,behavior:'instant'});};
+  P.go=P.navigate=id=>{const alias={affarer:'customers',test:'settings'};id=alias[id]||id;if($('#portal-dialog')?.open)P.closeDialog();if(P.role!=='internal'&&internalPages.includes(id))id='overview';if(propertyPages.includes(id)&&P.getPartner()?.type!=='property')id='overview';if(P.role==='partner'&&P.getPartner()?.type==='property'&&['customers','pipeline','offers','agreements','documents','sites','academy','commission','reports'].includes(id))id='overview';P.page=P.routes[id]?id:'overview';const url=new URL(location.href);url.hash=P.page;if(P.page==='movein')url.searchParams.set('movein',P.partner);else url.searchParams.delete('movein');if(P.role==='internal'&&['partner-detail','journey'].includes(P.page)&&P.getPartner(P.selectedPartnerId))url.searchParams.set('partner',P.selectedPartnerId);else url.searchParams.delete('partner');history.replaceState(null,'',url);P.render();closeMenu();window.scrollTo({top:0,behavior:'instant'});};
   P.render=()=>{
-    $('#partner').hidden=P.role==='internal';$('#profile-role').textContent=P.role==='internal'?'Internt team':`Partner · ${P.partner==='syd'?'Syd':'Väst'}`;
-    $('#current-page').textContent=titles[P.page]||'Partnerportal';
-    document.querySelectorAll('.nav-button').forEach(b=>{const active=b.dataset.go===P.page||(b.dataset.go==='offers'&&['agreements','documents'].includes(P.page));b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
-    const route=P.routes[P.page];$('#view').innerHTML=route?route.render():'<div class="empty">Vyn förbereds.</div>';route?.bind?.();
+    P.initPropertyDemo?.();
+    const internal=P.role==='internal',property=P.getPartner()?.type==='property';
+    $('#role').value=P.role;$('#partner').value=P.partner;$('#partner').hidden=internal;$('#profile-role').textContent=internal?'Kraftringen · intern demovy':P.getPartner()?.typeLabel||'Partner';
+    $('#sidebar-view-label').textContent=internal?'Kraftringen':P.getPartner()?.typeLabel||'Partner';$('#return-internal').hidden=internal;
+    $('#current-page').textContent=P.page==='overview'?(internal?'Kraftringens översikt':property?'Partneröversikt':'Översikt'):navForView().find(n=>n[0]===P.page)?.[1]||titles[P.page]||'Partnerportal';
+    $('#nav').innerHTML=navForView().map(([id,label,ic])=>{const active=id===P.page||(id==='offers'&&['agreements','documents'].includes(P.page))||(id==='partners'&&P.page==='partner-detail');return `<button class="nav-button ${active?'active':''}" data-go="${id}" aria-current="${active?'page':'false'}">${icon(ic)}<span>${label}</span></button>`;}).join('');
+    document.body.classList.toggle('property-resident-preview',P.page==='movein');
+    const route=routeForView();$('#view').innerHTML=route?route.render():'<div class="empty">Vyn förbereds.</div>';route?.bind?.();
   };
   const badge=status=>`<span class="pill status-${e(status)}">${statuses[status]||e(status)}</span>`;
   const head=(title,subtitle,action='')=>`<div class="page-head"><div><span class="eyebrow">PARTNERPORTAL / ${P.role==='internal'?'INTERNT TEAM':e(partners[P.partner])}</span><h1>${title}</h1><p class="muted">${subtitle}</p></div>${action}</div>`;
@@ -135,18 +154,21 @@
   P.register('reports',{render:()=>{
     const records=P.getRecords(),events=visibleEvents();return head('Rapporter & aktiviteter','Följ testaffärer och kontakthistorik i den valda demovyn.',`<button class="btn btn-primary" id="export-report">${icon('download')} Exportera testdata</button>`)+`<div class="dashboard-grid reports-grid"><section class="card"><div class="panel-heading"><h2>Affärer per steg</h2><span class="pill">Antal</span></div>${pipelineChart()}</section><section class="card"><div class="panel-heading"><h2>Fördelning i demovyn</h2></div><div class="table-wrap"><table><thead><tr><th>PARTNER</th><th>KUNDER</th><th>ÖPPNA AFFÄRER</th></tr></thead><tbody>${Object.entries(partners).filter(([key])=>P.role==='internal'||key===P.partner).map(([key,label])=>`<tr><td>${label}</td><td>${records.filter(r=>r.partner===key).length}</td><td>${records.filter(r=>r.partner===key&&r.status!=='avslutad').length}</td></tr>`).join('')}</tbody></table></div><div class="panel-foot muted">Försäljningsvärde och provision kräver ett fastställt underlag.</div></section></div><section class="card report-activity"><div class="panel-heading"><h2>Aktivitetslogg</h2><span class="pill">${events.length} händelser</span></div><div class="activity-list">${events.map(ev=>`<button class="activity-row" data-record="${e(ev.id)}"><span class="activity-icon">${icon(ev.visibility==='internal'?'shield':'file')}</span><span><small>${P.date(ev.at)} · ${e(ev.actor)}${ev.visibility==='internal'?' · Intern demovy':''}</small><strong>${e(ev.company)}</strong><span>${e(ev.text)}</span></span>${icon('arrow')}</button>`).join('')}</div></section>`;
   },bind:()=>$('#export-report').addEventListener('click',exportData)});
-  P.register('settings',{render:()=>head('Test & beslut','En klickbar målbild för partners. Fokus på upplevelsen och arbetsmomenten.',`<button class="btn btn-secondary" id="reset-demo">Återställ exempeldata</button>`)+`<div class="decision-grid settings-grid"><article class="card"><span class="eyebrow">ERT VAL</span><h2>Aktiv säljpartner</h2><p>Partnern arbetar vidare med affären. Bilderna är målbild för portalens funktioner och design.</p><p>Företag och BRF är fokus. Privatkunder och ytterligare produktområden i referensbilderna är inte tillagda i denna version.</p></article><article class="card"><span class="eyebrow">FÖRSLAG ATT TESTA</span><h2>Ett sammanhängande arbetsflöde</h2><ol><li>Registrera en fiktiv kunddialog.</li><li>Byt till Internt team, tilldela ansvar och dela återkoppling.</li><li>Byt tillbaka, dokumentera kontakt och uppdatera nästa steg.</li><li>Förbered offertutkast och följ simulerade dokumentsteg.</li><li>Skapa en kundsida och testa ett utbildningsmoment.</li></ol></article><article class="card"><span class="eyebrow">DEMOMILJÖ</span><h2>Alla åtgärder är lokala</h2><p>Demovyerna har ingen riktig inloggning. All data finns i webbläsaren, även interna anteckningar. Två datorer delar inte affärsdata.</p><p>Utskick, signering, publicering och supportärenden genomförs inte på riktigt. Nedladdade dokument är markerade som testunderlag.</p><button class="btn btn-secondary" id="export-settings">${icon('download')} Exportera testdata</button></article><article class="card"><span class="eyebrow">ÖPPNA BESLUT</span><h2>Underlag före affärsregler</h2><p>Partnerns befogenheter, offertvillkor, produkter, informationsdelning, certifieringskrav och eventuell ersättning behöver beslutas.</p><p>Partnerresan, utbildningsmoment och pipelinesteg är exempel att diskutera. Backend och integrationer lämnas till en senare etapp.</p></article></div>`,bind:()=>{
+  P.register('settings',{render:()=>head('Test & beslut','Kraftringens partneröversikt och två typer av partnerarbetsyta.',`<button class="btn btn-secondary" id="reset-demo">Återställ exempeldata</button>`)+`<div class="decision-grid settings-grid"><article class="card"><span class="eyebrow">ERA VAL</span><h2>Kommersiellt resultat först</h2><p>Kraftringens huvudvy visar samarbetenas ekonomiska exempelutfall. Varje partner har en intern profil och en partnerresa.</p><p>Säljpartners arbetar med företag och BRF. Fastighetsbolag får en sida där inflyttande bostadshyresgäster kan registrera ett testintresse för elhandel.</p></article><article class="card"><span class="eyebrow">FÖRSLAG ATT TESTA</span><h2>Två vägar från samma översikt</h2><ol><li>Välj period och jämför partnerresultat i Kraftringens översikt.</li><li>Öppna en partnerprofil och prova ansvar, nästa steg och partnerresa.</li><li>Förhandsgranska Savera som aktiv säljpartner.</li><li>Öppna Exempelfastigheter AB och förhandsgranska inflyttningssidan.</li><li>Registrera ett fiktivt intresse och kontrollera kvittot och registreringslistan.</li></ol></article><article class="card"><span class="eyebrow">DEMOMILJÖ</span><h2>Alla åtgärder är lokala</h2><p>Testlänken är delad för visning. Appens demovyer har inga egna personliga behörigheter; all data, även interna anteckningar, finns i webbläsaren. Två datorer delar inte teständringar.</p><p>Inflyttningssidan är en förhandsvisning bakom samma testlänk. Registreringen tecknar inget avtal. Utskick, signering och support är simuleringar.</p><button class="btn btn-secondary" id="export-settings">${icon('download')} Exportera vald demovys testdata</button></article><article class="card"><span class="eyebrow">ÖPPNA BESLUT</span><h2>Vad mäter er affärsnytta?</h2><p>Resultatbidragets definition och vilka partnerkostnader som ska ingå behöver fastställas. Ekonomiska exempelutfall är fristående från pipeline och testregistreringar.</p><p>Pris, kundvillkor, partnerns mandat, eventuell ersättning och inflyttningsflödets verkliga avtalsteckning behöver underlag. Partnerresans steg är förslag. Backend och integrationer kommer senare.</p></article></div>`,bind:()=>{
     $('#export-settings').onclick=exportData;
-    $('#reset-demo').onclick=()=>{if(!confirm('Återställa den nya portalens exempeldata? Lokala teständringar i kunder, utkast, utbildning och kundsidor tas bort.'))return;P.state=seed();P.save();selectedId=undefined;customerQuery='';customerFilter='all';P.render();P.toast('Portalens exempeldata återställda.');};
+    $('#reset-demo').onclick=()=>{if(!confirm('Återställa portalens exempeldata? Lokala teständringar i kunder, utkast, utbildning, kundsidor, partnerprofiler och inflyttningsregistreringar tas bort.'))return;P.state=seed();P.save();selectedId=undefined;customerQuery='';customerFilter='all';P.render();P.toast('Portalens exempeldata återställda.');};
   }});
   document.addEventListener('DOMContentLoaded',()=>{
-    $('#nav').innerHTML=nav.map(([id,label,ic])=>`<button class="nav-button" data-go="${id}">${icon(ic)}<span>${label}</span>${id==='offers'?'<span class="nav-mini">NY</span>':''}</button>`).join('');
+    $('#partner').innerHTML=partnerRegistry.map(p=>`<option value="${p.id}">${e(p.name)}</option>`).join('');
     $('#support-icon').innerHTML=icon('headphones');$('#settings-icon').innerHTML=icon('settings');$('#notifications').innerHTML=icon('bell');$('#menu-toggle').innerHTML=icon('menu');
-    $('#role').onchange=ev=>{P.role=ev.target.value;P.render();};$('#partner').onchange=ev=>{P.partner=ev.target.value;selectedId=undefined;P.render();};$('#close-dialog').onclick=P.closeDialog;
+    $('#role').onchange=ev=>{P.role=ev.target.value;selectedId=undefined;P.go('overview');};$('#partner').onchange=ev=>P.previewPartner(ev.target.value);$('#close-dialog').onclick=P.closeDialog;$('#return-internal').onclick=P.returnInternal;
     $('#menu-toggle').onclick=()=>{const open=!$('#sidebar').classList.contains('open');$('#sidebar').classList.toggle('open',open);$('#sidebar-backdrop').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));};$('#sidebar-backdrop').onclick=closeMenu;
     $('#notifications').onclick=()=>P.openDialog('Senaste aktiviteter',`<div class="activity-list">${visibleEvents().slice(0,5).map(ev=>`<div class="activity-row"><span class="activity-icon">${icon('file')}</span><span><small>${P.date(ev.at)}</small><strong>${e(ev.company)}</strong><span>${e(ev.text)}</span></span></div>`).join('')||'<p>Inga aktiviteter ännu.</p>'}</div>`);
     document.addEventListener('click',ev=>{const nav=ev.target.closest('[data-go]');if(nav){ev.preventDefault();P.go(nav.dataset.go);return;}const add=ev.target.closest('[data-new-customer]');if(add){newCustomer();return;}const record=ev.target.closest('[data-record]');if(record){selectedId=record.dataset.record;P.go('customers');}});
     window.addEventListener('hashchange',()=>P.go(location.hash.slice(1)));
-    P.go(location.hash.slice(1)||'overview');
+    const params=new URLSearchParams(location.search);
+    const residentPartner=params.get('movein');
+    const internalPartner=params.get('partner');if(P.getPartner(internalPartner))P.selectedPartnerId=internalPartner;
+    if(P.getPartner(residentPartner)?.type==='property'){P.role='partner';P.partner=residentPartner;P.go('movein');}else P.go(location.hash.slice(1)||'overview');
   });
 })();
