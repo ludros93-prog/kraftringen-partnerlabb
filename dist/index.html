@@ -3,82 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Partnerlabb: en testprototyp för aktiva B2B-säljpartners, med enbart fiktiva exempeldata.">
-  <meta name="theme-color" content="#173c32">
-  <title>Partnerlabb · B2B</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23173c32'/%3E%3Cpath d='M36 10 18 35h15l-4 19 19-27H33z' fill='%23c6e992'/%3E%3C/svg%3E">
+  <meta name="description" content="Kraftringen Partnerportal – klickbar B2B-prototyp med kunder, pipeline, offertstudio, utbildning och kundsidor. Enbart exempeldata.">
+  <meta name="theme-color" content="#071b30">
+  <title>Kraftringen · Partnerportal</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071b30'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23099b98' stroke-width='5'/%3E%3Ccircle cx='34' cy='28' r='11' fill='none' stroke='white' stroke-width='4'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="studio.css">
+  <link rel="stylesheet" href="academy.css">
+  <link rel="stylesheet" href="partner.css">
   <script src="app.js" defer></script>
+  <script src="studio.js" defer></script>
+  <script src="academy.js" defer></script>
+  <script src="partner.js" defer></script>
 </head>
 <body>
-  <aside class="sidebar">
-    <a class="brand" href="#affarer"><span class="brand-mark" aria-hidden="true"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19 19 5M5 5h14v14"/></svg></span><span>Partnerlabb<small>B2B · Kraftringen</small></span></a>
-    <div class="sidebar-label">ARBETSPLATS</div>
-    <nav aria-label="Huvudmeny">
-      <button data-page="affarer" class="nav-button active"><span aria-hidden="true">▦</span> Affärer <span id="nav-count" class="nav-count">3</span></button>
-      <button data-page="material" class="nav-button"><span aria-hidden="true">▤</span> Material</button>
-      <button data-page="test" class="nav-button"><span aria-hidden="true">◎</span> Test & beslut</button>
-    </nav>
-    <div class="sidebar-card"><span class="eyebrow">EN FÖRSTA VERSION</span><p>Bygg samarbetet.<br>En affär i taget.</p><span class="small-light">Aktiv säljpartner är valt.<br>Flödet är ett förslag att testa.</span></div>
-    <div class="sidebar-bottom"><span class="avatar">PL</span><div>Partnerlabb<small>Prototyp 01 · exempeldata</small></div></div>
+  <a class="skip-link" href="#view">Hoppa till innehållet</a>
+  <aside class="sidebar" id="sidebar">
+    <a href="#overview" class="brand" aria-label="Kraftringen Partnerportal, översikt"><svg viewBox="0 0 44 40" width="35" height="33" aria-hidden="true" fill="none" stroke="currentColor"><ellipse cx="21" cy="20" rx="18" ry="15" stroke-width="2.2" transform="rotate(20 21 20)"/><ellipse cx="23" cy="17" rx="12" ry="11" stroke-width="2.2"/><ellipse cx="26" cy="14" rx="6" ry="6" stroke-width="2.2"/></svg><span>kraftringen<small>PARTNERPORTAL</small></span></a>
+    <nav id="nav" class="nav-list" aria-label="Huvudmeny"></nav>
+    <div class="sidebar-support"><span id="support-icon"></span><strong>Vi hjälper dig vidare.</strong><p>Samla dina frågor till partnerteamet.</p><button class="btn btn-primary btn-small" data-go="support">Hjälp & support <span aria-hidden="true">→</span></button></div>
+    <div class="sidebar-user"><span class="avatar">DE</span><div><strong>Demoanvändare</strong><small>Aktiv säljpartner</small></div><button class="icon-button" data-go="settings" aria-label="Demoinställningar" id="settings-icon"></button></div>
   </aside>
+  <button class="sidebar-backdrop" id="sidebar-backdrop" aria-label="Stäng menyn" hidden></button>
   <div class="workspace">
-    <header class="topbar">
-      <div class="breadcrumb">B2B <span>/</span> Partnersamarbete</div>
-      <div class="view-picker"><label for="role">Demovy</label><select id="role"><option value="partner">Partner</option><option value="internal">Internt team</option></select><select id="partner" aria-label="Exempelpartner"><option value="syd">Exempelpartner Syd</option><option value="vast">Exempelpartner Väst</option></select></div>
-    </header>
-    <div class="demo-banner"><span class="demo-dot"></span><strong>Testmiljö</strong><span>Enbart exempeldata · Sparas i denna webbläsare · Demovyer utan inloggning</span></div>
-    <main id="main">
-      <section id="page-affarer">
-        <div class="page-heading"><div><div class="eyebrow">PARTNERSAMARBETE</div><h1 id="page-title">Mina affärer</h1><p id="page-description">Håll kontakten, följ affären och planera nästa steg.</p></div><button id="new-opportunity" class="button primary"><span aria-hidden="true">＋</span> Registrera affär</button></div>
-        <div id="stats" class="stats"></div>
-        <div class="affairs-grid">
-          <section class="card list-card" aria-labelledby="list-title">
-            <div class="card-heading"><div><h2 id="list-title">Affärsöversikt</h2><p>Företag och bostadsrättsföreningar</p></div><span class="pill subtle">Förslag till flöde</span></div>
-            <div class="list-controls"><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Sök företag, BRF eller ort" aria-label="Sök affärer"></div><select id="status-filter" aria-label="Filtrera status"><option value="all">Alla statusar</option><option value="ny">Ny</option><option value="pagar">Pågår</option><option value="vantar">Väntar</option><option value="avslutad">Avslutad</option></select></div>
-            <div id="affair-list" class="affair-list" aria-label="Affärer"></div>
-            <div class="list-foot"><span id="list-count"></span><span>Alla organisationer är fiktiva</span></div>
-          </section>
-          <section id="detail" class="card detail-card" aria-label="Vald affär"></section>
-        </div>
-        <div class="scope-note"><span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19 19 5M5 5h14v14"/></svg></span><p><strong>Testa samarbetet först.</strong> Pris, offertbefogenhet, partnerinsyn och eventuell ersättning behöver beslutas innan de byggs in.</p><button class="text-button" data-page="test">Se öppna beslut →</button></div>
-      </section>
-      <section id="page-material" hidden>
-        <div class="page-heading"><div><div class="eyebrow">PARTNERSAMARBETE</div><h1>Material</h1><p>En plats att testa vad partnern behöver i sitt säljarbete.</p></div><span class="pill subtle">Exempel på struktur</span></div>
-        <div class="resource-intro"><h2>Rätt underlag, när det behövs.</h2><p>Portföljlösningar, prissäkring och elavtal är områden ni arbetar med. Godkända produktbeskrivningar och villkor behöver ni lämna innan materialet fylls med innehåll.</p></div>
-        <div class="resource-grid">
-          <article class="card resource"><span class="resource-icon">01</span><span class="eyebrow">SAMARBETE</span><h2>Första kunddialogen</h2><p>Ett enkelt diskussionsunderlag för att testa registreringen.</p><button class="text-button" id="download-checklist">Hämta exempelunderlag ↓</button></article>
-          <article class="card resource"><span class="resource-icon">02</span><span class="eyebrow">PRODUKTINFORMATION</span><h2>Lösningar & elavtal</h2><p>Plats för ert godkända material. Inga produktvillkor är tillagda.</p><span class="pill subtle">Underlag saknas</span></article>
-          <article class="card resource"><span class="resource-icon">03</span><span class="eyebrow">PARTNERUPPLÄGG</span><h2>Så samarbetar vi</h2><p>Plats för beslut om ansvar, informationsdelning och arbetssätt.</p><span class="pill subtle">Behöver beslutas</span></article>
-        </div>
-      </section>
-      <section id="page-test" hidden>
-        <div class="page-heading"><div><div class="eyebrow">PROTOTYP 01</div><h1>Testa, prata, förbättra.</h1><p>Ett litet flöde för att fatta nästa beslut tillsammans.</p></div><button class="button secondary" id="reset-demo">Återställ exempeldata</button></div>
-        <div class="test-grid">
-          <article class="card guide"><span class="eyebrow">ERT VAL</span><h2>Aktiv säljpartner</h2><p>Partnern arbetar vidare med affären. Vilka aktiviteter partnern får utföra själv är ännu inte fastställt.</p><span class="eyebrow spaced">FÖRSLAG ATT TESTA</span><ol><li>Registrera en fiktiv företags- eller BRF-affär som partner.</li><li>Byt till <strong>Internt team</strong>, tilldela en demoansvarig och dela återkoppling.</li><li>Byt tillbaka till partnern och dokumentera en ny kontakt och nästa steg.</li><li>Kontrollera att partnern ser återkopplingen och att interna anteckningar inte visas i partnervyn.</li></ol><p class="small">Statusarna Ny, Pågår, Väntar och Avslutad är förslag i testet. De definierar inte ert beslutade säljflöde.</p></article>
-          <article class="card guide"><span class="eyebrow">TRE ÖPPNA BESLUT</span><h2>Det här behöver ni avgöra</h2><div class="decision"><b>01</b><div><h3>Partnerns uppdrag</h3><p>Vilka aktiviteter får partnern utföra och när behöver Kraftringen ta över eller godkänna nästa steg?</p></div></div><div class="decision"><b>02</b><div><h3>Information & insyn</h3><p>Vilka uppgifter får registreras och vad får partnern se? Hur hanteras dubbla registreringar?</p></div></div><div class="decision"><b>03</b><div><h3>Internt ansvar</h3><p>Vem tar emot nya affärer, fördelar dem och ansvarar för återkoppling?</p></div></div></article>
-          <article class="card guide"><span class="eyebrow">VAD PROTOTYPEN VISAR</span><h2>Ett flöde i en webbläsare</h2><p>Demovyerna låter er testa registrering, uppföljning och återkoppling med fiktiva uppgifter.</p><p>Data sparas lokalt i respektive webbläsare. Två datorer delar inte affärerna. Export kan användas för att granska ett test, men är ingen synkronisering.</p><p>Rollväxling är ingen behörighetskontroll. All demodata finns i webbläsaren, även interna anteckningar. Riktig inloggning, delad databas och serverkontroller återstår.</p><button class="button secondary" id="export-demo">Exportera testdata ↓</button></article>
-          <article class="card guide"><span class="eyebrow">BYGGA TILLSAMMANS</span><h2>Samma projekt, tydliga ändringar</h2><p>Att ge någon tillgång till den färdiga portalen ger inte automatiskt tillgång till byggprojektet. Använd varsin inloggning och ge båda redigeringsrätt i den miljö ni väljer.</p><p>Starta med en AI-bygguppgift åt gången och turas om att testa. För parallella AI-ändringar behövs separata utkast eller grenar och ett sätt att föra ihop resultatet.</p><p>Integrationer med Dynamics, Oneflow eller Veckokollen och kommersiella regler ingår inte i denna version.</p></article>
-        </div>
-      </section>
-    </main>
-    <footer>Partnerlabb <span>·</span> Arbetsprototyp för B2B <span>·</span> Inga riktiga kunduppgifter</footer>
+    <header class="topbar"><div class="breadcrumb"><button class="icon-button" id="menu-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Öppna menyn"></button><span>Partnerportal</span><span class="crumb-separator">/</span><strong id="current-page">Översikt</strong></div><div class="top-actions"><div class="role-picker"><label for="role">Demovy</label><select id="role"><option value="partner">Partner</option><option value="internal">Internt team</option></select><select id="partner" aria-label="Exempelpartner"><option value="syd">Exempelpartner Syd</option><option value="vast">Exempelpartner Väst</option></select></div><button class="icon-button" id="notifications" aria-label="Visa senaste aktiviteter"></button><div class="profile"><span class="avatar">DE</span><div><strong>Demoanvändare</strong><small id="profile-role">Partner · Syd</small></div></div></div></header>
+    <div class="demo-banner"><span class="demo-badge">PROTOTYP</span><span>Exempeldata · Sparas i denna webbläsare</span><button class="text-button" data-go="settings">Om testmiljön <span aria-hidden="true">→</span></button></div>
+    <main class="main" id="view" tabindex="-1"></main>
+    <footer class="footer"><span>Kraftringen Partnerportal · Arbetsprototyp</span><span>Företag & BRF · Enbart exempeldata</span></footer>
   </div>
-  <dialog id="create-dialog" aria-labelledby="dialog-title">
-    <form id="create-form">
-      <div class="dialog-heading"><div><div class="eyebrow">NY EXEMPELAFFÄR</div><h2 id="dialog-title">Starta en kunddialog.</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Stäng">×</button></div>
-      <p class="form-intro">Använd påhittade uppgifter. Registreringen avgör inte leadägande eller rätt till ersättning.</p>
-      <label for="company">Företag eller BRF <span>*</span></label><input id="company" name="company" maxlength="90" required placeholder="Exempelbrf Ängen">
-      <div class="form-row"><div><label for="kind">Kundtyp</label><select id="kind" name="kind"><option value="BRF">Bostadsrättsförening</option><option value="Företag">Företag</option></select></div><div><label for="city">Ort</label><input id="city" name="city" maxlength="60" placeholder="Lund"></div></div>
-      <div class="form-row"><div><label for="contact">Kontaktperson · fiktiv</label><input id="contact" name="contact" maxlength="80" placeholder="Kim Exempel"></div><div><label for="email">E-post · exempel</label><input id="email" name="email" type="email" maxlength="120" placeholder="kim@kund.example"></div></div>
-      <label for="need">Vad vill kunden diskutera? <span>*</span></label><textarea id="need" name="need" required maxlength="800" rows="3" placeholder="Exempel: vill diskutera sitt elavtal och hur samarbetet kan se ut."></textarea>
-      <label for="next">Partnerns nästa steg <span>*</span></label><input id="next" name="next" required maxlength="180" placeholder="Exempel: föreslå tid för ett första möte">
-      <div class="form-row"><div><label for="next-date">Datum för nästa steg · valfritt</label><input id="next-date" name="date" type="date"></div><div id="create-partner-wrap"><label for="create-partner">Exempelpartner</label><select id="create-partner" name="partner"><option value="syd">Exempelpartner Syd</option><option value="vast">Exempelpartner Väst</option></select></div></div>
-      <div id="duplicate-warning" class="inline-warning" hidden>Liknande namn finns redan i demovyn. Kontrollera om det är samma affär; regler för dubbla registreringar behöver beslutas.</div>
-      <label class="checkbox-label"><input type="checkbox" id="example-check" required> Jag använder enbart påhittade exempeluppgifter.</label>
-      <div class="dialog-actions"><button type="button" class="button secondary" id="cancel-dialog">Avbryt</button><button type="submit" class="button primary">Registrera exempel</button></div>
-    </form>
-  </dialog>
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="portal-dialog" aria-labelledby="dialog-title"><div class="modal-head"><h2 id="dialog-title"></h2><button type="button" id="close-dialog" class="icon-button" aria-label="Stäng dialog">×</button></div><div id="dialog-body"></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>

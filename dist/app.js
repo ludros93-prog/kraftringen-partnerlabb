@@ -1,13 +1,28 @@
 (() => {
   'use strict';
-  const STORAGE_KEY = 'partnerlabb.active.v1';
-  const partners = { syd: 'Exempelpartner Syd', vast: 'Exempelpartner Väst' };
-  const statuses = { ny: 'Ny', pagar: 'Pågår', vantar: 'Väntar', avslutad: 'Avslutad' };
-  const owners = ['Ej tilldelad', 'Demoansvarig A', 'Demoansvarig B'];
-  const $ = (selector) => document.querySelector(selector);
-  const escape = (value) => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-  const dateLabel = (value) => value && !Number.isNaN(new Date(value).getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short' }).format(new Date(value)) : 'Ej planerat';
-  const seedData = () => [
+  const $ = selector => document.querySelector(selector);
+  const e = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const paths = {
+    home:'M3 10 12 3l9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z',
+    user:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8M20 8v6M17 11h6',
+    users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8M22 21v-2a4 4 0 0 0-3-4M16 3a4 4 0 0 1 0 8',
+    chart:'M4 20V10M10 20V4M16 20v-7M22 20V7',file:'M14 2H5v20h14V7zM14 2v6h6M8 12h8M8 16h6',
+    bolt:'m13 2-9 12h7l-1 8 10-12h-7z',shield:'M12 3 3 7v6c0 5 9 9 9 9s9-4 9-9V7zM8 12l3 3 5-6',
+    check:'m5 12 4 4L20 5',arrow:'M5 12h14m-6-6 6 6-6 6',search:'M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16m6 14 5 5',
+    book:'M12 5s-4-3-10-2v16s6-1 10 2c4-3 10-2 10-2V3c-6-1-10 2-10 2v16',mail:'M3 5h18v14H3zM3 5l9 8 9-8',
+    plus:'M12 4v16M4 12h16',calendar:'M4 5h16v16H4zM8 2v6M16 2v6M4 10h16M8 14h3M8 17h7',
+    target:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18m0 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8',
+    leaf:'M20 3C9 2 3 6 3 12a7 7 0 0 0 14 0c0-4 3-9 3-9zM3 21 14 10',settings:'M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2',
+    help:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M9 9a3 3 0 1 1 5 2c-2 1-2 1-2 3M12 17h.01',
+    link:'M10 13a5 5 0 0 0 7 0l4-4a5 5 0 0 0-7-7l-2 2M14 11a5 5 0 0 0-7 0l-4 4a5 5 0 0 0 7 7l2-2',
+    download:'M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5',briefcase:'M3 7h18v14H3zM8 7V3h8v4M3 12s9 7 18 0M11 12h2v4',
+    bell:'M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 20h4',clock:'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18M12 7v6l4 2',
+    copy:'M9 9h12v12H9zM15 9V3H3v12h6',edit:'m4 16 12-12 4 4-12 12H4zM14 6l4 4',menu:'M3 6h18M3 12h18M3 18h18',
+    graduation:'m2 9 10-6 10 6-10 6zM6 12v6s6 5 12 0v-6M22 9v9',headphones:'M3 14v-3a9 9 0 0 1 18 0v3M3 12h4v8H3zM17 12h4v8h-4z',
+    layers:'m12 2 10 6-10 6L2 8zm-10 12 10 6 10-6M2 19l10 6 10-6',money:'M3 5h18v14H3zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M6 12h.01M18 12h.01',megaphone:'M3 9h5l11-5v16L8 15H3zM8 15l2 6H6l-2-6'
+  };
+  const icon = name => `<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[name] || paths.file}"/></svg>`;
+  const baseRecords = () => [
     { id: 'demo-001', company: 'Exempelbrf Solgläntan', kind: 'BRF', city: 'Lund', partner: 'syd', contact: 'Kim Exempel', email: 'kim@solglantan.example', need: 'Vill diskutera sitt elavtal och vilket underlag som behövs inför en fortsatt dialog.', next: 'Föreslå ett gemensamt första möte', date: '2026-10-12', status: 'pagar', owner: 'Demoansvarig A', events: [
       { at: '2026-10-06T13:30:00Z', actor: 'Internt team', text: 'Vi kan delta i ett första möte. Återkom gärna med förslag på tid.', visibility: 'shared' },
       { at: '2026-10-06T09:00:00Z', actor: 'Internt team', text: 'Exempel på intern anteckning: stäm av vem som deltar från teamet.', visibility: 'internal' },
@@ -23,165 +38,115 @@
       { at: '2026-10-07T07:30:00Z', actor: 'Exempelpartner Väst', text: 'Exempel på affär från en annan partner.', visibility: 'shared' }
     ] }
   ];
-  let storageFailed = false;
-  function readData() {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return seedData();
-      const records = JSON.parse(saved);
-      if (!Array.isArray(records) || records.some(record => !record || typeof record.id !== 'string' || typeof record.company !== 'string' || !partners[record.partner] || !statuses[record.status] || !Array.isArray(record.events))) throw new Error('Invalid local demo data');
-      return records;
-    } catch { return seedData(); }
+  const STORAGE = 'partnerlabb.portal.v2';
+  const partners = {syd:'Exempelpartner Syd',vast:'Exempelpartner Väst'};
+  const statuses = {ny:'Ny',pagar:'Pågår',vantar:'Väntar',avslutad:'Avslutad'};
+  const stages = {lead:'Kunddialog',offer:'Offertutkast',authority:'Fullmakt · demo',agreement:'Avtal · demo',active:'Aktiv kund · demo'};
+  function seed() {
+    const records=baseRecords();
+    records.forEach((r,i)=>r.stage=['offer','lead','authority','lead'][i]);
+    const extra=[['demo-005','Exempelbolaget Bryggan AB','Företag','Landskrona','syd','agreement'],['demo-006','Exempelbrf Eklövet','BRF','Lund','syd','active'],['demo-007','Exempelbolaget Grönska AB','Företag','Kristianstad','syd','lead']];
+    for(const [id,company,kind,city,partner,stage] of extra) records.push({id,company,kind,city,partner,stage,contact:'Taylor Exempel',email:'taylor@kund.example',need:'Fiktiv kunddialog om elhandel. Produktval och villkor behöver underlag.',next:'Stämma av nästa steg tillsammans',date:'2026-10-16',status:'pagar',owner:'Demoansvarig A',events:[{at:'2026-10-05T09:30:00Z',actor:partners[partner],text:'Exempel för att visa ett möjligt steg i partnerflödet.',visibility:'shared'}]});
+    return {records,offers:[],training:{},sites:[],journey:{},support:[]};
   }
-  let data = readData();
-  let role = 'partner';
-  let partner = 'syd';
-  let selectedId = data.find(record => record.partner === partner)?.id;
-  let toastTimer;
-  function toast(message) {
-    $('#toast').textContent = message;
-    $('#toast').hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { $('#toast').hidden = true; }, 5500);
+  function readState() {
+    try { const value=JSON.parse(localStorage.getItem(STORAGE)); if(value && Array.isArray(value.records) && value.records.every(r=>r && partners[r.partner] && statuses[r.status] && typeof r.company==='string' && Array.isArray(r.events))) return {...seed(),...value}; } catch {}
+    const state=seed();
+    try { const old=JSON.parse(localStorage.getItem('partnerlabb.active.v1'));if(Array.isArray(old)&&old.every(r=>r && partners[r.partner] && statuses[r.status] && Array.isArray(r.events))){state.records=old.map(r=>({...r,stage:r.stage||'lead'}));} } catch {}
+    return state;
   }
-  function persist() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); storageFailed = false; }
-    catch { storageFailed = true; }
+  const P=window.Portal={state:readState(),role:'partner',partner:'syd',page:'overview',routes:{},partners,e,escape:e,icon};
+  let selectedId,toastTimer,storageFailed=false;
+  P.register=(id,route)=>{P.routes[id]=route;};
+  P.getRecords=()=>P.role==='internal'?P.state.records:P.state.records.filter(r=>r.partner===P.partner);
+  P.getView=()=>({role:P.role,partner:P.partner});
+  P.save=()=>{try{localStorage.setItem(STORAGE,JSON.stringify(P.state));storageFailed=false;return true;}catch{storageFailed=true;P.toast('Webbläsaren kunde inte spara. Ändringarna finns i denna flik; exportera innan du stänger.');return false;}};
+  P.toast=message=>{if(storageFailed&&!message.includes('kunde inte'))message+=' · Kunde inte sparas i webbläsaren.';$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,6000);};
+  P.download=(filename,content,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+  P.openDialog=(title,html,mount)=>{$('#dialog-title').textContent=title;$('#dialog-body').innerHTML=html;if(!$('#portal-dialog').open)$('#portal-dialog').showModal();mount?.();};
+  P.closeDialog=()=>$('#portal-dialog').close();
+  P.date=value=>value&&!Number.isNaN(new Date(value).getTime())?new Intl.DateTimeFormat('sv-SE',{day:'numeric',month:'short'}).format(new Date(value)):'Ej planerat';
+  P.event=(record,text,visibility='shared')=>record.events.unshift({at:new Date().toISOString(),actor:P.role==='internal'?'Internt team':partners[record.partner],text,visibility});
+  P.validText=(input)=>{input.setCustomValidity(input.value.trim()?'':'Fyll i text, inte enbart blanksteg.');input.addEventListener('input',()=>input.setCustomValidity(''),{once:true});return input.reportValidity();};
+  const nav=[['overview','Översikt','home'],['pipeline','Pipeline','chart'],['customers','Kunder','users'],['offers','Offerter & avtal','file'],['sites','Kundsidor','link'],['academy','Utbildning','graduation'],['material','Material & kampanjer','megaphone'],['commission','Provision','money'],['reports','Rapporter','chart'],['journey','Partnerresan','target']];
+  const titles=Object.fromEntries([...nav,['agreements','Avtal & fullmakter'],['documents','Dokument'],['support','Hjälp & support'],['settings','Test & beslut'],['certs','Certifieringar']].map(a=>[a[0],a[1]]));
+  function closeMenu(){$('#sidebar').classList.remove('open');$('#sidebar-backdrop').hidden=true;$('#menu-toggle').setAttribute('aria-expanded','false');}
+  P.go=P.navigate=id=>{const alias={affarer:'customers',test:'settings'};id=alias[id]||id;if($('#portal-dialog')?.open)P.closeDialog();P.page=P.routes[id]?id:'overview';history.replaceState(null,'','#'+P.page);P.render();closeMenu();window.scrollTo({top:0,behavior:'instant'});};
+  P.render=()=>{
+    $('#partner').hidden=P.role==='internal';$('#profile-role').textContent=P.role==='internal'?'Internt team':`Partner · ${P.partner==='syd'?'Syd':'Väst'}`;
+    $('#current-page').textContent=titles[P.page]||'Partnerportal';
+    document.querySelectorAll('.nav-button').forEach(b=>{const active=b.dataset.go===P.page||(b.dataset.go==='offers'&&['agreements','documents'].includes(P.page));b.classList.toggle('active',active);b.setAttribute('aria-current',active?'page':'false');});
+    const route=P.routes[P.page];$('#view').innerHTML=route?route.render():'<div class="empty">Vyn förbereds.</div>';route?.bind?.();
+  };
+  const badge=status=>`<span class="pill status-${e(status)}">${statuses[status]||e(status)}</span>`;
+  const head=(title,subtitle,action='')=>`<div class="page-head"><div><span class="eyebrow">PARTNERPORTAL / ${P.role==='internal'?'INTERNT TEAM':e(partners[P.partner])}</span><h1>${title}</h1><p class="muted">${subtitle}</p></div>${action}</div>`;
+  const visibleOffers=()=>P.state.offers.filter(o=>P.role==='internal'||o.partner===P.partner);
+  const visibleEvents=()=>P.getRecords().flatMap(r=>r.events.filter(ev=>P.role==='internal'||ev.visibility==='shared').map(ev=>({...ev,company:r.company,id:r.id}))).sort((a,b)=>new Date(b.at)-new Date(a.at));
+  function pipelineChart(){const records=P.getRecords();const counts=Object.keys(stages).map(s=>records.filter(r=>(r.stage||'lead')===s).length);const max=Math.max(1,...counts);return `<div class="pipeline-chart"><div class="chart-caption">Antal exempelaffärer per steg</div><div class="chart-bars">${Object.entries(stages).map(([key,label],i)=>`<button class="bar-column" data-go="pipeline" aria-label="${e(label)}, ${counts[i]} affärer"><span class="bar-count">${counts[i]}</span><span class="bar-track"><span class="bar-fill bar-${i}" style="height:${counts[i]?Math.max(8,counts[i]/max*100):3}%"></span></span><span class="bar-label">${e(label.replace(' · demo',''))}</span></button>`).join('')}</div></div>`;}
+  P.register('overview',{render:()=>{
+    const records=P.getRecords(),events=visibleEvents(),offers=visibleOffers(),open=records.filter(r=>r.status!=='avslutad').length;
+    const training=P.academyStats?.()||{percent:0,completedCourses:0};
+    const upcoming=records.filter(r=>r.date&&r.status!=='avslutad').sort((a,b)=>a.date.localeCompare(b.date)).slice(0,3);
+    const kpis=[['KUNDER & BRF',records.length,'I din exempelportfölj','users','teal'],['ÖPPNA AFFÄRER',open,'Pågående kunddialoger','chart','navy'],['OFFERTUTKAST',offers.length,'Förberedda i testmiljön','file','blue'],['UTBILDNINGSFRAMSTEG',training.percent+'%','Lokala demomoment','graduation','green'],['PROVISION','—','Ersättningsmodell ej beslutad','money','soft']];
+    return `<div class="dashboard-head"><div class="dashboard-title"><span class="eyebrow">VÄLKOMMEN TILLBAKA</span><h1>${P.role==='internal'?'Teamets partneröversikt':'Din arbetsdag, samlad.'}</h1><p class="muted">${P.role==='internal'?'Följ era partners och samordna nästa steg.':'Kunder, affärer och kunskap – ett nästa steg i taget.'}</p></div><button class="btn btn-secondary" data-export>${icon('download')} Exportera testöversikt</button></div>
+    <div class="kpi-grid">${kpis.map(([label,value,note,ic,color])=>`<article class="kpi"><span class="kpi-icon ${color}">${icon(ic)}</span><div><span class="kpi-label">${label}</span><strong class="kpi-value">${value}</strong><span class="kpi-note">${note}</span></div></article>`).join('')}</div>
+    <div class="dashboard-grid"><section class="card"><div class="panel-heading"><h2>Din pipeline</h2><span class="pill">Exempelflöde</span></div>${pipelineChart()}<div class="panel-foot"><button class="text-button" data-go="pipeline">Visa hela pipelinen ${icon('arrow')}</button></div></section>
+    <section class="card"><div class="panel-heading"><h2>Snabbåtgärder</h2></div><div class="quick-actions">${[['Ny kunddialog','user','new'],['Skapa offertutkast','file','offers'],['Fullmakt & avtal','shield','agreements'],['Skapa kundsida','link','sites'],['Hitta säljmaterial','book','material']].map(([label,ic,page])=>`<button class="quick-action" ${page==='new'?'data-new-customer':`data-go="${page}"`}>${icon(ic)}<span>${label}</span>${icon('arrow')}</button>`).join('')}</div></section>
+    <section class="card"><div class="panel-heading"><h2>Nästa steg</h2><span class="pill">Planerat</span></div><div class="goal-list">${upcoming.map(r=>`<button class="next-task" data-record="${e(r.id)}"><span class="task-date">${P.date(r.date)}</span><strong>${e(r.company)}</strong><span>${e(r.next)}</span></button>`).join('')||'<div class="empty">Lägg till ett nästa steg i en kunddialog.</div>'}</div><div class="panel-foot"><button class="text-button" data-go="customers">Se alla kunddialoger ${icon('arrow')}</button></div></section></div>
+    <div class="bottom-grid"><section class="card"><div class="panel-heading"><h2>Senaste aktiviteter</h2><button class="text-button" data-go="reports">Visa alla</button></div><div class="activity-list">${events.slice(0,3).map(ev=>`<button class="activity-row" data-record="${e(ev.id)}"><span class="activity-icon">${icon('file')}</span><span><small>${P.date(ev.at)} · ${e(ev.actor)}</small><strong>${e(ev.company)}</strong><span>${e(ev.text).slice(0,130)}</span></span>${icon('arrow')}</button>`).join('')}</div></section>
+    <section class="campaign-card" style="background-image:linear-gradient(0deg,rgba(6,38,48,.96),rgba(6,38,48,.10)),url('assets/wind.jpg')"><span class="pill">EXEMPEL PÅ MATERIAL</span><div><h2>En bra kunddialog<br>börjar med rätt frågor.</h2><p>Samla kundens behov och förbered nästa möte.</p><button class="btn btn-light" data-go="material">Utforska material ${icon('arrow')}</button></div></section>
+    <section class="card"><div class="panel-heading"><h2>Din utveckling</h2><button class="text-button" data-go="academy">Visa alla</button></div><div class="learning-summary"><span class="progress-ring" style="--progress:${training.percent*3.6}deg"><strong>${training.percent}%</strong></span><div><strong>Partner Academy</strong><p class="muted">${training.completedCourses} av 4 demokurser klara</p><span class="pill">Testa utbildningsflödet</span></div></div><div class="course-mini">${[['Kom igång med portalen','book'],['Första kunddialogen','users'],['Nästa steg tillsammans','target']].map(([label,ic])=>`<button data-go="academy">${icon(ic)}<span>${label}</span>${icon('arrow')}</button>`).join('')}</div></section></div>
+    <div class="support-strip">${icon('headphones')}<div><strong>Partnerteamet finns nära.</strong><span>Samla frågor, hitta material och få stöd i nästa steg.</span></div><button class="text-button" data-go="support">Hjälp & support ${icon('arrow')}</button></div>`;
+  },bind:()=>{$('[data-export]')?.addEventListener('click',exportData);}});
+  let customerQuery='',customerFilter='all';
+  function filteredCustomers(){return P.getRecords().filter(r=>(`${r.company} ${r.city} ${r.kind}`.toLocaleLowerCase('sv-SE').includes(customerQuery.toLocaleLowerCase('sv-SE')))&&(customerFilter==='all'||r.status===customerFilter));}
+  function customerRows(){return filteredCustomers().map(r=>`<tr class="${r.id===selectedId?'selected':''}"><td><button class="customer-name" data-record="${e(r.id)}"><span class="customer-avatar">${r.kind==='BRF'?'BRF':'AB'}</span><span><strong>${e(r.company)}</strong><small>${e(r.city||'Ort ej angiven')}</small></span></button></td><td>${badge(r.status)}</td><td>${e(r.owner)}</td><td><button class="icon-button" data-record="${e(r.id)}" aria-label="Öppna ${e(r.company)}">${icon('arrow')}</button></td></tr>`).join('')||'<tr><td colspan="4"><div class="empty">Inga kunder matchar. Justera sökningen.</div></td></tr>';}
+  function selectedRecord(){const records=P.getRecords();return records.find(r=>r.id===selectedId)||records[0];}
+  function detailHtml(){
+    const r=selectedRecord();if(!r)return '<div class="empty"><h2>Din första kunddialog</h2><p>Registrera en fiktiv kund för att testa flödet.</p></div>';
+    const events=r.events.filter(ev=>P.role==='internal'||ev.visibility==='shared');
+    return `<div class="panel-heading"><div><span class="eyebrow">${e(r.kind)} · ${e(r.city)}</span><h2>${e(r.company)}</h2></div>${badge(r.status)}</div><div class="detail-content"><div class="detail-meta"><div><small>KONTAKT · EXEMPEL</small><strong>${e(r.contact||'Ej angiven')}</strong><span>${e(r.email)}</span></div><div><small>INTERN ANSVARIG</small><strong>${e(r.owner)}</strong><span>${e(partners[r.partner])}</span></div></div><div class="info-note"><strong>Kundens frågeställning</strong><p>${e(r.need)}</p></div><div class="next-step-summary"><small>NÄSTA STEG · ${P.date(r.date)}</small><strong>${e(r.next)}</strong></div><div class="detail-actions"><button class="btn btn-primary btn-small" id="update-record">${icon('edit')} ${P.role==='internal'?'Ansvar & återkoppling':'Dokumentera kontakt'}</button><button class="btn btn-secondary btn-small" data-go="offers">${icon('file')} Offertstudio</button></div><h3 class="section-title">Aktivitet & återkoppling</h3><div class="timeline">${events.map(ev=>`<div class="timeline-item ${ev.visibility==='internal'?'internal-event':''}"><small>${P.date(ev.at)} · ${e(ev.actor)}${ev.visibility==='internal'?' · Intern demovy':''}</small><p>${e(ev.text)}</p></div>`).join('')}</div></div>`;
   }
-  function saved(message) { persist(); render(); toast(storageFailed ? 'Ändringen finns i denna flik, men webbläsaren kunde inte spara den. Exportera testdata innan du stänger.' : message); }
-  function availableRecords() { return role === 'internal' ? data : data.filter(record => record.partner === partner); }
-  function badge(status) { return `<span class="pill ${escape(status)}">${escape(statuses[status])}</span>`; }
-  function event(record, actor, text, visibility = 'shared') { record.events.unshift({ at: new Date().toISOString(), actor, text, visibility }); }
-  function renderStats(records) {
-    const stats = [
-      ['Öppna affärer', records.filter(record => record.status !== 'avslutad').length, 'Alla statusar utom Avslutad', '↗'],
-      ['Nya affärer', records.filter(record => record.status === 'ny').length, 'Att ta en första titt på', '＋'],
-      [role === 'internal' ? 'Utan intern ansvarig' : 'Väntande affärer', records.filter(record => role === 'internal' ? record.owner === 'Ej tilldelad' : record.status === 'vantar').length, role === 'internal' ? 'Ansvar att fördela i testet' : 'Nästa steg att stämma av', '◷']
-    ];
-    $('#stats').innerHTML = stats.map(([label, count, hint, icon]) => `<div class="stat"><div><div class="stat-label">${label}</div><div class="stat-number">${count}</div><div class="stat-hint">${hint}</div></div><span class="stat-icon" aria-hidden="true">${icon === '↗' ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 19 19 5M5 5h14v14"/></svg>' : icon}</span></div>`).join('');
-  }
-  function renderList(records) {
-    const query = $('#search').value.trim().toLocaleLowerCase('sv-SE');
-    const filter = $('#status-filter').value;
-    const visible = records.filter(record => `${record.company} ${record.city} ${record.kind}`.toLocaleLowerCase('sv-SE').includes(query) && (filter === 'all' || record.status === filter));
-    $('#list-count').textContent = `${visible.length} av ${records.length} affärer`;
-    $('#nav-count').textContent = records.length;
-    $('#affair-list').innerHTML = visible.length ? visible.map(record => `<button class="affair-row ${record.id === selectedId ? 'selected' : ''}" data-affair="${escape(record.id)}" aria-pressed="${record.id === selectedId}"><span class="company-avatar" aria-hidden="true">${record.kind === 'BRF' ? 'BRF' : 'AB'}</span><span class="affair-info"><span class="affair-name" style="display:block">${escape(record.company)}</span><span class="affair-meta">${escape(record.kind)} · ${escape(record.city || 'Ort ej angiven')}${role === 'internal' ? `<br>${escape(partners[record.partner])}` : ''}</span><span class="affair-next" style="display:block">${escape(record.next || 'Nästa steg saknas')}</span></span><span class="row-side">${badge(record.status)}<span class="row-arrow" aria-hidden="true">→</span></span></button>`).join('') : '<div class="empty"><strong>Inga affärer i denna lista</strong>Justera sökningen eller registrera en ny exempelaffär.</div>';
-  }
-  function renderDetail(records) {
-    const record = records.find(item => item.id === selectedId);
-    if (!record) { $('#detail').innerHTML = '<div class="empty"><strong>Välj en affär</strong>Här ser du nästa steg och återkoppling.</div>'; return; }
-    const visibleEvents = record.events.filter(item => role === 'internal' || item.visibility === 'shared');
-    $('#detail').innerHTML = `
-      <div class="detail-header"><div class="detail-overline"><span class="eyebrow">AFFÄR · ${escape(record.id)}</span>${badge(record.status)}</div><h2>${escape(record.company)}</h2><p>${escape(record.kind)} · ${escape(record.city || 'Ort ej angiven')} · ${escape(partners[record.partner])}</p></div>
-      <div class="detail-body"><div class="summary-grid"><div><span class="field-label">Kontakt · exempel</span><span class="field-value">${escape(record.contact || 'Ej angiven')}<br>${escape(record.email)}</span></div><div><span class="field-label">Intern ansvarig</span><span class="field-value">${escape(record.owner)}</span></div><div><span class="field-label">Partnerns nästa steg</span><span class="field-value">${escape(record.next)}</span></div><div><span class="field-label">Planerat datum</span><span class="field-value">${dateLabel(record.date)}</span></div></div>
-      <div class="need"><span class="field-label">Kundens frågeställning</span><p>${escape(record.need)}</p></div>
-      ${role === 'internal' ? `<form id="assign-form" class="detail-form"><h3>Ansvar & status i testflödet</h3><div class="form-row"><div><label for="owner">Intern ansvarig</label><select id="owner" name="owner">${owners.map(owner => `<option${record.owner === owner ? ' selected' : ''}>${escape(owner)}</option>`).join('')}</select></div><div><label for="status">Status · förslag</label><select id="status" name="status">${Object.entries(statuses).map(([key,label]) => `<option value="${key}"${record.status === key ? ' selected' : ''}>${label}</option>`).join('')}</select></div></div><button class="button secondary" type="submit">Spara ansvar & status</button></form>
-      <hr class="section-divider"><form id="feedback-form" class="detail-form"><h3>Återkoppla till partnern</h3><label for="feedback">Meddelande som partnern får se</label><textarea id="feedback" name="feedback" rows="2" maxlength="800" required placeholder="Exempel: föreslå en tid för ett gemensamt möte."></textarea><button class="button primary" type="submit">Dela återkoppling</button></form>
-      <hr class="section-divider"><form id="internal-note-form" class="detail-form"><h3>Intern anteckning · demovy</h3><label for="internal-note">Visas endast i den interna demovyn</label><textarea id="internal-note" name="note" rows="2" maxlength="800" required placeholder="Använd enbart fiktivt testinnehåll."></textarea><p class="form-hint">Alla uppgifter finns lokalt i webbläsaren. Detta är inget behörighetsskydd.</p><button class="button secondary" type="submit">Spara intern testanteckning</button></form>` : `<form id="partner-update-form" class="detail-form"><h3>Fortsätt kunddialogen</h3><label for="contact-update">Senaste kontakt eller aktivitet</label><textarea id="contact-update" name="activity" rows="2" maxlength="800" required placeholder="Exempel: kontaktat styrelsen och föreslagit en mötestid."></textarea><label for="update-next">Nästa steg</label><input id="update-next" name="next" maxlength="180" required value="${escape(record.next)}"><label for="update-date">Planerat datum · valfritt</label><input id="update-date" name="date" type="date" value="${escape(record.date)}"><p class="form-hint">Aktiviteten delas med det interna teamet.</p><button class="button primary" type="submit">Spara aktivitet & nästa steg</button></form>`}
-      <hr class="section-divider"><h3>${role === 'internal' ? 'Aktivitet & anteckningar' : 'Aktivitet & återkoppling'}</h3><div class="timeline">${visibleEvents.map(item => `<div class="timeline-item"><div class="timeline-time">${dateLabel(item.at)}${item.visibility === 'internal' ? ' · Endast intern demovy' : ''}</div><div class="timeline-author">${escape(item.actor)}</div><p>${escape(item.text)}</p></div>`).join('') || '<p class="form-hint">Ingen aktivitet ännu.</p>'}</div></div>`;
-    $('#assign-form')?.addEventListener('submit', e => {
-      e.preventDefault();
-      const form = new FormData(e.currentTarget);
-      const newOwner = form.get('owner'), newStatus = form.get('status');
-      if (newOwner === record.owner && newStatus === record.status) { toast('Ingen ändring av ansvar eller status.'); return; }
-      record.owner = newOwner; record.status = newStatus;
-      event(record, 'Internt team', `Intern ansvarig: ${newOwner}. Status i testflödet: ${statuses[newStatus]}.`);
-      saved('Ansvar och status sparade i denna webbläsare.');
+  P.register('customers',{render:()=>head(P.role==='internal'?'Teamets kunder & affärer':'Mina kunder & affärer','Företag och BRF. Följ kontakten och samordna nästa steg.',`<button class="btn btn-primary" data-new-customer>${icon('plus')} Ny kunddialog</button>`)+`<div class="split-grid"><section class="card"><div class="panel-heading"><h2>Kundöversikt</h2><span class="pill">${P.getRecords().length} exempel</span></div><div class="toolbar"><label class="search-field">${icon('search')}<input id="customer-search" type="search" value="${e(customerQuery)}" placeholder="Sök kund eller ort" aria-label="Sök kunder"></label><select id="customer-filter" aria-label="Filtrera kundstatus"><option value="all">Alla statusar</option>${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${customerFilter===k?'selected':''}>${v}</option>`).join('')}</select></div><div class="table-wrap"><table><thead><tr><th>KUND</th><th>STATUS</th><th>ANSVARIG</th><th><span class="sr-only">Öppna</span></th></tr></thead><tbody id="customer-table-body">${customerRows()}</tbody></table></div><div class="panel-foot muted">Organisationer och personer är fiktiva.</div></section><section class="card customer-detail">${detailHtml()}</section></div>`,bind:()=>{
+    $('#customer-search').addEventListener('input',ev=>{customerQuery=ev.target.value;$('#customer-table-body').innerHTML=customerRows();});
+    $('#customer-filter').addEventListener('change',ev=>{customerFilter=ev.target.value;$('#customer-table-body').innerHTML=customerRows();});
+    $('#update-record')?.addEventListener('click',()=>updateRecord(selectedRecord()));
+  }});
+  function newCustomer(){P.openDialog('Starta en kunddialog',`<p class="muted">Använd påhittade uppgifter. Registrering avgör inte leadägande eller rätt till ersättning.</p><form id="customer-form"><div class="form-grid"><label class="field">Företag eller BRF *<input name="company" required maxlength="90" placeholder="Exempelbrf Ängen"></label><label class="field">Kundtyp<select name="kind"><option>BRF</option><option>Företag</option></select></label><label class="field">Ort<input name="city" maxlength="60" placeholder="Lund"></label><label class="field">Kontaktperson · fiktiv<input name="contact" maxlength="80" placeholder="Kim Exempel"></label><label class="field">E-post · exempel<input name="email" type="email" maxlength="120" placeholder="kim@kund.example"></label>${P.role==='internal'?`<label class="field">Exempelpartner<select name="partner">${Object.entries(partners).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>`:''}</div><label class="field">Vad vill kunden diskutera? *<textarea name="need" required maxlength="800" rows="3" placeholder="Samla behov och frågor inför nästa dialog."></textarea></label><label class="field">Partnerns nästa steg *<input name="next" required maxlength="180" placeholder="Föreslå ett gemensamt möte"></label><label class="field">Datum för nästa steg · valfritt<input name="date" type="date"></label><p class="info-note" id="duplicate-note" hidden>Liknande kundnamn finns redan i demovyn. Hanteringen av dubbla registreringar behöver beslutas.</p><label class="check-field"><input type="checkbox" required> Jag använder enbart påhittade exempeluppgifter.</label><div class="modal-actions"><button class="btn btn-secondary" type="button" id="cancel-customer">Avbryt</button><button class="btn btn-primary" type="submit">Registrera exempel</button></div></form>`,()=>{
+    const form=$('#customer-form');form.elements.company.focus();$('#cancel-customer').onclick=P.closeDialog;
+    form.elements.company.addEventListener('input',ev=>{$('#duplicate-note').hidden=!P.getRecords().some(r=>r.company.toLowerCase()===ev.target.value.trim().toLowerCase());});
+    form.addEventListener('submit',ev=>{ev.preventDefault();for(const name of ['company','need','next'])if(!P.validText(form.elements.namedItem(name)))return;const f=new FormData(form);const r={id:'test-'+crypto.randomUUID().slice(0,8),company:f.get('company').trim(),kind:f.get('kind'),city:f.get('city').trim(),contact:f.get('contact').trim(),email:f.get('email').trim(),need:f.get('need').trim(),next:f.get('next').trim(),date:f.get('date'),partner:P.role==='internal'?f.get('partner'):P.partner,status:'ny',owner:'Ej tilldelad',stage:'lead',events:[]};P.event(r,'Kunddialog registrerad med exempeluppgifter.');P.state.records.unshift(r);selectedId=r.id;customerQuery='';customerFilter='all';P.save();P.closeDialog();P.go('customers');P.toast('Kunddialogen är sparad i denna webbläsare.');});
+  });}
+  function updateRecord(r){
+    if(!r)return;
+    const internal=P.role==='internal';
+    const internalFields=`<div class="form-grid"><label class="field">Intern ansvarig<select name="owner">${['Ej tilldelad','Demoansvarig A','Demoansvarig B'].map(name=>`<option ${name===r.owner?'selected':''}>${name}</option>`).join('')}</select></label><label class="field">Status · testförslag<select name="status">${Object.entries(statuses).map(([k,v])=>`<option value="${k}" ${r.status===k?'selected':''}>${v}</option>`).join('')}</select></label></div><label class="field">Demosteg i pipeline<select name="stage">${Object.entries(stages).map(([k,v])=>`<option value="${k}" ${r.stage===k?'selected':''}>${v}</option>`).join('')}</select></label><label class="field">Återkoppling som partnern får se<textarea name="feedback" maxlength="800" rows="3" placeholder="Föreslå ett nästa steg tillsammans."></textarea></label><label class="field">Intern testanteckning<textarea name="privateNote" maxlength="800" rows="2" placeholder="Visas bara i den interna demovyn."></textarea></label><p class="muted small">Demovyerna styr visningen. Alla uppgifter finns lokalt i webbläsaren.</p>`;
+    const partnerFields=`<label class="field">Senaste kontakt eller aktivitet *<textarea name="activity" required maxlength="800" rows="3" placeholder="Exempel: kontaktat styrelsen om ett första möte."></textarea></label><label class="field">Nästa steg *<input name="next" required maxlength="180" value="${e(r.next)}"></label><label class="field">Planerat datum<input name="date" type="date" value="${e(r.date)}"></label><p class="muted small">Aktiviteten delas med det interna teamet.</p>`;
+    P.openDialog(internal?'Samordna kunddialogen':'Dokumentera kundkontakten',`<p class="muted">${e(r.company)} · exempeluppgifter</p><form id="update-form">${internal?internalFields:partnerFields}<div class="modal-actions"><button class="btn btn-primary" type="submit">Spara ${internal?'ansvar & återkoppling':'aktivitet & nästa steg'}</button></div></form>`,()=>{
+      $('#update-form').onsubmit=ev=>{ev.preventDefault();const form=ev.currentTarget;const f=new FormData(form);
+      if(internal){const changed=r.owner!==f.get('owner')||r.status!==f.get('status')||r.stage!==f.get('stage');r.owner=f.get('owner');r.status=f.get('status');r.stage=f.get('stage');if(changed)P.event(r,`Intern ansvarig: ${r.owner}. Status: ${statuses[r.status]}. Demosteg: ${stages[r.stage]}.`);if(f.get('feedback').trim())P.event(r,f.get('feedback').trim());if(f.get('privateNote').trim())P.event(r,f.get('privateNote').trim(),'internal');}
+      else {if(!P.validText(form.elements.activity)||!P.validText(form.elements.next))return;r.next=f.get('next').trim();r.date=f.get('date');P.event(r,`${f.get('activity').trim()}\nNästa steg: ${r.next}.`);}
+      P.save();P.closeDialog();P.render();P.toast('Uppdateringen är sparad i denna webbläsare.');};
     });
-    $('#feedback-form')?.addEventListener('submit', e => {
-      e.preventDefault();
-      const message = $('#feedback').value.trim();
-      if (!validNonEmpty($('#feedback'), message)) return;
-      event(record, 'Internt team', message);
-      saved('Återkopplingen visas nu i partnerns demovy.');
-    });
-    $('#internal-note-form')?.addEventListener('submit', e => {
-      e.preventDefault();
-      const message = $('#internal-note').value.trim();
-      if (!validNonEmpty($('#internal-note'), message)) return;
-      event(record, 'Internt team', message, 'internal');
-      saved('Testanteckningen sparad i den interna demovyn.');
-    });
-    $('#partner-update-form')?.addEventListener('submit', e => {
-      e.preventDefault();
-      const message = $('#contact-update').value.trim();
-      const next = $('#update-next').value.trim();
-      if (!validNonEmpty($('#contact-update'), message) || !validNonEmpty($('#update-next'), next)) return;
-      record.next = next; record.date = $('#update-date').value;
-      event(record, partners[record.partner], `${message}\nNästa steg: ${next}${record.date ? ` (${dateLabel(record.date)})` : ''}.`);
-      saved('Aktivitet och nästa steg sparade i denna webbläsare.');
-    });
   }
-  function validNonEmpty(input, value) {
-    input.setCustomValidity(value ? '' : 'Fyll i text, inte enbart blanksteg.');
-    input.addEventListener('input', () => input.setCustomValidity(''), { once: true });
-    return input.reportValidity();
-  }
-  function render() {
-    const records = availableRecords();
-    if (!records.some(record => record.id === selectedId)) selectedId = records[0]?.id;
-    $('#partner').hidden = role === 'internal';
-    $('#page-title').textContent = role === 'internal' ? 'Teamets partneraffärer' : 'Mina affärer';
-    $('#page-description').textContent = role === 'internal' ? 'Fördela ansvar och återkoppla till era aktiva säljpartners.' : 'Håll kontakten, följ affären och planera nästa steg.';
-    renderStats(records); renderList(records); renderDetail(records);
-  }
-  function showPage(page) {
-    if (!['affarer', 'material', 'test'].includes(page)) page = 'affarer';
-    ['affarer', 'material', 'test'].forEach(name => { $(`#page-${name}`).hidden = name !== page; });
-    document.querySelectorAll('nav [data-page]').forEach(button => { button.classList.toggle('active', button.dataset.page === page); button.setAttribute('aria-current', button.dataset.page === page ? 'page' : 'false'); });
-    if (location.hash !== `#${page}`) history.replaceState(null, '', `#${page}`);
-  }
-  $('#role').addEventListener('change', e => { role = e.target.value; render(); });
-  $('#partner').addEventListener('change', e => { partner = e.target.value; render(); });
-  $('#search').addEventListener('input', () => renderList(availableRecords()));
-  $('#status-filter').addEventListener('change', () => renderList(availableRecords()));
-  $('#affair-list').addEventListener('click', e => {
-    const button = e.target.closest('[data-affair]');
-    if (!button) return;
-    selectedId = button.dataset.affair; render();
-    if (window.innerWidth < 960) $('#detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  P.register('pipeline',{render:()=>head('Pipeline','Ett föreslaget flöde från kunddialog till aktiv kund. Alla affärer är fiktiva.',`<button class="btn btn-primary" data-new-customer>${icon('plus')} Ny kunddialog</button>`)+`<div class="info-note compact">${icon('layers')} Stegen är en visningsdemo. Fullmakt, avtal och signering genomförs inte på riktigt.</div><div class="kanban">${Object.entries(stages).map(([key,label],index)=>{const records=P.getRecords().filter(r=>(r.stage||'lead')===key);return `<section class="kanban-column"><div class="kanban-head"><span class="stage-dot stage-${index}"></span><h2>${e(label.replace(' · demo',''))}</h2><span class="pill">${records.length}</span></div>${records.map(r=>`<button class="kanban-card" data-record="${e(r.id)}"><span class="eyebrow">${e(r.kind)} · ${e(r.city)}</span><h3>${e(r.company)}</h3><p>${e(r.next)}</p><div>${badge(r.status)}<small>${P.date(r.date)}</small></div></button>`).join('')||'<div class="kanban-empty">Inga exempelaffärer i detta steg.</div>'}</section>`;}).join('')}</div><div class="info-note">Testa flödet: registrera kund → förbered offertutkast → följ dokumentsteg i Offert- & avtalsstudion. Internt team kan även ändra demosteg via kunddialogen.</div>`});
+  P.register('commission',{render:()=>head('Provision & ersättning','Plats för uppföljning när er ersättningsmodell är beslutad.')+`<div class="kpi-grid commission-kpis">${[['Intjänad ersättning','money'],['Planerad utbetalning','calendar'],['Utbetalt','check']].map(([label,ic])=>`<article class="kpi"><span class="kpi-icon teal">${icon(ic)}</span><div><span class="kpi-label">${label.toUpperCase()}</span><strong class="kpi-value">—</strong><span class="kpi-note">Underlag saknas</span></div></article>`).join('')}</div><div class="card provision-empty"><span class="large-icon">${icon('money')}</span><span class="pill">ÖPPET BESLUT</span><h2>Hur ska partnern få ersättning?</h2><p>Här kan partnern senare följa ersättning per affär och utbetalningar. Belopp och beräkningar bygger på den modell ni väljer.</p><div class="decision-grid"><div><strong>Vad utlöser ersättning?</strong><p>Händelse, underlag och godkännande behöver definieras.</p></div><div><strong>Hur beräknas beloppet?</strong><p>Regler och eventuella undantag behöver beslutas.</p></div><div><strong>Vad får partnern se?</strong><p>Detaljnivå och utbetalningsstatus behöver fastställas.</p></div></div><button class="btn btn-secondary" data-go="settings">Se övriga öppna beslut ${icon('arrow')}</button></div>`});
+  function exportData(){const records=P.getRecords().map(r=>({...r,events:r.events.filter(ev=>P.role==='internal'||ev.visibility==='shared')}));P.download('partnerportal-exempeldata.json',JSON.stringify({prototype:true,exportedAt:new Date().toISOString(),view:P.getView(),note:'Lokal exempeldata. Demovyer är inte behörighetsskydd.',records,offers:visibleOffers(),sites:P.state.sites.filter(s=>P.role==='internal'||s.partner===P.partner)},null,2),'application/json');P.toast('Testdata för vald demovy exporterade.');}
+  P.register('reports',{render:()=>{
+    const records=P.getRecords(),events=visibleEvents();return head('Rapporter & aktiviteter','Följ testaffärer och kontakthistorik i den valda demovyn.',`<button class="btn btn-primary" id="export-report">${icon('download')} Exportera testdata</button>`)+`<div class="dashboard-grid reports-grid"><section class="card"><div class="panel-heading"><h2>Affärer per steg</h2><span class="pill">Antal</span></div>${pipelineChart()}</section><section class="card"><div class="panel-heading"><h2>Fördelning i demovyn</h2></div><div class="table-wrap"><table><thead><tr><th>PARTNER</th><th>KUNDER</th><th>ÖPPNA AFFÄRER</th></tr></thead><tbody>${Object.entries(partners).filter(([key])=>P.role==='internal'||key===P.partner).map(([key,label])=>`<tr><td>${label}</td><td>${records.filter(r=>r.partner===key).length}</td><td>${records.filter(r=>r.partner===key&&r.status!=='avslutad').length}</td></tr>`).join('')}</tbody></table></div><div class="panel-foot muted">Försäljningsvärde och provision kräver ett fastställt underlag.</div></section></div><section class="card report-activity"><div class="panel-heading"><h2>Aktivitetslogg</h2><span class="pill">${events.length} händelser</span></div><div class="activity-list">${events.map(ev=>`<button class="activity-row" data-record="${e(ev.id)}"><span class="activity-icon">${icon(ev.visibility==='internal'?'shield':'file')}</span><span><small>${P.date(ev.at)} · ${e(ev.actor)}${ev.visibility==='internal'?' · Intern demovy':''}</small><strong>${e(ev.company)}</strong><span>${e(ev.text)}</span></span>${icon('arrow')}</button>`).join('')}</div></section>`;
+  },bind:()=>$('#export-report').addEventListener('click',exportData)});
+  P.register('settings',{render:()=>head('Test & beslut','En klickbar målbild för partners. Fokus på upplevelsen och arbetsmomenten.',`<button class="btn btn-secondary" id="reset-demo">Återställ exempeldata</button>`)+`<div class="decision-grid settings-grid"><article class="card"><span class="eyebrow">ERT VAL</span><h2>Aktiv säljpartner</h2><p>Partnern arbetar vidare med affären. Bilderna är målbild för portalens funktioner och design.</p><p>Företag och BRF är fokus. Privatkunder och ytterligare produktområden i referensbilderna är inte tillagda i denna version.</p></article><article class="card"><span class="eyebrow">FÖRSLAG ATT TESTA</span><h2>Ett sammanhängande arbetsflöde</h2><ol><li>Registrera en fiktiv kunddialog.</li><li>Byt till Internt team, tilldela ansvar och dela återkoppling.</li><li>Byt tillbaka, dokumentera kontakt och uppdatera nästa steg.</li><li>Förbered offertutkast och följ simulerade dokumentsteg.</li><li>Skapa en kundsida och testa ett utbildningsmoment.</li></ol></article><article class="card"><span class="eyebrow">DEMOMILJÖ</span><h2>Alla åtgärder är lokala</h2><p>Demovyerna har ingen riktig inloggning. All data finns i webbläsaren, även interna anteckningar. Två datorer delar inte affärsdata.</p><p>Utskick, signering, publicering och supportärenden genomförs inte på riktigt. Nedladdade dokument är markerade som testunderlag.</p><button class="btn btn-secondary" id="export-settings">${icon('download')} Exportera testdata</button></article><article class="card"><span class="eyebrow">ÖPPNA BESLUT</span><h2>Underlag före affärsregler</h2><p>Partnerns befogenheter, offertvillkor, produkter, informationsdelning, certifieringskrav och eventuell ersättning behöver beslutas.</p><p>Partnerresan, utbildningsmoment och pipelinesteg är exempel att diskutera. Backend och integrationer lämnas till en senare etapp.</p></article></div>`,bind:()=>{
+    $('#export-settings').onclick=exportData;
+    $('#reset-demo').onclick=()=>{if(!confirm('Återställa den nya portalens exempeldata? Lokala teständringar i kunder, utkast, utbildning och kundsidor tas bort.'))return;P.state=seed();P.save();selectedId=undefined;customerQuery='';customerFilter='all';P.render();P.toast('Portalens exempeldata återställda.');};
+  }});
+  document.addEventListener('DOMContentLoaded',()=>{
+    $('#nav').innerHTML=nav.map(([id,label,ic])=>`<button class="nav-button" data-go="${id}">${icon(ic)}<span>${label}</span>${id==='offers'?'<span class="nav-mini">NY</span>':''}</button>`).join('');
+    $('#support-icon').innerHTML=icon('headphones');$('#settings-icon').innerHTML=icon('settings');$('#notifications').innerHTML=icon('bell');$('#menu-toggle').innerHTML=icon('menu');
+    $('#role').onchange=ev=>{P.role=ev.target.value;P.render();};$('#partner').onchange=ev=>{P.partner=ev.target.value;selectedId=undefined;P.render();};$('#close-dialog').onclick=P.closeDialog;
+    $('#menu-toggle').onclick=()=>{const open=!$('#sidebar').classList.contains('open');$('#sidebar').classList.toggle('open',open);$('#sidebar-backdrop').hidden=!open;$('#menu-toggle').setAttribute('aria-expanded',String(open));};$('#sidebar-backdrop').onclick=closeMenu;
+    $('#notifications').onclick=()=>P.openDialog('Senaste aktiviteter',`<div class="activity-list">${visibleEvents().slice(0,5).map(ev=>`<div class="activity-row"><span class="activity-icon">${icon('file')}</span><span><small>${P.date(ev.at)}</small><strong>${e(ev.company)}</strong><span>${e(ev.text)}</span></span></div>`).join('')||'<p>Inga aktiviteter ännu.</p>'}</div>`);
+    document.addEventListener('click',ev=>{const nav=ev.target.closest('[data-go]');if(nav){ev.preventDefault();P.go(nav.dataset.go);return;}const add=ev.target.closest('[data-new-customer]');if(add){newCustomer();return;}const record=ev.target.closest('[data-record]');if(record){selectedId=record.dataset.record;P.go('customers');}});
+    window.addEventListener('hashchange',()=>P.go(location.hash.slice(1)));
+    P.go(location.hash.slice(1)||'overview');
   });
-  document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.page)));
-  window.addEventListener('hashchange', () => showPage(location.hash.slice(1)));
-  $('#new-opportunity').addEventListener('click', () => {
-    $('#create-form').reset();
-    $('#create-form').querySelectorAll('input,textarea').forEach(input => input.setCustomValidity(''));
-    $('#create-partner').value = partner;
-    $('#create-partner-wrap').hidden = role !== 'internal';
-    $('#duplicate-warning').hidden = true;
-    $('#create-dialog').showModal();
-  });
-  ['close-dialog', 'cancel-dialog'].forEach(id => $(`#${id}`).addEventListener('click', () => $('#create-dialog').close()));
-  $('#company').addEventListener('input', () => {
-    const name = $('#company').value.trim().toLocaleLowerCase('sv-SE');
-    $('#duplicate-warning').hidden = !name || !availableRecords().some(record => record.company.toLocaleLowerCase('sv-SE') === name);
-  });
-  $('#create-form').addEventListener('submit', e => {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    for (const name of ['company', 'need', 'next']) if (!validNonEmpty(e.currentTarget.elements.namedItem(name), String(form.get(name)).trim())) return;
-    const recordPartner = role === 'internal' ? form.get('partner') : partner;
-    const record = { id: `test-${crypto.randomUUID().slice(0,8)}`, company: String(form.get('company')).trim(), kind: form.get('kind'), city: String(form.get('city')).trim(), contact: String(form.get('contact')).trim(), email: String(form.get('email')).trim(), need: String(form.get('need')).trim(), next: String(form.get('next')).trim(), date: form.get('date'), partner: recordPartner, status: 'ny', owner: 'Ej tilldelad', events: [] };
-    event(record, role === 'internal' ? 'Internt team' : partners[recordPartner], 'Affären registrerad med exempeluppgifter.');
-    data.unshift(record); selectedId = record.id;
-    $('#search').value = ''; $('#status-filter').value = 'all';
-    $('#create-dialog').close();
-    saved('Exempelaffären registrerad. Byt demovy för att testa återkopplingen.');
-  });
-  $('#reset-demo').addEventListener('click', () => {
-    if (!window.confirm('Återställa till de fyra ursprungliga exempelaffärerna? Lokala teständringar tas bort.')) return;
-    data = seedData(); selectedId = undefined; $('#search').value = ''; $('#status-filter').value = 'all'; saved('Exempeldata återställda.');
-  });
-  function download(name, content, type) {
-    const url = URL.createObjectURL(new Blob([content], { type }));
-    const link = document.createElement('a'); link.href = url; link.download = name; document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-  $('#export-demo').addEventListener('click', () => {
-    const records = availableRecords().map(record => ({ ...record, events: record.events.filter(item => role === 'internal' || item.visibility === 'shared') }));
-    download('partnerlabb-exempeldata.json', JSON.stringify({ prototype: true, view: role, note: 'Enbart lokal testdata. Export är inte synkronisering.', records }, null, 2), 'application/json');
-    toast('Testdata exporterade för den valda demovyn.');
-  });
-  $('#download-checklist').addEventListener('click', () => download('partnerlabb-exempelunderlag.txt', 'PARTNERLABB – EXEMPELUNDERLAG\nDiskussionsförslag, inte beslutade krav eller produktvillkor.\n\n1. Vilket företag eller vilken BRF gäller dialogen? Använd ett fiktivt namn i testet.\n2. Vad vill kunden diskutera?\n3. Vilken kontakt eller aktivitet har partnern genomfört?\n4. Vad är nästa steg och vem behöver delta?\n\nPartnerns uppdrag, offertbefogenhet, informationshantering och eventuell ersättning behöver beslutas separat.\n', 'text/plain;charset=utf-8'));
-  showPage(location.hash.slice(1)); render();
 })();

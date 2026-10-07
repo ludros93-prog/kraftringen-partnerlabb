@@ -1,6 +1,8 @@
-# Partnerlabb – B2B-prototyp
+# Kraftringen Partnerportal – frontendprototyp
 
-Ludwig och Håkan har valt **aktiv säljpartner**: partnern arbetar vidare med affären. Registrering, ansvarstilldelning, informationsdelning och statusar i denna version är förslag att testa, inte beslutade affärsprocesser. Ingen byggplattform är vald.
+En klickbar partnerarbetsplats utifrån referensbildernas marinblå och petrolfärgade uttryck. Ludwig och Håkan har valt **aktiv säljpartner** som arbetar vidare med affären. Företag och BRF inom elhandel är fokus; privatkunder, fiber och andra produktområden i bilderna ingår inte.
+
+Denna etapp omfattar hela arbetsplatsens frontend. Flöden, pipelinesteg, utbildningar och partnerresan är förslag att testa. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
 ## Starta
 
@@ -12,38 +14,55 @@ python -m http.server 8000 --directory dist
 
 Öppna <http://localhost:8000>. Appen består av vanlig HTML, CSS och JavaScript i `dist/`; inga paket eller byggsteg krävs.
 
-## Vad som fungerar
+## Arbetsplatsens vyer
 
-- Två demovyer: **Partner** och **Internt team**, med två fiktiva exempelpartners.
-- Registrera företag eller BRF, kundens frågeställning och nästa steg; valfria kontaktuppgifter och datum använder exempeldata.
-- Partnern dokumenterar senaste kontakt eller aktivitet och uppdaterar nästa steg.
-- Det interna teamet tilldelar en demoansvarig, ändrar föreslagen status och delar återkoppling. Interna testanteckningar visas bara i den interna demovyn.
-- Sökning, statusfilter, aktivitetsöversikt, exempelunderlag, JSON-export för vald demovy och återställning av de fyra ursprungliga exempelaffärerna.
+| Vy | Det går att testa |
+| --- | --- |
+| Översikt & pipeline | Nyckeltal från exempeldata, nästa steg, aktivitetshistorik och affärer per föreslaget steg. |
+| Kunder | Registrera företag eller BRF, söka och filtrera, dokumentera kontakt och nästa steg. Internt team tilldelar demoansvarig, ändrar status eller pipelinesteg och delar återkoppling. |
+| Offerter & avtal | Offertstudion har fyra steg: **Välj område → Beskriv behov → Välj kund → Granska & spara**. Sparade behovsunderlag kan öppnas igen, hämtas som TXT och markeras som skickade i en simulering. |
+| Avtal & dokument | Prova lokala demosteg för fullmakt, avtal och signering samt öppna dokumentbiblioteket. |
+| Kundsidor | Skapa och redigera kundsidans rubrik, introduktion, bild och kontaktknapp. Förhandsgranska och prova kontaktformuläret. |
+| Partner Academy | Fyra demokurser med tre textmoment vardera, kategorifilter, bokmärken, klarmarkering och lokala framsteg per exempelpartner. En anmälan till en exempelgenomgång kan markeras i demo. |
+| Material & kampanjer | Filtrera, förhandsvisa och hämta fyra TXT-mallar samt läsa en exempelbrief för kampanjplanering. |
+| Provision | Visar öppna beslut och saknat underlag. **Ingen ersättning beräknas.** |
+| Rapporter | Antal kunder och affärer per partner eller steg, aktivitetslogg och JSON-export av kunddata, offertutkast och kundsidor för vald demovy. |
+| Partnerresan | Åtta föreslagna steg: Rekrytera, Onboarda, Certifiera, Aktivera, Sälja, Leverera, Utveckla och Behålla. Testaktiviteter kan markeras lokalt. |
+| Hjälp & support / Test & beslut | FAQ, lokala testförfrågningar, öppna beslut, dataexport och återställning av exempeldata. |
 
-En varning för identiskt företagsnamn är en hjälp i testet. Den avgör inte hur dubbla registreringar ska hanteras.
+Två demovyer, **Partner** och **Internt team**, visar olika perspektiv. Exempelpartner Syd och Väst har separata listor i partnervyn. Interna testanteckningar döljs där. Varningen för identiska kundnamn är en testhjälp; regler för dubbla registreringar är inte beslutade.
 
-## Testa första flödet
+## Testa ett sammanhängande flöde
 
-1. Välj **Partner / Exempelpartner Syd** och registrera en påhittad affär.
-2. Byt till **Internt team**, välj affären, tilldela **Demoansvarig A** och dela återkoppling. Lägg också till en intern testanteckning.
-3. Byt tillbaka till samma partner. Kontrollera återkopplingen, dokumentera en ny kontakt och uppdatera nästa steg.
-4. Kontrollera att den interna anteckningen inte visas i partnervyn och att partnerns aktivitet visas internt. Byt exempelpartner för att granska den andra demovyn.
+1. Välj **Partner / Exempelpartner Syd** och registrera en fiktiv kunddialog i **Kunder**.
+2. Byt till **Internt team**, tilldela **Demoansvarig A**, dela återkoppling och skriv en intern testanteckning.
+3. Byt tillbaka till partnern, läs återkopplingen och dokumentera kontakt och nästa steg. Kontrollera att den interna anteckningen inte visas.
+4. Öppna **Offerter & avtal**, gå igenom de fyra stegen och spara ett behovsunderlag för kunden. Hämta TXT-underlaget och prova simulerat utskick samt fullmakts-, avtals- och signeringsstegen.
+5. Skapa och förhandsgranska en **Kundsida**, klarmarkera ett Academy-moment och en aktivitet i **Partnerresan**. Granska **Rapporter** och ladda om för att kontrollera sparade ändringar.
 
-## Begränsningar
+## Lokal data och demosteg
 
-Använd enbart påhittade uppgifter. Data sparas i `localStorage` för aktuell webbplats och webbläsare. **Två datorer delar inte affärsdata**, och öppna flikar synkas inte automatiskt. Exporten är ingen synkronisering; återställning tar bort lokala teständringar.
+Använd enbart påhittade uppgifter. Sparad testdata ligger i `localStorage` för aktuell webbplats och webbläsare under `partnerlabb.portal.v2`. Om giltig v2-data saknas läses tidigare kunddata från `partnerlabb.active.v1` på samma webbplats; kunder utan pipelinesteg får **Kunddialog**. Den gamla v1-posten raderas inte. Återställning återgår till den nya versionens sju exempelkunder och tar bort lokala teständringar.
 
-**Demovyerna är ingen säkerhet eller inloggning.** All data, även interna anteckningar, finns i webbläsaren och kan läsas där. En skarp portal behöver identifierade användare, delad databas och behörighetskontroller på servern.
+Två datorer delar inte data och öppna flikar synkas inte automatiskt. JSON-exporten är ett granskningsunderlag, ingen synkronisering eller fullständig säkerhetskopia av utbildningar, partnerresan och supportförfrågningar.
 
-Inga integrationer med Dynamics, Oneflow eller B2B Veckokollen ingår. Produktvillkor, priser, offertbefogenhet, leadägande, exklusivitet och eventuell ersättning är inte införda. Partnerns uppdrag, tillåtna uppgifter och insyn samt internt mottagaransvar behöver beslutas.
+Utskick, signering, kundsidepublicering, mötesbokning och supportkontakt är simuleringar. TXT-filer är demounderlag, inga kommersiella offerter, juridiska fullmakter eller avtal. Academy ger inga verkliga certifikat. Pris, produktvillkor, partnerns mandat och eventuell ersättning kräver underlag från Ludwig och Håkan.
+
+Demovyerna styr visningen utan inloggning eller åtkomstskydd; även interna anteckningar finns i webbläsaren. Inga riktiga kunduppgifter eller anslutningar till Dynamics, Oneflow eller B2B Veckokollen används.
+
+## Filer
+
+- `dist/app.js`: gemensam navigation, lokal data, kunder, pipeline, översikt och rapporter.
+- `dist/studio.js`: offertstudio och simulerade dokumentsteg.
+- `dist/academy.js`: demokurser och utbildningsframsteg.
+- `dist/partner.js`: kundsidor, material, partnerresan och support.
+- [ASSETS.md](ASSETS.md): bildkällor. Bilderna är illustrationer, inte antagna godkända Kraftringen-bilder.
 
 ## Förslag för att bygga tillsammans
 
-Starta med **ett gemensamt Replit Core-projekt**, varsin inloggning och redigeringsåtkomst. Använd Teams för samtalet, låt en AI-ändring åt gången bli klar och testa resultatet tillsammans. Att dela den färdiga portalen ger inte automatiskt åtkomst till byggprojektet.
+Förslag: **ett gemensamt Replit Core-projekt**, varsin inloggning, redigeringsåtkomst och Teams för samtalet. Börja med en AI-ändring åt gången. Core dokumenterar en aktiv bakgrundsuppgift per projekt; Pro upp till tio parallella Agent-uppgifter. Samma filer kan ändå ge konflikter. Konton och abonnemang har inte testats här.
 
-Replit dokumenterar samarbete i samma projekt. Core har en aktiv bakgrundsuppgift per projekt; Pro dokumenterar upp till tio parallella Agent-uppgifter. Det innebär inte att två AI-uppgifter kan ändra samma filer utan konflikter. Konton, abonnemang och det praktiska samarbetet har inte testats här.
-
-Lovable dokumenterar separata utkast som accepteras ett i taget. ChatGPT Sites dokumenterar redigeringsbehörighet inom samma workspace, men samtidig AI-redigering är inte verifierad. När projektet läggs i GitHub kan Codex arbeta på en separat gren eller worktree och ändringarna granskas innan de förs ihop.
+Lovable dokumenterar separata utkast som accepteras ett i taget. ChatGPT Sites dokumenterar redigeringsbehörighet inom samma workspace; samtidig AI-redigering är inte verifierad. Senare kan GitHub och Codex med separata grenar eller worktrees användas. Att dela den färdiga portalen är ett annat samarbete än att redigera byggprojektet.
 
 Officiella källor kontrollerade 7 oktober 2026:
 
