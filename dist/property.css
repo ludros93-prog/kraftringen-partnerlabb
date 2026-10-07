@@ -211,3 +211,20 @@ body.property-resident-preview .main { max-width: none; padding: 0; }
   .property-service-flow { grid-template-columns: minmax(0,1fr); }
   .property-business-separation { align-items: flex-start; }
 }
+.property-hero-compact { grid-template-columns: minmax(0,1fr) 250px; margin-bottom: 18px; }
+.property-hero-compact .property-hero-copy { padding: 22px 26px; }
+.property-hero-compact .property-hero-copy h2 { font-size: 23px; line-height: 1.3; margin: 8px 0; }
+.property-hero-compact .property-hero-copy p { font-size: 11px; line-height: 1.7; max-width: 620px; margin-bottom: 14px; }
+.property-hero-compact .property-hero-actions { margin-bottom: 0; gap: 9px; }
+.property-hero-compact .property-hero-actions .btn { font-size: 11px; padding: 10px 13px; }
+.property-hero-compact .property-hero-photo { min-height: 205px; }
+.property-hero-compact .property-photo-note { font-size: 11px; bottom: 18px; left: 19px; }
+.property-service-explainer { margin-top: 22px; border: 1px solid var(--line); border-radius: 7px; padding: 17px 19px; background: #fff; }
+.property-service-explainer summary { cursor: pointer; color: #3d6875; font-weight: 600; font-size: 12px; }
+.property-service-explainer .property-how { margin-top: 18px; padding-top: 19px; }
+.property-voluntary-intro { padding: 16px; margin-bottom: 21px; border: 1px solid #d8e9e5; background: #eef6f3; border-radius: 7px; color: #527877; font-size: 11px; line-height: 1.7; }
+.property-voluntary-intro strong { color: #355f65; font-size: 12px; }
+.property-voluntary-intro p { margin: 7px 0 10px; }
+.property-voluntary-intro .property-decline { margin-top: 0; font-size: 11px; white-space: normal; }
+@media(max-width:1000px) { .property-hero-compact { grid-template-columns: minmax(0,1fr) 190px; } }
+@media(max-width:760px) { .property-hero-compact { grid-template-columns: minmax(0,1fr); } .property-hero-compact .property-hero-copy { padding: 21px; } .property-hero-compact .property-hero-copy h2 { font-size: 21px; } .property-hero-compact .property-hero-photo { display: none; } .property-voluntary-intro { padding: 14px; } }

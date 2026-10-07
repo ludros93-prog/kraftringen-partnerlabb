@@ -16,6 +16,12 @@ python -m http.server 8000 --directory dist
 
 Öppna <http://localhost:8000>. Appen består av vanlig HTML, CSS och JavaScript i `dist/`; inga paket eller byggsteg krävs.
 
+## Lärdomar från partnerplattformar
+
+[BENCHMARK.md](BENCHMARK.md) jämför officiellt dokumenterade arbetssätt hos Salesforce, Impartner, ZINFI, PartnerStack och impact.com, kontrollerade 7 oktober 2026. Det är inspirationsunderlag, ingen världsrankning eller vald plattform.
+
+Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och direktlänk till befintligt ärende. Listan härleds från aktuell lokal data; den skapar eller sparar inga separata uppgifter. Turordningen och handlingarna är testförslag utifrån status och sparat nästa steg, inte fastställda befogenheter eller tidslöften. Internt ligger kommersiella fakta och måttdefinitioner först. Fastighetsspåret låter partnern rätta underlaget vid komplettering och hyresgästen avstå redan i första steget.
+
 ## Arbetsplatsens vyer
 
 | Vy | Det går att testa |
@@ -52,7 +58,7 @@ Vid vanlig öppning visas den interna Kraftringen-vyn först. En inflyttningslä
 1. Börja i Kraftringens resultatöversikt och jämför alla partners med en vald partner. Anteckna exempelvärdena för avtal och nettobidrag samt period och urval.
 2. Öppna Savera i partneröversikten och gå till säljpartnerns arbetsyta. Registrera en fiktiv företags- eller BRF-dialog, dokumentera kontakt och förbered ett offertutkast genom studions fyra steg.
 3. Återgå till Kraftringen för intern ansvarstilldelning och återkoppling. Kontrollera att partnerresan finns internt och att markeringar följer vald partner.
-4. Öppna ett av fastighetsbolagen och dess inflyttningssida. Använd **Fyll med exempeluppgifter** och gå igenom Inflyttning, Kontakt, Tjänst & fullmakt och Granska. Välj frivilligt tjänsten och fullmaktsdemot innan det fiktiva underlaget registreras. Att avstå skapar inget ärende.
+4. Öppna ett av fastighetsbolagen och dess inflyttningssida. Prova att avstå i första steget och kontrollera att inget ärende skapas. Börja sedan om, använd **Fyll med exempeluppgifter** och gå igenom Inflyttning, Kontakt, Tjänst & fullmakt och Granska. Välj frivilligt tjänsten och fullmaktsdemot innan det fiktiva underlaget registreras.
 5. Återgå till fastighetsbolagets **Inflyttningsärenden** och förmedla det nya underlaget till Kraftringen. Öppna Kraftringens interna **Inflyttningsärenden**, prova separat handläggning för elhandel och elnät samt dokumentera erbjudandeval och återkoppling. Kontrollera återkopplingen från partnersidan och ladda om för att kontrollera lokal lagring.
 6. Kontrollera att avtal och nettobidrag är oförändrade för samma period och urval. Serviceanmälan, förmedling och slutförd demohandläggning skapar inga verkliga kunder, avtal eller intäkter.
 

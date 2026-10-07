@@ -56,3 +56,11 @@
 - Inflyttningsärenden ingår inte i företagspartnernas eller Face2faces kunddata. Finansiella fixtures är fortsatt fristående, även vid bekräftat demoärende.
 - Egen elförbrukning hos partnern behandlas som en separat B2B-affär och skapas inte från hyresgästärendet.
 - Regelbakgrunden används inte som ett produktlöfte. Eventuella laguppgifter ska ha officiell källa och ikraftträdandedatum; undvik att beskriva framtida regler som redan gällande.
+
+## Arbetslistor och internationella förebilder
+
+- `workspace.js` härleder nästa handling från befintliga kunddialoger, konsumentunderlag, inflyttningsärenden och intern partneruppföljning. Uppgifter är inga nya persistenta affärsobjekt. Filter är endast visningsval.
+- Visa vem som har nästa insats och en direkt väg till befintligt underlag. Turordning och sortering är testförslag, inte beslutade SLA:er eller ansvarsvillkor. Använd endast redan angivna datum; inflyttningsdatum är inte en utlovad svarstid.
+- Behåll kommersiellt resultat först internt. Ekonomiska signaler ska förklaras med period och mått, utan automatiska hälsopoäng eller slutsatser om partnerkvalitet.
+- Fastighetspartner får korrigera bostadsunderlag vid komplettering men kan inte ändra hyresgästens tjänsteval eller fullmaktsmarkering. Tidigt avstående från hyresgästflödet skapar inget ärende.
+- Benchmarkunderlaget i BENCHMARK.md skiljer dokumenterade leverantörsfunktioner från vår anpassning. Påstå inte att någon leverantör är objektivt bäst i världen eller att prototypen har deras backendförmågor.

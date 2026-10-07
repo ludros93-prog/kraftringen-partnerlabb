@@ -76,8 +76,10 @@
   }
   function partnerForm(row) {
     if (!['draft', 'needs_info'].includes(row.handoverStatus)) return `<div class="movein-service-awaiting"><strong>Kraftringen tar över ärendet</strong><p>Följ återkopplingen här. Elhandel, elnätskontakter och bekräftelser hanteras av Kraftringen.</p></div>`;
-    if (!canForward(row)) return `<div class="movein-service-awaiting"><strong>Underlaget kan inte förmedlas ännu</strong><p>Hyresgästens tjänsteval, testmarkering för fullmaktssteget och kompletta exempeluppgifter behöver finnas. Äldre intressen räknas inte som ett nytt val av tjänsten.</p></div>`;
-    return `<form id="movein-service-forward-form"><h3 class="movein-service-form-head">${row.handoverStatus === 'needs_info' ? 'Komplettera & förmedla igen' : 'Förmedla till Kraftringen'}</h3><label class="field">${row.handoverStatus === 'needs_info' ? 'Vad har kompletterats? *' : 'Meddelande till Kraftringen · valfritt'}<textarea name="partnerReply" rows="3" maxlength="800" ${row.handoverStatus === 'needs_info' ? 'required' : ''} placeholder="Ange en fiktiv komplettering eller fråga."></textarea></label><p class="movein-service-small">Du förmedlar serviceunderlaget. Kraftringen tar sedan över elfrågorna. Fullmaktsmarkeringen gäller bara testet.</p><div class="modal-actions"><button class="btn btn-primary" type="submit">${icon('arrow')} Förmedla testunderlag</button></div></form>`;
+    const supplement = row.handoverStatus === 'needs_info';
+    if (!canForward(row) && !(supplement && row.serviceRequested === true && row.authorityDemo === true)) return `<div class="movein-service-awaiting"><strong>Underlaget kan inte förmedlas ännu</strong><p>Hyresgästens tjänsteval, testmarkering för fullmaktssteget och kompletta exempeluppgifter behöver finnas. Äldre intressen räknas inte som ett nytt val av tjänsten.</p></div>`;
+    const corrections = supplement ? `<fieldset class="movein-service-corrections"><legend>Komplettera bostadsunderlaget</legend><p class="movein-service-small">Stäm av uppgifterna med hyresgästen. Tjänsteval och fullmaktsmarkering ändras inte här.</p><label class="field">Bostadsadress *<input name="address" required maxlength="180" value="${e(row.address)}"></label><div class="form-grid"><label class="field">Lägenhetsnummer<input name="apartment" maxlength="40" value="${e(row.apartment || '')}"></label><label class="field">Inflyttningsdatum *<input name="moveDate" type="date" required value="${e(row.moveDate)}"></label><label class="field">Postnummer *<input name="postcode" required maxlength="12" value="${e(row.postcode || '')}"></label><label class="field">Ort *<input name="city" required maxlength="80" value="${e(row.city || '')}"></label></div></fieldset>` : '';
+    return `<form id="movein-service-forward-form"><h3 class="movein-service-form-head">${supplement ? 'Komplettera & förmedla igen' : 'Förmedla till Kraftringen'}</h3>${corrections}<label class="field">${supplement ? 'Vad har kompletterats? *' : 'Meddelande till Kraftringen · valfritt'}<textarea name="partnerReply" rows="3" maxlength="800" ${supplement ? 'required' : ''} placeholder="Ange en fiktiv komplettering eller fråga."></textarea></label><p class="movein-service-small">Du förmedlar serviceunderlaget. Kraftringen tar sedan över elfrågorna. Fullmaktsmarkeringen gäller bara testet.</p><div class="modal-actions"><button class="btn btn-primary" type="submit">${icon('arrow')} Förmedla testunderlag</button></div></form>`;
   }
   function download(row) {
     const sharedEvents = row.events.filter(item => item?.visibility === 'shared');
@@ -111,9 +113,17 @@
       if (forwardForm) forwardForm.onsubmit = submitEvent => {
         submitEvent.preventDefault();
         if (P.role === 'internal') return;
-        const input = submitEvent.currentTarget.elements.partnerReply;
+        const form = submitEvent.currentTarget;
+        if (!form.reportValidity()) return;
+        const input = form.elements.partnerReply;
         if (row.handoverStatus === 'needs_info' && !P.validText(input)) return;
         const reply = input.value.trim();
+        if (row.handoverStatus === 'needs_info') {
+          const changes = Object.fromEntries(['address', 'apartment', 'moveDate', 'postcode', 'city'].map(field => [field, form.elements.namedItem(field).value.trim()]));
+          for (const field of ['address', 'postcode', 'city']) if (!P.validText(form.elements.namedItem(field))) return;
+          if (!canForward({ ...row, ...changes })) { P.toast('Kontrollera bostadsunderlaget innan du förmedlar det igen.'); return; }
+          Object.assign(row, changes);
+        }
         if (forward(row.id)) {
           if (reply) { row.events.unshift(event('Partnerns komplettering/meddelande: ' + reply)); P.save(); }
           P.closeDialog(); P.render(); P.toast('Testunderlaget är förmedlat till Kraftringens demovy. Inget skickas externt.');

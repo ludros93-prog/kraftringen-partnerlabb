@@ -67,6 +67,9 @@
 .movein-service-timeline p { color: #537686; font-size: 11px; line-height: 1.8; margin: 4px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .movein-service-private { padding: 11px; background: #f7f8f9; border-radius: 6px; }
 @media (max-width: 1180px) { .movein-service-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+.movein-service-corrections { margin: 18px 0; padding: 16px; border: 1px solid #d7e3e7; border-radius: 10px; min-width: 0; }
+.movein-service-corrections legend { padding: 0 6px; color: #153a49; font-size: 13px; font-weight: 650; }
+.movein-service-corrections input { min-height: 44px; }
 @media (max-width: 700px) {
   .movein-service-workspace .page-head { align-items: flex-start; flex-direction: column; }
   .movein-service-hero { gap: 14px; padding: 20px; align-items: flex-start; }
