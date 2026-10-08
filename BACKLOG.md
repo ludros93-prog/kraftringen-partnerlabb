@@ -44,11 +44,19 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-03 — Hitta redan registrerat testkvitto efter omladdning
 
-- Status: behöver avgränsas och reproduceras i gränssnittet.
+- Status: kandidat klar på `codex/inflytt-03-kvitto`; väntar på PR-granskning.
 - Belägg: receipt ligger modullokalt; serviceposten sparas redan i moveins.
 - Möjlig nytta: hitta befintligt underlag utan att registrera samma sak igen.
 - Avgränsning: återanvänd faktiskt sparad post och dess aktuella status.
   Skapa inte automatisk dubblett, kund, avtal eller hypotetisk bekräftelse.
+- Lösning: första steget visar den senaste lokalt registrerade posten för vald
+  fastighetspartner, med referens och aktuell ärendestatus. Användaren kan öppna
+  samma post och hämta ett uppdaterat testkvitto. Seedade exempel, äldre
+  intressen och andra partners poster erbjuds inte som återställbara kvitton.
+- Verifiering: beroendefria `qa/movein-receipt.mjs`, befintliga
+  `qa/movein-next-action.mjs`, JavaScript-syntax, Python-AST för den utökade
+  webbläsarregressionen och diffkontroll passerar. Browser-QA kunde inte köras
+  utan den föreskrivna browserkontrollen i detta pass.
 
 ## RESEARCH-01 — Identifiera Saleshub och tillämpa en relevant princip
 

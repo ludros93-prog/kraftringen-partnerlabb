@@ -1,5 +1,31 @@
 # Arbetslogg
 
+## 2026-10-09 — Kandidat: hitta sparat testunderlag efter omladdning
+
+- Uppgift: INFLYTT-03. `receipt` i `property.js` var endast modulminne, trots
+  att samma registrering redan sparades i `moveins`. Efter omladdning visades
+  därför ett nytt tomt flöde utan direkt väg tillbaka till testkvittot.
+- Kandidat: hyresgästsidans första steg visar den senaste återställbara lokala
+  registreringen för vald fastighetspartner. Den öppnar samma `moveins`-post,
+  visar aktuell teststatus och anpassat nästa steg samt kan skapa ett nytt
+  TXT-testkvitto. Knappen för ny registrering säger uttryckligen att det gäller
+  ett annat underlag.
+- Avgränsning: återställning skapar ingen ny post, kund, affär, intäkt eller
+  kickback. Seedade exempel, äldre intressen utan uttryckligt tjänsteval och
+  andra partners poster filtreras bort. All data är fortsatt lokal och fiktiv.
+- Verifiering: `node --check dist/property.js`,
+  `node qa/movein-receipt.mjs`, `node qa/movein-next-action.mjs`, Python-AST
+  för den utökade `qa/movein-service.py` och `git diff --check` passerar.
+  Den nya modulregressionen kontrollerar senaste post, partnerisolering,
+  seedfiltrering, aktuell status och oförändrat antal ärenden. Browser-QA
+  kördes inte eftersom föreskriven Sites-browserkontroll saknades i passet.
+- Leveransläge: egen gren `codex/inflytt-03-kvitto`; PR-nummer och HEAD-SHA
+  fylls i efter push och öppnad pull request. Ingen integration till `main`
+  eller Sites-publicering görs i detta utvecklingspass.
+- Nästa uppgift efter granskning: välj en ny belagd backlogpunkt; DATA-01 väntar
+  fortsatt på verkligt verksamhetsunderlag och RESEARCH-01 kräver säker
+  identifiering av Saleshub.
+
 ## 2026-10-08 — Rätt nästa insats efter kompletterad överlämning
 
 - Uppgift: INFLYTT-02. Koden reproducerade att ett återförmedlat
