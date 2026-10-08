@@ -44,7 +44,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-03 — Hitta redan registrerat testkvitto efter omladdning
 
-- Status: kandidat klar på `codex/inflytt-03-kvitto`; väntar på PR-granskning.
+- Status: kandidat klar i PR #1 på `codex/inflytt-03-kvitto`; väntar på granskning.
 - Belägg: receipt ligger modullokalt; serviceposten sparas redan i moveins.
 - Möjlig nytta: hitta befintligt underlag utan att registrera samma sak igen.
 - Avgränsning: återanvänd faktiskt sparad post och dess aktuella status.

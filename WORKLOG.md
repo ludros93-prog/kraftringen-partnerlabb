@@ -19,9 +19,12 @@
   Den nya modulregressionen kontrollerar senaste post, partnerisolering,
   seedfiltrering, aktuell status och oförändrat antal ärenden. Browser-QA
   kördes inte eftersom föreskriven Sites-browserkontroll saknades i passet.
-- Leveransläge: egen gren `codex/inflytt-03-kvitto`; PR-nummer och HEAD-SHA
-  fylls i efter push och öppnad pull request. Ingen integration till `main`
-  eller Sites-publicering görs i detta utvecklingspass.
+- Leveransläge: egen gren `codex/inflytt-03-kvitto`, kandidatcommit
+  `4d99e14f40967f6870f63e45f79b3fae3fb28531` och GitHub PR #1:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1.
+  PR:en är öppnad mot oförändrad `main` på
+  `347f02a1a1cdfe47e2abb33793e9f24b1575f758`. Ingen integration till `main`
+  eller Sites-publicering gjordes i detta utvecklingspass.
 - Nästa uppgift efter granskning: välj en ny belagd backlogpunkt; DATA-01 väntar
   fortsatt på verkligt verksamhetsunderlag och RESEARCH-01 kräver säker
   identifiering av Saleshub.
