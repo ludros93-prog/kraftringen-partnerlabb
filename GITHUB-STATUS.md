@@ -1,35 +1,36 @@
 # GitHubövergångens status
 
-- Status: `prepared` — förberedd, inte aktiverad.
-- Destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
-- Repot finns och är publikt. Användaren valde uttryckligen att behålla
-  det publikt den 8 oktober 2026. Uppladdning är ännu inte verifierad.
-- Git-push nekades med HTTP 403: repot saknas bland GitHub-anslutningens
-  valda repositories. Försök att lägga till det via GitHub API nekades också.
-  Ägaren behöver välja repot på https://github.com/settings/installations/162333072.
-- Daniel: GitHub-kontot `daniel-smail` är bekräftat. Ingen inbjudan eller
-  tilldelad GitHub-behörighet är bekräftad här. GitHub nekade anslutningens
-  försök att bjuda in honom med HTTP 403; ägaren behöver ordna åtkomsten.
-- Aktiv huvudkälla: det befintliga Sites-projektets Git-källa.
-- Aktiv arbetsrutin: RUNBOOK-SITES.md, med befintliga Sites-timuppgiften.
+- Status: `active` — GitHub är huvudkälla för kod och arbetsminne.
+- Repo: https://github.com/ludros93-prog/kraftringen-partnerlabb
+- Synlighet: publikt, uttryckligen valt av användaren den 8 oktober 2026.
+- Första importen är pushad och återläst från GitHub-main:
+  `344dead6445cbdd3e3faa81472f06062b9116add`.
+- Aktuell Sites-källa vid importen:
+  `7b8f4988aff6aac4712a3c411e0d6c2770b14488`. Hela historiken och den
+  senaste frontendversionen ingår. GitHub-main kan därefter ha nyare commits.
+- Daniel: GitHub-kontot `daniel-smail` har verifierad `read`-behörighet.
+  Publik läsning ger inte skrivåtkomst. Anslutningen nekades att bjuda in
+  honom med HTTP 403; repoägaren behöver ordna utvecklaråtkomst i Collaborators.
+- Aktiv arbetsrutin: RUNBOOK.md och COLLABORATION.md, egen gren + pull request.
+  Ludwig/Codex samordnar integration till main och Sites-publicering.
+- Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` har en sparad,
+  återläst prompt för färsk GitHub-main och egen agent/-gren + PR. Schema och
+  Europe/Stockholm är bevarade. Uppgiften är tillfälligt pausad under sista
+  källöverföringen; återaktivering kvitteras i WORKLOG.md.
 
-Kandidater för gemensam GitHub-utveckling är förberedda. De gör inte GitHub
-till huvudkälla förrän övergången är verifierad och status ändras till
-`active` av ansvarig samordnare.
+## Publicerad portal och källöverföring
 
-## Aktivera först efter verifierad övergång
+Sites är publiceringsmål för det befintliga projektet
+`appgprj_6ac600ecf7d48191923687550810c1d4`. Portalen har fortfarande custom-
+åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
+Sites-inloggningen.
 
-Samordnaren ska kontrollera att:
+Senast verifierade lyckade publicering är version 11 med SHA
+`6882cde49905a672087809b7829d23d3fa59c117` på
+https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+Övergången ändrar bara utvecklingsinstruktioner; dist och hostingmanifest är
+identiska med den färska Sites-källan. Ingen ny frontendpublicering behövs.
 
-1. Det angivna publika repot finns och samordnaren har källåtkomst.
-   Daniels utvecklaråtkomst dokumenteras separat och får inte antas.
-2. Aktuell Sites-historik, källkod och arbetsminne har laddats upp med bevarade
-   commits. GitHub-huvudgrenen har rätt SHA och inga credentials ingår.
-3. CLAUDE/AGENTS/RUNBOOK är samstämmiga med GitHub som huvudkälla och gren + PR.
-4. Samma befintliga timagent har ändrats till GitHub-källa och gren + PR.
-   Sparad prompt och aktivering är verifierade; ingen dubbel timagent finns.
-
-Ändra sedan status till `active`, ange faktisk repo-URL, åtkomst, bas-SHA och
-datum och uppdatera WORKLOG. Källöverföring tillbaka till Sites och GitHub
-Actions-resultat ska fortsatt redovisas som verifierade först när de har
-körts. Den publicerade portalen ska behålla samma projekt, URL och åtkomst.
+För över GitHub-main med bibehållen historik och fast-forward enligt RUNBOOK.
+Aktuell kvittens står i WORKLOG.md. Automatisk synk, GitHub Actions, grenskydd
+eller centralt delad testdata införs inte genom denna källflytt.

@@ -144,3 +144,32 @@
   oförändrad Sites-prompt och samma schema. Återläsning bekräftade aktivering,
   prompt och schema. GitHubövergången står kvar som prepared; ingen
   konkurrerande timagent eller ny frontendpublicering skapades.
+
+## 2026-10-08 — GitHub-källan uppladdad och gemensam rutin aktiverad
+
+- Användaren valde Partnerlabb i ChatGPT Codex Connector-installationens
+  repositories. GitHub API bekräftade att anslutningen nu har repoåtkomst.
+- Samma timuppgift pausades under övergången. Färsk Sites-källa hade hunnit
+  bli 7b8f4988aff6aac4712a3c411e0d6c2770b14488 efter ett faktiskt timpass.
+  Den senaste förbättringen och hela historiken importerades med en vanlig
+  merge; inga commits eller appändringar skrevs över.
+- GitHub-main pushades och återlästes som
+  344dead6445cbdd3e3faa81472f06062b9116add. Repot är publikt enligt det
+  uttryckliga användarvalet. Frontend och hostingmanifest är identiska med
+  den färska Sites-källan. 146 historiska textblobs kontrollerades utan
+  träff på credentialmönster; Claude-importerna var giltiga. Beroendefria
+  qa/movein-next-action.mjs passerade båda regressionskontrollerna.
+- Native Sites-kvittens bekräftade senast publicerad version 11 som
+  succeeded, SHA6882cde49905a672087809b7829d23d3fa59c117 och deployment
+  appgdep_6ac80515215c8191b2610ca02802e87d. Befintlig URL och custom-åtkomst
+  är kvar. GitHubflytten gör inga frontendändringar eller nya avtal.
+- Samma befintliga timuppgift har fått en ny prompt: färsk GitHub-main,
+  gemensamma instruktioner, egen agent/-gren och pull request. Ingen direkt
+  main-/Sites-push från ett timpass. Sparad prompt och fortsatt paus lästes
+  tillbaka; schema och Europe/Stockholm är oförändrade. Återaktivering och
+  källöverföring kvitteras separat efter faktisk verifiering.
+- GITHUB-STATUS är active. Ludwig/Codex samordnar integration/publicering;
+  Daniel/Claude Code följer samma arbetsminne och egen claude/-gren + PR.
+  daniel-smail har just nu verifierad read-behörighet. Skrivinbjudan nekades
+  tidigare med HTTP403; ägaren behöver ge utvecklaråtkomst i Collaborators.
+  Publik läsning innebär inte skickad eller accepterad skrivinbjudan.

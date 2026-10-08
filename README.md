@@ -116,27 +116,27 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 - `dist/consumer.js`: Face2faces konsumentaffärer, återkoppling, säljstöd och försäljningsrapport.
 - [ASSETS.md](ASSETS.md): bildkällor. Bilderna är illustrationer, inte antagna godkända Kraftringen-bilder.
 
-## Förberedd gemensam utveckling med Codex och Claude
+## Gemensam utveckling med Codex och Claude
 
 Användaren har uttryckligen valt att låta GitHub-repot vara publikt för kod,
 instruktioner och arbetsminne. Destinationen är
-<https://github.com/ludros93-prog/kraftringen-partnerlabb>. Repot är verifierat
-och ännu tomt; uppladdningen är inte genomförd och tilldelade behörigheter
-är inte verifierade. Daniel har bekräftat
-GitHub-kontot `daniel-smail`; någon GitHub-inbjudan är inte bekräftad här.
+<https://github.com/ludros93-prog/kraftringen-partnerlabb>. Källkod och bevarad
+Git-historik har laddats upp och verifierats. Daniel har bekräftat
+GitHub-kontot `daniel-smail`; hans verifierade åtkomst är publik läsning.
+Skrivbehörighet är ännu inte bekräftad och behöver ordnas av repoägaren.
 
-[GITHUB-STATUS.md](GITHUB-STATUS.md) visar övergångens status. Tills den är
-`active` är Sites fortsatt huvudkälla, [RUNBOOK-SITES.md](RUNBOOK-SITES.md)
-gäller och den befintliga timuppgiften följer sitt nuvarande uppdrag.
+[GITHUB-STATUS.md](GITHUB-STATUS.md) visar faktisk aktiveringsstatus,
+revisioner och behörigheter. GitHub är huvudkälla och Sites är publiceringsmål.
+[RUNBOOK-SITES.md](RUNBOOK-SITES.md) bevarar den äldre rutinen som referens.
 
-Efter verifierad övergång arbetar Ludwig med ChatGPT/Codex och Daniel med
-Claude Code på egna grenar och lämnar pull requests till `main`. Även
-masteragentens timpass ska då lämna gren och PR. Ludwig/Codex samordnar
+Ludwig använder ChatGPT/Codex och Daniel Claude Code. Utveckling sker på
+egna grenar med pull requests till `main`. Även
+masteragentens timpass lämnar gren och PR. Ludwig/Codex samordnar
 integration och publicering till samma privata Partnerlabb-länk. Automatisk
 synk är inte förutsatt och testdata ligger kvar i respektive webbläsare.
 
 [COLLABORATION.md](COLLABORATION.md) och [RUNBOOK.md](RUNBOOK.md) beskriver
-arbetssättet efter aktivering. [CLAUDE.md](CLAUDE.md) importerar gemensamma
+det gemensamma arbetssättet. [CLAUDE.md](CLAUDE.md) importerar gemensamma
 instruktioner. En PR-mall finns i `.github/pull_request_template.md` och en
 GitHub Actions-mall för syntax och befintliga inflyttningsflöden finns i
 `templates/github-actions-qa.yml`. Actions-mallen är inte aktiverad och krävs
@@ -184,9 +184,9 @@ Kickbackuppföljningen omfattar samtliga partnerkanaler, enligt användarens fö
 
 ## Masteragent och återkommande utveckling
 
-Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb. [MISSION.md](MISSION.md) beskriver mål och mandat, [RUNBOOK.md](RUNBOOK.md) källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer Git-källan; dessa rotfiler ingår inte i den statiska deploymenten. Ett framtida molnpass måste därför öppna aktuell Sites-källa.
+Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb. [MISSION.md](MISSION.md) beskriver mål och mandat, [RUNBOOK.md](RUNBOOK.md) källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub-källan; dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska därför hämta aktuell GitHub-main och läsa instruktionerna där.
 
-Återkommande timpass är aktiverade genom en länkad Sites-molnuppgift, **Partnerlabbs masterutvecklare**, varje hel timme i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Sparat schema, påbörjad körning och utförd/publicerad förbättring redovisas separat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
+Den befintliga länkade Sites-molnuppgiften **Partnerlabbs masterutvecklare** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Dess sparade uppdrag använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 
 Första förbättringen gäller återupptagbart pågående inflyttningsunderlag per partner i samma flik. Utkastet är åtskilt från registrerade serviceärenden och ekonomiskt exempelutfall. Testa: fyll delvis i första steget → ladda om → fortsätt till Kontakt → lämna sidan → öppna samma partners hyresgästvy igen. Prova därefter **Börja om** och kontrollera att ett tomt, frivilligt flöde visas utan att något serviceärende skapats.
 

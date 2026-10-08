@@ -1,18 +1,20 @@
 # Arbeta tillsammans i Partnerlabb
 
-GitHubövergången är förberedd och ännu inte aktiverad. Användaren har
-uttryckligen valt att låta repot vara publikt:
-https://github.com/ludros93-prog/kraftringen-partnerlabb. Repot är verifierat
-och ännu tomt; koduppladdningen är inte genomförd. GITHUB-STATUS.md visar
-aktuell status; tills den är `active` gäller Sites som huvudkälla och
-RUNBOOK-SITES.md som arbetsrutin.
+Användaren har uttryckligen valt det publika repot
+https://github.com/ludros93-prog/kraftringen-partnerlabb. Källkod och bevarad
+Git-historik har laddats upp och verifierats. GITHUB-STATUS.md visar faktisk
+aktiveringsstatus, revisioner och behörigheter. GitHub är huvudkälla;
+RUNBOOK.md beskriver utveckling och Sites-publicering. RUNBOOK-SITES.md
+bevarar den äldre arbetsrutinen som referens.
 
-Följande arbetssätt gäller efter verifierad aktivering: GitHub blir den
-gemensamma källan för kod, instruktioner och arbetsminne. Ludwig använder
-ChatGPT/Codex och Daniel använder Claude Code med GitHub-kontot `daniel-smail`.
+GitHub är den gemensamma källan för kod, instruktioner och arbetsminne.
+Ludwig använder ChatGPT/Codex och Daniel använder Claude Code med
+GitHub-kontot `daniel-smail`.
 Verktygen arbetar mot samma repo med varsitt konto och separata arbetsgrenar.
 Tillgång till repot och till den publicerade portalen hanteras separat;
-Daniels GitHub-inbjudan och behörighet är ännu inte bekräftade.
+Daniels verifierade GitHub-åtkomst är publik läsning. Skrivbehörighet är
+ännu inte bekräftad och behöver ordnas av repoägaren innan han skickar
+arbetsgrenar till det gemensamma repot.
 
 ## En uppgift per arbetsgren
 

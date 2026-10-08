@@ -13,20 +13,21 @@ Det viktigaste målet är enklare arbete för användarna och större kommersiel
 nytta av Kraftringens partnersamarbeten. Läs alltid aktuella `AGENTS.md` för
 bekräftade fakta; nyare användarbeslut gäller före äldre resonemang.
 
-## Förberedd gemensam utveckling
+## Gemensam utveckling
 
 Användaren har därefter uttryckligen valt ett publikt GitHub-repo för Codex
 och Claude: https://github.com/ludros93-prog/kraftringen-partnerlabb.
-Repot är verifierat och ännu tomt. Övergången är förberedd och koden har
-ännu inte laddats upp. Den privata Sites-åtkomsten ska bevaras. Läs
-GITHUB-STATUS.md: tills status är `active` gäller nuvarande Sites-källa och
-RUNBOOK-SITES.md. Ändra inte arbetskälla eller schema på eget initiativ.
+Källkod och bevarad Git-historik har laddats upp och verifierats. GitHub är
+huvudkälla för kod och arbetsminne; Sites är publiceringsmål. Den privata
+Sites-åtkomsten ska bevaras. GITHUB-STATUS.md visar verifierade revisioner,
+aktiveringsstatus och behörigheter. Ändra inte schema eller åtkomst på eget
+initiativ.
 
-Efter verifierad aktivering gäller GitHub som huvudkälla och separat gren
-plus pull request för alla utvecklingspass, även timagenten. Ludwig/Codex
-samordnar integration och Sites-publicering enligt COLLABORATION.md och
-RUNBOOK.md. Detta nyare arbetssätt ersätter då den äldre direkta
-publiceringsrutinen nedan utan att begränsa det autonoma bygguppdraget.
+Separat gren plus pull request gäller för alla utvecklingspass, även
+timagenten. Ludwig/Codex samordnar integration och Sites-publicering enligt
+COLLABORATION.md och
+RUNBOOK.md. RUNBOOK-SITES.md bevarar den äldre arbetsrutinen som referens;
+utveckla inte Sites-källan separat från GitHub.
 
 ## Verksamheten
 
@@ -76,7 +77,9 @@ arbetslogg och prioriterad kö. Välj en avgränsad uppgift och slutför den.
 Prioritera hinder i centrala flöden, enklare inflyttningsservice, tydligare
 kommersiell uppföljning och datakvalitet, tillförlitlighet, tillgänglighet och
 prestanda, sedan nya funktioner med belagt behov. Beskriv användarnyttan kort.
-Genomför och publicera självständigt inom det redan godkända prototypuppdraget.
+Genomför och testa självständigt inom det redan godkända prototypuppdraget.
+Lämna färdiga förbättringar som pull requests från en egen arbetsgren.
+Ludwig/Codex samordnar integration och publicering till samma Sites-projekt.
 Dokumentera saknat verksamhetsunderlag och fortsätt med oberoende arbete.
 
 Bevara fungerande flöden, sparad lokal data och migreringar. Följ arkitekturen.
@@ -97,7 +100,8 @@ integration av parallellt arbete och publicering av varje version.
 
 Underhåll `BACKLOG.md` och `WORKLOG.md`: fakta, öppna frågor, genomförda
 förbättringar, verifiering, hinder och nästa uppgift. Rapportera konkret vad
-som ändrades, användarnyttan, verifieringen och den faktiska publiceringen.
+som ändrades, användarnyttan och verifieringen. Skilj kandidat, öppnad pull
+request, integrerad ändring och faktisk publicering i rapporteringen.
 Skicka inga externa meddelanden eller utskick utan uttryckligt uppdrag.
 
 Fortsätt från arbetsminnet mellan pass. Återuppta avbrutet arbete och undersök

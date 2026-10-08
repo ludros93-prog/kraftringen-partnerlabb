@@ -1,15 +1,12 @@
 # Utvecklingspass och publicering
 
-## Övergångsstatus — läs först
+## Aktiv gemensam källa
 
-GitHubarbetssättet nedan är förberett, inte aktiverat. Läs GITHUB-STATUS.md.
-Så länge status är `prepared` gäller befintliga Sites-källan och den
-oförändrade arbetsrutinen i RUNBOOK-SITES.md. Planerad GitHub-destination är
-https://github.com/ludros93-prog/kraftringen-partnerlabb; det publika repot
-finns, men uppladdning är ännu inte verifierad. Återkommande arbete ska inte övergå
-innan samordnaren har verifierat uppladdningen och ändrat samma timuppgift.
-
-Resten av denna fil gäller när GITHUB-STATUS.md är markerad `active`.
+GitHub är huvudkälla: https://github.com/ludros93-prog/kraftringen-partnerlabb.
+Koden och Git-historiken har laddats upp. GITHUB-STATUS.md anger verifierade
+övergångsfakta och WORKLOG.md anger faktisk källöverföring och aktivering.
+RUNBOOK-SITES.md bevarar den äldre rutinen som referens; nya utvecklingspass
+följer denna fils gren- och PR-rutin.
 
 ## Uppdrag och huvudkälla
 

@@ -3,8 +3,8 @@
 Destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
 
 Användaren skapade repot och valde uttryckligen att låta det vara publikt
-den 8 oktober 2026. Källkod och historik är förberedda. GITHUB-STATUS.md
-anger om uppladdningen och det nya arbetssättet har aktiverats.
+den 8 oktober 2026. Källkod och hela Git-historiken är uppladdade. GITHUB-STATUS.md
+beskriver det aktiva arbetssättet och verifierade övergångsfakta.
 
 GitHub nekade anslutningen att bjuda in `daniel-smail` med HTTP 403.
 Repoägaren behöver ge Daniel utvecklaråtkomst under Settings → Collaborators.
@@ -13,7 +13,7 @@ Hans Sites-visningsåtkomst är separat.
 
 ## Börja utveckla
 
-När GITHUB-STATUS.md är `active`, klona den gemensamma källan:
+Klona den gemensamma källan:
 
 ```sh
 git clone https://github.com/ludros93-prog/kraftringen-partnerlabb.git
