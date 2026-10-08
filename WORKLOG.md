@@ -110,3 +110,7 @@
   lägga till just detta repo nekades också med HTTP 403. Användaren har fått
   installationens inställningslänk för att ge källåtkomst. Ingen uppladdning
   eller aktivering påstås innan en faktisk GitHub-push verifierats.
+- Efter fortsatt nekad källåtkomst återaktiverades samma timuppgift med
+  oförändrad Sites-prompt och samma schema. Återläsning bekräftade aktivering,
+  prompt och schema. GitHubövergången står kvar som prepared; ingen
+  konkurrerande timagent eller ny frontendpublicering skapades.
