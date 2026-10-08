@@ -23,7 +23,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-02 — Rätt nästa insats efter kompletterad överlämning
 
-- Status: implementerad och verifierad i aktuell kandidat; publiceringskvittens dokumenteras i WORKLOG.md.
+- Status: klar och publicerad i version 11; kvittens finns i WORKLOG.md.
 - Belägg: en needs_info-rad med "Stäm av lägenhetsuppgiften med hyresgästen"
   förmedlas på nytt. Arbetslistan byter ansvar till Kraftringen men behåller
   partnerns tidigare next/nextDate. Verifierat genom modul-API:er i isolerad VM.

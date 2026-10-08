@@ -19,8 +19,14 @@
   bekräftar ansvarsskifte, rensat datum, bevarad historik och företräde för en
   senare intern plan. Browser-QA kördes inte eftersom föreskriven Sites-
   browserkontroll inte var tillgänglig i detta pass.
-- Publicering: kandidat väntar på Sites-kvittens; exakt SHA, version och
-  deployment dokumenteras efter lyckad publicering.
+- Publicering: version 11 publicerades med native Sites-kvittens `succeeded`
+  2026-10-08 kl. 21:03:31 UTC på
+  https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Pushad/publicerad SHA: `6882cde49905a672087809b7829d23d3fa59c117`.
+  - Version-ID: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_dfa6ce6c536c8191a5af73efb1d44d44`.
+  - Deployment-ID: `appgdep_6ac80515215c8191b2610ca02802e87d`.
+  - Publiceringen använde arkivet från exakt samma SHA och bevarade Site-ID och
+    befintlig custom-åtkomst.
 - Nästa uppgift: avgränsa INFLYTT-03 i gränssnittet så att ett redan registrerat
   testkvitto kan hittas efter omladdning utan att ett nytt ärende skapas.
 
