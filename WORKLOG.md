@@ -47,3 +47,33 @@
   verifierat men dess första faktiska körning/utveckling/publicering är ännu
   inte bekräftad. Verktygsfelet ska inte kallas misslyckad kodutveckling.
 - Nästa uppgift: INFLYTT-02 efter att INFLYTT-01 testats och levererats.
+
+## 2026-10-08 — Förberedd privat GitHub-övergång för Codex och Claude
+
+- Användaren har uttryckligen bett att Partnerlabb läggs på GitHub för
+  gemensam utveckling med Codex och Claude. GitHub-kontot `ludros93-prog`
+  verifierades både genom anslutningen och gh. Daniel har angett
+  `daniel-smail`; det kontot verifierades via GitHub API.
+- Ingen befintlig privat Partnerlabb-destination hittades. Skapandet av
+  `ludros93-prog/kraftringen-partnerlabb` nekades med
+  `Resource not accessible by integration (createRepository)`. Andra projekt
+  har inte ändrats och koden har inte laddats upp till ett annat repo.
+- Användaren har tillfrågats om URL till ett tomt privat GitHub-repo. Daniel
+  har ännu inte bjudits till något repo; hans Sites-visningsåtkomst är separat.
+- Färsk Sites-källa öppnades och basen d6da7a72b57032f7d856b7074b8a0243614b2d0a
+  verifierades. En separat stagingcheckout i
+  /workspace/staging/partnerlabb-github innehåller förberedd Claude-konfiguration,
+  gemensamma instruktioner, PR-mall och inaktiv GitHub Actions-mall.
+  Övergångsstatus är prepared; ingen ny GitHub-huvudkälla påstås aktiv.
+- Hela Git-historiken behålls. 107 historiska textblobs kontrollerades utan
+  träff på vanliga GitHub-/OpenAI-tokenmönster eller privata nycklar. Inga
+  credentials läggs i paketet. Frontend, Sites-manifest och publicerad version
+  10 är oförändrade.
+- Befintliga timuppgiften pausades kort under försöket och återaktiverades
+  efter nekad reposkapning. Ursprunglig prompt och schema är bevarade;
+  Site-läsning bekräftade återaktiveringen. Agenten ska fortsätta från Sites
+  tills riktig privat uppladdning och nya gemensamma rutinen har verifierats.
+- Återuppta genom att läsa färsk Sites-källa igen, verifiera privat målrepo,
+  föra över bevarad historik, ge daniel-smail redigeringsåtkomst och ändra samma
+  timuppgift till GitHub/egen gren/PR. Skapa ingen andra timagent och skriv
+  inte över senare Sites-ändringar från ett äldre stagingpaket.
