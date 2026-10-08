@@ -2,7 +2,7 @@
 
 En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för aktiva säljpartners och fastighetsbolag. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
 
-Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Arbetsytorna är nu anpassade till dessa två segment. Fastighetspartners erbjuder frivillig inflyttningsservice vid hyresavtal och förmedlar hyresgästens underlag till Kraftringen. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
+Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Face2face använder Beest; prototypen prioriterar nu intern resultatuppföljning och har ingen integration med Beest. Saveras eventuella användning av partnerarbetsytan kan utvecklas senare. Befintliga arbetsflöden bevaras som lokala testvyer. Fastighetspartners erbjuder frivillig inflyttningsservice vid hyresavtal och förmedlar hyresgästens underlag till Kraftringen. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
@@ -26,7 +26,7 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 
 | Vy | Det går att testa |
 | --- | --- |
-| Kraftringens resultatöversikt | Resultatbidrag före partnerkostnad, partnerkostnad, nettobidrag, nya avtal och avtalad årsvolym i MWh. Välj månad eller kvartal, filtrera partnertyp, jämför utfall och exportera ekonomiska exempel som CSV. Framtida potential visas separat. |
+| Kraftringens resultatöversikt | Resultatbidrag före partnerkostnad, partnerkostnad, nettobidrag, nya avtal och avtalad årsvolym i MWh. Välj månad, kvartal eller år, filtrera partnertyp, jämför utfall och exportera ekonomiska exempel som CSV. Framtida potential visas separat. |
 | Partners & partnerprofil | Sök och sortera partners efter exempelutfall. Granska en partner, redigera intern ansvarig, nästa steg, uppföljningsdatum och intern anteckning samt öppna partnerns arbetsyta. |
 | Saveras översikt & pipeline | Nyckeltal från kundernas exempeldata, nästa steg, aktivitetshistorik och affärer per föreslaget steg. |
 | Företagskunder | Registrera företag eller BRF, söka och filtrera, dokumentera kontakt och nästa steg. Internt team tilldelar demoansvarig, ändrar status eller pipelinesteg och delar återkoppling. |
@@ -36,6 +36,8 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | Partner Academy | Elakademin med sex textade kapitelfilmer, kapiteltext, filmmanus, tolv självtestfrågor med facit och PDF-kundguide. Därutöver fyra bevarade demokurser med tre textmoment vardera. Kategorifilter, bokmärken, klarmarkering och testsvar sparas lokalt per partner. En anmälan till en exempelgenomgång kan markeras i demo. |
 | Material & kampanjer | Filtrera, förhandsvisa och hämta fyra TXT-mallar samt läsa en exempelbrief för kampanjplanering. |
 | Provision | Visar öppna beslut och saknat underlag. **Ingen ersättning beräknas.** |
+| Affärsutfall, internt | Periodvisa nya avtal och avtalad årsvolym, fördelning Opti/kvartspris, säljare och geografi. Face2face visar churn och bortfall före start separat; fastighetspartners visar anmälningar och hjälpta nyinflyttare separat från elhandelsavtal. |
+| Kickback, internt | Manuella exempelposter per partner och period med avstämnings- och betalningsbelopp. Ingen ersättning beräknas från affärer eller ärenden. |
 | Resultatrapport, internt | Ekonomiska nyckeltal och tabell för vald period och partnerurval samt CSV-export av exempelutfall. |
 | Rapporter, säljpartner | Antal kunder och affärer per steg, aktivitetslogg och JSON-export av kunddata, offertutkast och kundsidor för vald demovy. |
 | Partnerresan, endast internt | Följ varje partner separat genom åtta föreslagna steg: Rekrytera, Onboarda, Certifiera, Aktivera, Sälja, Leverera, Utveckla och Behålla. Två interna testaktiviteter per steg och exempelplacering kan sparas lokalt. |
@@ -72,7 +74,7 @@ Om giltig v2-data saknas läses tidigare kunddata från `partnerlabb.active.v1` 
 
 Två datorer delar inte data och öppna flikar synkas inte automatiskt. JSON-exporten är ett granskningsunderlag, ingen synkronisering eller fullständig säkerhetskopia av alla moduler.
 
-Ekonomiskt utfall ligger som manuella exempelvärden i `commercial.js`, separat från kunddialoger och `moveins`. I demot är **nettobidrag = resultatbidrag före partnerkostnad − partnerkostnad**. MWh avser avtalad årsvolym för periodens nya exempelavtal, inte levererad el under perioden. Månad och kvartal har angivna jämförelseperioder; oktober och Q4 visar endast 1–7 oktober.
+Ekonomiskt utfall ligger som manuella exempelvärden i `commercial.js`, separat från kunddialoger och `moveins`. I demot är **nettobidrag = resultatbidrag före partnerkostnad − partnerkostnad**. MWh avser avtalad årsvolym för periodens nya exempelavtal, inte levererad el under perioden. Månad och kvartal har angivna jämförelseperioder; oktober och Q4 visar endast 1–7 oktober. Årsvyn visar 1 januari–7 oktober 2026 och saknar jämförbar föregående årsbas.
 
 Framtida potential är en separat manuell ögonblicksbild och räknas inte in i utfallet. Inga belopp beräknas från elpris, avtalsvillkor, provisionsregler eller registreringar. **Intresseanmälan är varken avtal eller intäkt.** Ekonomiska definitioner och ersättningsregler behöver separat underlag.
 
@@ -149,3 +151,17 @@ Frontendflödet går att testa som: hyresgästunderlag → partnerns förmedling
 Kommersiellt resultat visas fortfarande först på den interna partnerprofilen. Ärendeantal, underlag, kompletteringar och demobekräftelser är operativ uppföljning för alla datum. Ekonomiska fixtures för vald period är fristående och ändras inte när ett serviceärende registreras, förmedlas eller bekräftas.
 
 Regelbakgrunden är verifierad i Ei:s nyhet 25 juni 2026: automatisk anvisning av elhandelsavtal avskaffas **1 juli 2027**. Det är en beslutad framtida ändring, inte en redan gällande förändring vid prototypens datum. Uppgiften används inte som produktlöfte. Källa: https://ei.se/om-oss/nyheter/2026/2026-06-25-tva-nya-lagar-ersatter-ellagen
+
+## Affärsutfall och kickback
+
+Öppna **Affärsutfall** internt eller en partners profil. Periodvalet är gemensamt med den ekonomiska resultatöversikten och kickbackvyn. Säljare, regioner, produktfördelning och alla belopp är manuella exempel. Nyttigheten är elhandel; Opti och kvartspris är avtalstyperna användaren har angett. Det innebär inga antaganden om produktvillkor.
+
+För Savera prioriteras nya avtal, avtalad årsvolym i MWh, säljare och avtalstyp. MWh för september avser årsförbrukning enligt september månads nya exempelavtal, inte levererad el i september. Face2face följs efter avtalstyp och geografi, med Beest angivet som möjlig framtida datakälla. Ingen data hämtas från Beest. Fastighetspartners visar hjälpta nyinflyttare och serviceanmälningar separat från elhandelsavtal. Produktfilter ändrar endast avtal/MWh; serviceutfall avser tjänsten, inte en avtalstyp.
+
+Churn är ett testförslag: kunder ur periodens öppningskohort som lämnat efter avtalsstart dividerat med kunder i samma öppningskohort. Års- och kvartalsmått använder sin egen öppningskohort, inte summerade månadsnämnare. Bortfall före start visas separat: avbrutna avtal bland periodens sålda avtal, observerade till 7 oktober. Färska avtalskohorter är fortfarande under observation. Saknad nämnare visas som saknat underlag.
+
+Kickback visar manuellt angivna exempelbelopp, föreslagen avstämningsstatus och registrerade betalningar mot dessa poster. Det är uppföljning av postperiodens underlag, inte betalningsmånadens kassaflöde. Faktiska beräkningsregler och partneravtal saknas. Kostnader i den ekonomiska resultatöversikten och kickbackposterna är separata exempelunderlag; ingen automatisk ersättningsberäkning eller avstämning görs.
+
+- `dist/partner-results-data.js`: fristående aggregat och kohorter för kanalutfall.
+- `dist/partner-results.js` och `.css`: interna rapporter och partnerprofilens utfallspanel.
+- `dist/partner-kickback.js` och `.css`: manuella ersättningsexempel och statusuppföljning.

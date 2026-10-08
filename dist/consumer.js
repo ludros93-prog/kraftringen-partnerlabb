@@ -76,7 +76,8 @@
   function renderOverview() {
     init();
     const data = rows(), feedback = data.flatMap(row => activityFor(row.id).filter(event => event.kind === 'feedback').map(event => ({...event, row}))).sort((a, b) => b.at.localeCompare(a.at)).slice(0, 3);
-    return `<div class="consumer-workspace">${heading('FACE2FACE × KRAFTRINGEN', 'Konsumentförsäljning', 'Dina försäljningsunderlag, återkoppling och nästa steg – samlat för teamet.', newButton)}
+    return `<div class="consumer-workspace">${heading('FACE2FACE × KRAFTRINGEN', 'Konsumentförsäljning', 'Face2face säljer i Beest. Denna arbetsyta bevarar portalens lokala konsumentdemo.', newButton)}
+      ${demoNote('Nuvarande säljverktyg: Beest. Kraftringens nya affärsutfall följs i den interna vyn. Ingen Beest-data hämtas i prototypen.')}
       ${P.workbench?.render({limit:3}) || ''}
       ${metrics()}
       <section class="consumer-hero consumer-hero-compact"><div><span class="consumer-eyebrow">ELHANDEL TILL PRIVATKUNDER</span><h2>Följ kundmötet hela vägen.</h2><p>Följ varje underlag och återkoppling från Kraftringen.</p></div><div class="consumer-hero-actions"><button class="btn consumer-btn-light" data-go="consumer-sales">Alla underlag ${icon('arrow')}</button><button class="consumer-hero-link" data-go="consumer-followup">Återkoppling ${icon('arrow')}</button></div></section>
@@ -164,7 +165,7 @@
   }
   function renderReports() {
     init();
-    return `<div class="consumer-workspace">${heading('FACE2FACE / RESULTAT', 'Försäljningsuppföljning', 'Följ antal underlag, återkoppling och aktiva exempelkunder.', `<button class="btn btn-primary" data-consumer-export>${icon('download')} Exportera konsumenttestdata</button>`)}${metrics()}<div class="consumer-overview-grid"><section class="card"><div class="panel-heading"><h2>Exempelutfall per team</h2><span class="pill">Antal</span></div>${reportTable('team', 'Exempelteam')}</section><section class="card"><div class="panel-heading"><h2>Exempelutfall per säljare</h2><span class="pill">Antal</span></div>${reportTable('seller', 'Fiktiv säljare')}</section></div><section class="card consumer-report-status"><div class="panel-heading"><h2>Underlag per teststatus</h2></div>${statusDistribution()}</section>${demoNote('Rapporten visar lokala konsumentunderlag. Ekonomiskt resultat, försäljningsvärde och partnerersättning kräver ett fastställt underlag och räknas inte fram här.')}</div>`;
+    return `<div class="consumer-workspace">${heading('FACE2FACE / RESULTAT', 'Lokala konsumentunderlag', 'Demo av underlag och återkoppling. Face2faces interna avtalsutfall följs i Affärsutfall.', `<button class="btn btn-primary" data-consumer-export>${icon('download')} Exportera konsumenttestdata</button>`)}${metrics()}<div class="consumer-overview-grid"><section class="card"><div class="panel-heading"><h2>Exempelutfall per team</h2><span class="pill">Antal</span></div>${reportTable('team', 'Exempelteam')}</section><section class="card"><div class="panel-heading"><h2>Exempelutfall per säljare</h2><span class="pill">Antal</span></div>${reportTable('seller', 'Fiktiv säljare')}</section></div><section class="card consumer-report-status"><div class="panel-heading"><h2>Underlag per teststatus</h2></div>${statusDistribution()}</section>${demoNote('Rapporten visar lokala konsumentunderlag. Ekonomiskt resultat, försäljningsvärde och partnerersättning kräver ett fastställt underlag och räknas inte fram här.')}</div>`;
   }
   function bind() {
     const view = qs('#view');
