@@ -36,7 +36,7 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | Partner Academy | Elakademin med sex textade kapitelfilmer, kapiteltext, filmmanus, tolv självtestfrågor med facit och PDF-kundguide. Därutöver fyra bevarade demokurser med tre textmoment vardera. Kategorifilter, bokmärken, klarmarkering och testsvar sparas lokalt per partner. En anmälan till en exempelgenomgång kan markeras i demo. |
 | Material & kampanjer | Filtrera, förhandsvisa och hämta fyra TXT-mallar samt läsa en exempelbrief för kampanjplanering. |
 | Provision | Visar öppna beslut och saknat underlag. **Ingen ersättning beräknas.** |
-| Affärsutfall, internt | Periodvisa nya avtal och avtalad årsvolym, fördelning Opti/kvartspris, säljare och geografi. Face2face visar churn och bortfall före start separat; fastighetspartners visar anmälningar och hjälpta nyinflyttare separat från elhandelsavtal. |
+| Affärsutfall, internt | Periodvisa nya avtal och avtalad årsvolym, partneranpassad fördelning på elavtal, säljare och geografi. Face2face visar churn och bortfall före start separat; fastighetspartners visar anmälningar och hjälpta nyinflyttare separat från elhandelsavtal. |
 | Kickback, internt | Manuella exempelposter per partner och period med avstämnings- och betalningsbelopp. Ingen ersättning beräknas från affärer eller ärenden. |
 | Resultatrapport, internt | Ekonomiska nyckeltal och tabell för vald period och partnerurval samt CSV-export av exempelutfall. |
 | Rapporter, säljpartner | Antal kunder och affärer per steg, aktivitetslogg och JSON-export av kunddata, offertutkast och kundsidor för vald demovy. |
@@ -154,13 +154,13 @@ Regelbakgrunden är verifierad i Ei:s nyhet 25 juni 2026: automatisk anvisning a
 
 ## Affärsutfall och kickback
 
-Öppna **Affärsutfall** internt eller en partners profil. Periodvalet är gemensamt med den ekonomiska resultatöversikten och kickbackvyn. Säljare, regioner, produktfördelning och alla belopp är manuella exempel. Nyttigheten är elhandel; Opti och kvartspris är avtalstyperna användaren har angett. Det innebär inga antaganden om produktvillkor.
+Öppna **Affärsutfall** internt eller en partners profil. Periodvalet är gemensamt med den ekonomiska resultatöversikten och kickbackvyn. Säljare, regioner, produktfördelning och alla belopp är manuella exempel. Nyttigheten är elhandel. Face2face har Opti och kvartspris. Saveras företagsutbud är rörligt pris, kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, individuell portfölj och Kraftringen Stabil. Filtren visar den valda partnerns elavtal; alla partners visar den samlade katalogen. Fastighetspartners tidigare produktfördelning är fortsatt exempeldata och utbudet behöver bekräftas. Det innebär inga antaganden om produktvillkor.
 
 För Savera prioriteras nya avtal, avtalad årsvolym i MWh, säljare och avtalstyp. MWh för september avser årsförbrukning enligt september månads nya exempelavtal, inte levererad el i september. Face2face följs efter avtalstyp och geografi, med Beest angivet som möjlig framtida datakälla. Ingen data hämtas från Beest. Fastighetspartners visar hjälpta nyinflyttare och serviceanmälningar separat från elhandelsavtal. Produktfilter ändrar endast avtal/MWh; serviceutfall avser tjänsten, inte en avtalstyp.
 
 Churn är ett testförslag: kunder ur periodens öppningskohort som lämnat efter avtalsstart dividerat med kunder i samma öppningskohort. Års- och kvartalsmått använder sin egen öppningskohort, inte summerade månadsnämnare. Bortfall före start visas separat: avbrutna avtal bland periodens sålda avtal, observerade till 7 oktober. Färska avtalskohorter är fortfarande under observation. Saknad nämnare visas som saknat underlag.
 
-Kickback visar manuellt angivna exempelbelopp, föreslagen avstämningsstatus och registrerade betalningar mot dessa poster. Det är uppföljning av postperiodens underlag, inte betalningsmånadens kassaflöde. Faktiska beräkningsregler och partneravtal saknas. Kostnader i den ekonomiska resultatöversikten och kickbackposterna är separata exempelunderlag; ingen automatisk ersättningsberäkning eller avstämning görs.
+Kickbackuppföljningen omfattar samtliga partnerkanaler, enligt användarens förtydligande. Kickback visar manuellt angivna exempelbelopp, föreslagen avstämningsstatus och registrerade betalningar mot dessa poster. Det är uppföljning av postperiodens underlag, inte betalningsmånadens kassaflöde. Faktiska beräkningsregler och partneravtal saknas. Kostnader i den ekonomiska resultatöversikten och kickbackposterna är separata exempelunderlag; ingen automatisk ersättningsberäkning eller avstämning görs.
 
 - `dist/partner-results-data.js`: fristående aggregat och kohorter för kanalutfall.
 - `dist/partner-results.js` och `.css`: interna rapporter och partnerprofilens utfallspanel.
