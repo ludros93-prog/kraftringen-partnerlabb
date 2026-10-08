@@ -41,4 +41,9 @@
   Verktygskvittensen bekräftar schemat; den bevisar ännu inte en genomförd
   självständig molnkörning eller oavbruten drift. Varje körning ska läsa aktuell
   Git-källa och rapportera implementation/publicering eller konkret hinder.
+- Försök att starta ett första fristående molnpass direkt med
+  automations_run_now gav `NOT_FOUND`, HTTP 404 "Action not found", före
+  action invocation. Ingen direktstart bekräftades. Det sparade timschemat är
+  verifierat men dess första faktiska körning/utveckling/publicering är ännu
+  inte bekräftad. Verktygsfelet ska inte kallas misslyckad kodutveckling.
 - Nästa uppgift: INFLYTT-02 efter att INFLYTT-01 testats och levererats.
