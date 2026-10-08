@@ -4,6 +4,9 @@
 - Destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
 - Repot finns och är publikt. Användaren valde uttryckligen att behålla
   det publikt den 8 oktober 2026. Uppladdning är ännu inte verifierad.
+- Git-push nekades med HTTP 403: repot saknas bland GitHub-anslutningens
+  valda repositories. Försök att lägga till det via GitHub API nekades också.
+  Ägaren behöver välja repot på https://github.com/settings/installations/162333072.
 - Daniel: GitHub-kontot `daniel-smail` är bekräftat. Ingen inbjudan eller
   tilldelad GitHub-behörighet är bekräftad här. GitHub nekade anslutningens
   försök att bjuda in honom med HTTP 403; ägaren behöver ordna åtkomsten.

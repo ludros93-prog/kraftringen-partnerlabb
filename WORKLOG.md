@@ -104,3 +104,9 @@
 - Samma timuppgift är tillfälligt pausad för övergången. Färsk Sites-källa
   är fortsatt f6b0e4872885f01540a27dbd72e51a7c2bffbffc. Git-historiken
   är bevarad, Claude-importer verifierade och frontend/manifest oförändrade.
+- Git-push till målrepot nekades med HTTP 403. Både GitHub-anslutningen och
+  API-listan över installationens repositories bekräftade att det nya repot
+  inte ingår i appens valda repositories. Den dokumenterade API-vägen att
+  lägga till just detta repo nekades också med HTTP 403. Användaren har fått
+  installationens inställningslänk för att ge källåtkomst. Ingen uppladdning
+  eller aktivering påstås innan en faktisk GitHub-push verifierats.
