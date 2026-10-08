@@ -81,3 +81,10 @@
 - Fastighetspartners serviceanmälningar och hjälpta nyinflyttare följs separat från nya elhandelsavtal. Ett hjälpt serviceärende behöver inte ha lett till vårt avtal. Serviceaggregat har ingen avtalstyp; produktfilter avser endast avtalsutfallet.
 - Churnförslaget använder kunder aktiva vid periodstart som nämnare och samma kohorts avgångar som täljare. Summera inte månaders öppningskohorter för års- eller kvartalsmått. Bortfall före start följer periodens sålda avtal och avbrott observerade till datadatum; färska perioder är inte färdigutfall. Måttdefinitionerna är testförslag.
 - Användaren har bekräftat att kickback ska följas för samtliga partnerkanaler. `partner-kickback.js` visar manuella exempelposter, avstämning och betalningsbelopp, med föreslagna statusnamn. Postperiodens betalningar är inte ett kassaflöde per betalningsmånad. Kickback och kommersiell partnerkostnad är skilda exempelunderlag utan automatisk avstämning. Faktiska ersättningsvillkor, integrationer och datakällor kräver separat underlag.
+
+## Aktiverad masteragent – 8 oktober 2026
+
+- Användaren har aktiverat masterprompten som löpande bygguppdrag. Läs MISSION.md, RUNBOOK.md, BACKLOG.md och WORKLOG.md vid varje pass. Utför och publicera verifierade förbättringar inom befintlig frontendprototyp utan rutinmässig ny godkännandefråga. Saknade affärsregler parkeras medan oberoende arbete fortsätter.
+- Arbetsminnet är i aktuell Git-källa. Deploymentarkivet har inte dessa rotfiler; öppna källan genom Sites. Följ aktuell källa, instruktioner, parallellt arbete och exakt publiceringsproveniens.
+- Återkommande pass ska utveckla produkten, inte bara bevaka. Bevara användarnas data, statisk portabilitet, korrekt partnerutbud, separat service/avtal/ekonomi och befintlig Sites-åtkomst.
+- Ingen körning ändrar sitt eget eller andras schema, prompt eller aktivering. Schemalagda timpass innebär inte bevis för oavbruten exekvering eller garanterad körningsåterstart. Rapportera faktisk körning/publicering och konkret hinder.

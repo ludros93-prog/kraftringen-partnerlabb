@@ -70,6 +70,8 @@ Säljpartnerns befintliga offertstudio, dokumentdemosteg, kundsidor, Academy och
 
 Använd enbart påhittade kund- och hyresgästuppgifter. Sparad testdata ligger i `localStorage` för aktuell webbplats och webbläsare under `partnerlabb.portal.v2`. `commercial.management` sparar intern partneruppföljning och partnerresans markeringar, `moveins` sparar serviceunderlag och äldre intresseanmälningar och `propertySettings` sparar fastighetsbolagets presentation. Dessa kompletterar tidigare kunddata. Gamla `journey`-markeringar bevaras i datan men visas inte i den nya interna partnerresan.
 
+Pågående hyresgästunderlag sparas separat i flikens `sessionStorage` under `partnerlabb.moveinDraft.v1.<partner-id>`. Fält och steg kan återupptas efter omladdning eller återöppning för samma partner i samma flik. **Börja om**, avstående, lyckad slutregistrering och återställning av exempeldata rensar utkastet. Utkast är inte registrerade serviceärenden. Sparstatusen visar om webbläsaren inte tillåter lagring eller rensning. Ett stängt flikutkast är ingen delad eller beständig kundlagring; använd fortsatt bara fiktiva uppgifter.
+
 Om giltig v2-data saknas läses tidigare kunddata från `partnerlabb.active.v1` på samma webbplats; kunder utan pipelinesteg får **Kunddialog**. Den gamla v1-posten raderas inte. Återställning tar bort lokala teständringar och laddar portalens exempeldata igen.
 
 Två datorer delar inte data och öppna flikar synkas inte automatiskt. JSON-exporten är ett granskningsunderlag, ingen synkronisering eller fullständig säkerhetskopia av alla moduler.
@@ -165,3 +167,24 @@ Kickbackuppföljningen omfattar samtliga partnerkanaler, enligt användarens fö
 - `dist/partner-results-data.js`: fristående aggregat och kohorter för kanalutfall.
 - `dist/partner-results.js` och `.css`: interna rapporter och partnerprofilens utfallspanel.
 - `dist/partner-kickback.js` och `.css`: manuella ersättningsexempel och statusuppföljning.
+
+## Masteragent och återkommande utveckling
+
+Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb. [MISSION.md](MISSION.md) beskriver mål och mandat, [RUNBOOK.md](RUNBOOK.md) källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer Git-källan; dessa rotfiler ingår inte i den statiska deploymenten. Ett framtida molnpass måste därför öppna aktuell Sites-källa.
+
+Återkommande timpass planeras genom en länkad Sites-molnuppgift. Sparat schema, påbörjad körning och utförd/publicerad förbättring redovisas separat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats.
+
+Första förbättringen gäller återupptagbart pågående inflyttningsunderlag per partner i samma flik. Utkastet är åtskilt från registrerade serviceärenden och ekonomiskt exempelutfall. Testa: fyll delvis i första steget → ladda om → fortsätt till Kontakt → lämna sidan → öppna samma partners hyresgästvy igen. Prova därefter **Börja om** och kontrollera att ett tomt, frivilligt flöde visas utan att något serviceärende skapats.
+
+### Återkörbara webbläsarkontroller
+
+`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. De använder isolerade webbläsarkontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
+
+Med servern ovan igång, Python Playwright och Chromium tillgängliga:
+
+```sh
+python qa/movein-drafts.py
+python qa/movein-service.py
+```
+
+`PARTNERLABB_QA_URL` kan ange en annan lokal testserver. Frontendappen behöver fortsatt inga paket eller byggsteg; Playwright behövs enbart för utvecklingskontrollerna.

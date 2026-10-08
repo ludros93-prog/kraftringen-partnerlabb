@@ -11,7 +11,78 @@
     estate1: 'Flyttar du in hos Exempelfastigheter AB? Här kan du enkelt lämna ditt intresse för elhandel inför inflyttningen.',
     estate2: 'Flyttar du in hos Exempelbo Förvaltning? Samla dina uppgifter och lämna ditt intresse för elhandel här.'
   };
-  let draft = null, moveinStep = 1, receipt = null, declined = false, query = '', filter = 'all';
+  let draft = null, moveinStep = 1, receipt = null, declined = false, query = '', filter = 'all', draftStorageStatus = 'idle';
+  const draftPrefix = 'partnerlabb.moveinDraft.v1.';
+  const draftTextFields = { address: 120, apartment: 25, postcode: 6, city: 80, moveDate: 10, name: 100, email: 140, phone: 30 };
+  const draftChoiceFields = ['serviceRequested', 'authorityDemo'];
+  const ignoredDrafts = new Set();
+  const isProperty = id => (P.getPartner?.(id)?.type || (demos[id] ? 'property' : '')) === 'property';
+  const freshDraft = id => ({ partner: id, ...Object.fromEntries(Object.keys(draftTextFields).map(key => [key, ''])), serviceRequested: false, authorityDemo: false });
+  const validMoveDate = value => /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
+  function safeDraftStep(values, requested) {
+    if (requested > 1 && (!values.address.trim() || !/^[0-9]{3} ?[0-9]{2}$/.test(values.postcode) || !values.city.trim() || !validMoveDate(values.moveDate))) return 1;
+    if (requested > 2 && (!values.name.trim() || !/^[^\s@]+@[^\s@]+\.example$/i.test(values.email.trim()))) return 2;
+    if (requested > 3 && (!values.serviceRequested || !values.authorityDemo)) return 3;
+    return requested;
+  }
+  function readDraft(id) {
+    if (!isProperty(id) || ignoredDrafts.has(id)) return null;
+    try {
+      const raw = sessionStorage.getItem(draftPrefix + id);
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      if (!saved || saved.version !== 1 || saved.partner !== id || !Number.isInteger(saved.step) || saved.step < 1 || saved.step > 4 || !saved.fields || typeof saved.fields !== 'object' || Array.isArray(saved.fields)) throw new Error('Invalid draft');
+      const values = freshDraft(id);
+      for (const [key, max] of Object.entries(draftTextFields)) {
+        if (typeof saved.fields[key] !== 'string' || saved.fields[key].length > max) throw new Error('Invalid draft field');
+        values[key] = saved.fields[key];
+      }
+      for (const key of draftChoiceFields) {
+        if (typeof saved.fields[key] !== 'boolean') throw new Error('Invalid draft choice');
+        values[key] = saved.fields[key];
+      }
+      if (values.moveDate && !validMoveDate(values.moveDate)) throw new Error('Invalid draft date');
+      return { values, step: safeDraftStep(values, saved.step) };
+    } catch {
+      // An invalid or inaccessible draft must never become a registered record.
+      try { sessionStorage.removeItem(draftPrefix + id); } catch { draftStorageStatus = 'unavailable'; }
+      return null;
+    }
+  }
+  function saveDraft() {
+    if (!draft || !isProperty(draft.partner) || receipt || declined) return false;
+    const fields = {};
+    for (const key of Object.keys(draftTextFields)) fields[key] = draft[key];
+    for (const key of draftChoiceFields) fields[key] = draft[key] === true;
+    try {
+      sessionStorage.setItem(draftPrefix + draft.partner, JSON.stringify({ version: 1, partner: draft.partner, step: moveinStep, fields }));
+      ignoredDrafts.delete(draft.partner);
+      draftStorageStatus = 'saved';
+      return true;
+    } catch { draftStorageStatus = 'unavailable'; return false; }
+  }
+  function clearDraft(id) {
+    ignoredDrafts.add(id);
+    try { sessionStorage.removeItem(draftPrefix + id); draftStorageStatus = 'idle'; return true; }
+    catch { draftStorageStatus = 'clear-failed'; return false; }
+  }
+  function draftStatusText() {
+    if (draftStorageStatus === 'saved') return 'Utkast sparat i den här fliken. Det är inte registrerat.';
+    if (draftStorageStatus === 'unavailable') return 'Utkastet kan inte sparas i den här fliken. Behåll sidan öppen för att fortsätta.';
+    if (draftStorageStatus === 'clear-failed') return 'Webbläsaren kunde inte rensa det sparade utkastet. Dina nya uppgifter finns bara medan sidan är öppen tills de kan sparas.';
+    return 'Ditt utkast är inte registrerat.';
+  }
+  function updateDraftStatus() {
+    const node = document.querySelector('#property-draft-status');
+    if (node) { const text = draftStatusText(); if (node.textContent !== text) node.textContent = text; node.classList.toggle('property-draft-warning', ['unavailable', 'clear-failed'].includes(draftStorageStatus)); }
+  }
+  P.propertyDrafts = { clearAll: () => {
+    let cleared = true;
+    const ids = new Set([...Object.keys(demos), ...(P.partnerRegistry || []).filter(item => item.type === 'property').map(item => item.id)]);
+    for (const id of ids) if (!clearDraft(id)) cleared = false;
+    draft = null; receipt = null; declined = false; moveinStep = 1;
+    return cleared;
+  } };
   const uid = () => 'inflytt-' + crypto.randomUUID().slice(0, 8);
   const partner = () => P.getPartner?.(P.partner) || { id: P.partner, name: P.partners[P.partner] || 'Exempelfastigheter AB', type: 'property' };
   const date = value => value && !Number.isNaN(new Date(value + (value.length === 10 ? 'T12:00:00' : '')).getTime()) ? new Intl.DateTimeFormat('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(value + (value.length === 10 ? 'T12:00:00' : ''))) : 'Ej angivet';
@@ -77,10 +148,19 @@
     document.querySelector('#property-registrations-preview').onclick = () => P.openMovein(); bindDetails();
   } });
   function ensureDraft() {
-    if (!draft || draft.partner !== P.partner) { draft = { partner: P.partner, address: '', apartment: '', postcode: '', city: '', moveDate: '', name: '', email: '', phone: '', serviceRequested: false, authorityDemo: false }; moveinStep = 1; receipt = null; declined = false; }
+    if (!draft || draft.partner !== P.partner) {
+      draftStorageStatus = 'idle';
+      const saved = readDraft(P.partner);
+      draft = saved?.values || freshDraft(P.partner); moveinStep = saved?.step || 1; receipt = null; declined = false;
+      if (saved) saveDraft();
+    }
     return draft;
   }
-  P.openMovein = (id = P.partner) => { if ((P.getPartner?.(id)?.type || (demos[id] ? 'property' : '')) !== 'property') return; P.partner = id; P.role = 'partner'; draft = null; receipt = null; declined = false; moveinStep = 1; P.go('movein'); };
+  P.openMovein = (id = P.partner) => {
+    if (!isProperty(id)) return;
+    if (receipt || declined) { draft = null; receipt = null; declined = false; }
+    P.partner = id; P.role = 'partner'; ensureDraft(); P.go('movein');
+  };
   const summary = data => `<dl class="property-review-list"><div><dt>Din bostad</dt><dd>${e(data.address)}${data.apartment ? ', lgh ' + e(data.apartment) : ''}<br>${e(data.postcode)} ${e(data.city)}</dd></div><div><dt>Inflyttningsdatum</dt><dd>${e(date(data.moveDate))}</dd></div><div><dt>Namn</dt><dd>${e(data.name)}</dd></div><div><dt>E-post</dt><dd>${e(data.email)}</dd></div>${data.phone ? `<div><dt>Telefon</dt><dd>${e(data.phone)}</dd></div>` : ''}${data.serviceRequested ? '<div><dt>Ditt val</dt><dd>Inflyttningsservice med Kraftringen</dd></div>' : ''}${data.authorityDemo ? '<div><dt>Fullmaktssteg</dt><dd>Demomarkering · utan rättsverkan</dd></div>' : ''}</dl>`;
   function formFields(values) {
     if (moveinStep === 1) return `<div class="field"><label for="movein-address">Bostadsadress</label><input id="movein-address" name="address" autocomplete="off" required maxlength="120" value="${e(values.address)}" placeholder="Exempelgatan 4"></div><div class="form-grid"><div class="field"><label for="movein-postcode">Postnummer</label><input id="movein-postcode" name="postcode" inputmode="numeric" autocomplete="off" required pattern="[0-9]{3} ?[0-9]{2}" maxlength="6" value="${e(values.postcode)}" placeholder="222 22"></div><div class="field"><label for="movein-city">Ort</label><input id="movein-city" name="city" required maxlength="80" autocomplete="off" value="${e(values.city)}" placeholder="Lund"></div><div class="field"><label for="movein-apartment">Lägenhetsnummer · valfritt</label><input id="movein-apartment" name="apartment" maxlength="25" autocomplete="off" value="${e(values.apartment)}" placeholder="1202"></div><div class="field"><label for="movein-date">Inflyttningsdatum</label><input id="movein-date" name="moveDate" type="date" required value="${e(values.moveDate)}"></div></div><button type="button" class="text-button" id="property-fill-example">${icon('edit')} Fyll med exempeluppgifter</button>`;
@@ -92,16 +172,16 @@
     const data = settings(), values = ensureDraft(), steps = ['Inflyttning', 'Kontakt', 'Tjänst & fullmakt', 'Granska'];
     let body;
     if (declined) body = `<section class="card property-receipt"><span class="property-receipt-check">${icon('home')}</span><span class="property-eyebrow">DU ORDNAR ELEN SJÄLV</span><h2>Ditt val är gjort.</h2><p>Du har avstått från inflyttningsservicen. Inget ärende har registrerats eller förmedlats.</p><div class="property-form-actions"><button class="btn btn-secondary" id="property-decline-return">Till partnerarbetsytan</button><button class="btn btn-primary" id="property-receipt-new">Prova tjänsten igen ${icon('arrow')}</button></div></section>`;
-    else if (receipt) body = `<section class="card property-receipt"><span class="property-receipt-check">${icon('check')}</span><span class="property-eyebrow">TESTUNDERLAG REGISTRERAT</span><h2>Tack, ${e(receipt.name.split(' ')[0])}!</h2><p>Ditt underlag finns nu hos ${e(partner().name)} i testet och väntar på förmedling till Kraftringen.</p><div class="property-receipt-number">${e(receipt.id.toUpperCase())}<span>Väntar på fastighetsvärdens förmedling</span></div>${summary(receipt)}<div class="property-receipt-callout"><strong>Vad händer sedan?</strong><p>Fastighetsvärden förmedlar ärendet. Kraftringen tar över, återkopplar vid behov av komplettering och hjälper dig med elhandel och nödvändig elnätshantering. Du blir elhandelskund om du väljer erbjudandet.</p></div>${!receipt.saved ? '<p class="property-warning">Webbläsaren kunde inte spara. Underlaget finns bara i den här fliken just nu.</p>' : ''}<div class="property-form-actions"><button class="btn btn-secondary" id="property-receipt-download">${icon('download')} Hämta testkvitto</button><button class="btn btn-primary" id="property-receipt-new">Prova igen ${icon('arrow')}</button></div></section>`;
-    else body = `<section class="card property-movein-form"><div class="property-form-heading"><span class="property-eyebrow">STEG ${moveinStep} AV 4</span><h2>${['Var flyttar du in?', 'Hur når vi dig?', 'Vill du ha hjälp med elen?', 'Stämmer ditt underlag?'][moveinStep - 1]}</h2><p>${['Ange den bostad och det datum som inflyttningsservicen ska gälla.', 'Ange exempeluppgifter för kontakt och återkoppling.', 'Välj tjänsten och prova fullmaktssteget.', 'Granska ditt val och dina uppgifter före registrering.'][moveinStep - 1]}</p></div><form id="property-movein-form">${moveinStep === 1 ? '<div class="property-voluntary-intro"><strong>Du väljer hur du vill ordna elen.</strong><p>Inflyttningsservicen är frivillig. Du kan gå vidare med underlaget eller ordna elen själv. Ett elhandelsavtal kräver att du väljer erbjudandet.</p><button class="text-button property-decline" type="button" id="property-decline-service">Jag ordnar elen själv – avstå från tjänsten</button></div>' : ''}${formFields(values)}<div class="property-form-actions">${moveinStep > 1 ? '<button class="btn btn-secondary" type="button" id="property-movein-back">Tillbaka</button>' : '<span class="property-form-small">Enbart exempeluppgifter</span>'}<button class="btn btn-primary" type="submit">${moveinStep === 4 ? 'Registrera underlag' : 'Fortsätt'} ${icon(moveinStep === 4 ? 'check' : 'arrow')}</button></div></form></section>`;
+    else if (receipt) body = `<section class="card property-receipt"><span class="property-receipt-check">${icon('check')}</span><span class="property-eyebrow">TESTUNDERLAG REGISTRERAT</span><h2>Tack, ${e(receipt.name.split(' ')[0])}!</h2><p>Ditt underlag finns nu hos ${e(partner().name)} i testet och väntar på förmedling till Kraftringen.</p><div class="property-receipt-number">${e(receipt.id.toUpperCase())}<span>Väntar på fastighetsvärdens förmedling</span></div>${summary(receipt)}<div class="property-receipt-callout"><strong>Vad händer sedan?</strong><p>Fastighetsvärden förmedlar ärendet. Kraftringen tar över, återkopplar vid behov av komplettering och hjälper dig med elhandel och nödvändig elnätshantering. Du blir elhandelskund om du väljer erbjudandet.</p></div>${!receipt.saved ? `<p class="property-warning">${receipt.draftRetained ? 'Webbläsaren kunde inte spara registreringen. Utkastet är kvar i den här fliken och kan återupptas efter omladdning.' : 'Webbläsaren kunde inte spara registreringen eller utkastet. Underlaget finns bara medan sidan är öppen. Hämta testkvittot innan du lämnar sidan.'}</p>` : receipt.draftCleanupFailed ? '<p class="property-warning">Registreringen är sparad, men webbläsaren kunde inte rensa utkastet. Registrera inte samma underlag igen efter omladdning.</p>' : ''}<div class="property-form-actions"><button class="btn btn-secondary" id="property-receipt-download">${icon('download')} Hämta testkvitto</button><button class="btn btn-primary" id="property-receipt-new">Prova igen ${icon('arrow')}</button></div></section>`;
+    else body = `<section class="card property-movein-form"><div class="property-form-heading"><span class="property-eyebrow">STEG ${moveinStep} AV 4</span><h2>${['Var flyttar du in?', 'Hur når vi dig?', 'Vill du ha hjälp med elen?', 'Stämmer ditt underlag?'][moveinStep - 1]}</h2><p>${['Ange den bostad och det datum som inflyttningsservicen ska gälla.', 'Ange exempeluppgifter för kontakt och återkoppling.', 'Välj tjänsten och prova fullmaktssteget.', 'Granska ditt val och dina uppgifter före registrering.'][moveinStep - 1]}</p></div><form id="property-movein-form">${moveinStep === 1 ? '<div class="property-voluntary-intro"><strong>Du väljer hur du vill ordna elen.</strong><p>Inflyttningsservicen är frivillig. Du kan gå vidare med underlaget eller ordna elen själv. Ett elhandelsavtal kräver att du väljer erbjudandet.</p><button class="text-button property-decline" type="button" id="property-decline-service">Jag ordnar elen själv – avstå från tjänsten</button></div>' : ''}${formFields(values)}<div class="property-form-actions">${moveinStep > 1 ? '<button class="btn btn-secondary" type="button" id="property-movein-back">Tillbaka</button>' : '<span class="property-form-small">Enbart exempeluppgifter</span>'}<button class="btn btn-primary" type="submit">${moveinStep === 4 ? 'Registrera underlag' : 'Fortsätt'} ${icon(moveinStep === 4 ? 'check' : 'arrow')}</button></div></form><div class="property-draft-bar"><p id="property-draft-status" role="status" aria-live="polite"${['unavailable', 'clear-failed'].includes(draftStorageStatus) ? ' class="property-draft-warning"' : ''}>${e(draftStatusText())}</p><button class="text-button" type="button" id="property-draft-start-again">Börja om</button></div></section>`;
     return `<div class="property-resident-shell"><div class="property-resident-preview-bar"><span>${icon('user')} Hyresgästvy · test</span><div><button class="text-button" id="property-return-partner">Till partnerarbetsytan</button><button class="text-button" id="property-return-internal">Till Kraftringen</button></div></div><header class="property-resident-header"><a href="#overview" id="property-resident-brand">${icon('home')}<strong>${e(partner().name)}</strong></a><span>I samarbete med <strong>Kraftringen</strong> · demo</span></header><div class="property-resident-layout"><section class="property-resident-intro"><span class="property-eyebrow">INFLYTTNINGSSERVICE MED KRAFTRINGEN</span><h1>${e(data.welcome)}</h1><p>${e(data.intro)}</p><div class="property-resident-image"><img src="assets/office.jpg" alt="Illustrationsbild av en fastighet"><span>En enklare väg till elen i ditt nya hem.</span></div><div class="property-resident-benefits"><div>${icon('home')}<span><strong>Din fastighetsvärd erbjuder servicen</strong>Du väljer om du vill använda den.</span></div><div>${icon('edit')}<span><strong>Du lämnar underlag och fullmakt</strong>Fastighetsvärden förmedlar ärendet vidare.</span></div><div>${icon('bolt')}<span><strong>Kraftringen hjälper dig vidare</strong>Elkompetens, avtalshantering och bekräftelser.</span></div></div></section><div class="property-resident-form-column">${!receipt && !declined ? `<ol class="property-steps">${steps.map((step, index) => `<li class="${moveinStep === index + 1 ? 'active' : moveinStep > index + 1 ? 'done' : ''}"${moveinStep === index + 1 ? ' aria-current="step"' : ''}><span>${moveinStep > index + 1 ? icon('check') : index + 1}</span>${step}</li>`).join('')}</ol>` : ''}${body}<p class="property-resident-note">${icon('shield')} Test med exempeldata. Ingen verklig fullmakt, elleverans eller avtalsteckning.</p></div></div><div class="property-resident-footer"><span>${e(partner().name)} × Kraftringen</span><span>Lokal förhandsvisning · Den delade testmiljöns åtkomst gäller</span></div></div>`;
   }
-  function capture(form) {
-    for (const key of ['address','postcode','city','apartment','moveDate','name','email','phone']) if (form.elements.namedItem(key)) draft[key] = form.elements.namedItem(key).value.trim();
+  function capture(form, trim = true) {
+    for (const key of Object.keys(draftTextFields)) if (form.elements.namedItem(key)) { const value = form.elements.namedItem(key).value; draft[key] = trim ? value.trim() : value; }
     for (const key of ['serviceRequested','authorityDemo']) if (form.elements.namedItem(key)) draft[key] = form.elements.namedItem(key).checked;
   }
   function focusForm() { document.querySelector('.property-movein-form, .property-receipt')?.scrollIntoView({ behavior: 'instant', block: 'start' }); document.querySelector('#property-movein-form input, #property-receipt-download, #property-receipt-new')?.focus({ preventScroll: true }); }
-  function startAgain() { draft = null; receipt = null; declined = false; moveinStep = 1; P.render(); focusForm(); }
+  function startAgain() { clearDraft(P.partner); draft = freshDraft(P.partner); receipt = null; declined = false; moveinStep = 1; P.render(); focusForm(); }
   P.register('movein', { render: renderMovein, bind: () => {
     document.querySelector('#property-return-partner').onclick = () => P.go('overview');
     document.querySelector('#property-resident-brand').onclick = event => { event.preventDefault(); P.go('overview'); };
@@ -113,9 +193,14 @@
       return;
     }
     const form = document.querySelector('#property-movein-form');
-    document.querySelector('#property-movein-back')?.addEventListener('click', () => { capture(form); moveinStep--; P.render(); focusForm(); });
-    document.querySelector('#property-fill-example')?.addEventListener('click', () => { const data = settings(); Object.assign(draft, { address: data.address, postcode: data.postcode, city: data.city, apartment: '1202', moveDate: '2026-11-01', name: 'Lo Exempel', email: 'lo@hyresgast.example', phone: '' }); P.render(); });
-    document.querySelector('#property-decline-service')?.addEventListener('click', () => { declined = true; draft = { partner: P.partner }; P.render(); focusForm(); });
+    const formDraft = draft;
+    // A delayed blur/change from a replaced form must not write into another partner's draft.
+    const autosave = () => { if (draft !== formDraft || P.partner !== formDraft.partner || receipt || declined) return; capture(form, false); saveDraft(); updateDraftStatus(); };
+    form.addEventListener('input', autosave); form.addEventListener('change', autosave);
+    document.querySelector('#property-draft-start-again').onclick = startAgain;
+    document.querySelector('#property-movein-back')?.addEventListener('click', () => { capture(form); moveinStep--; saveDraft(); P.render(); focusForm(); });
+    document.querySelector('#property-fill-example')?.addEventListener('click', () => { const data = settings(); Object.assign(draft, { address: data.address, postcode: data.postcode, city: data.city, apartment: '1202', moveDate: '2026-11-01', name: 'Lo Exempel', email: 'lo@hyresgast.example', phone: '' }); saveDraft(); P.render(); });
+    document.querySelector('#property-decline-service')?.addEventListener('click', () => { const cleared = clearDraft(P.partner); declined = true; draft = freshDraft(P.partner); P.render(); focusForm(); if (!cleared) P.toast('Ditt val är gjort, men webbläsaren kunde inte rensa utkastet i fliken.'); });
     const email = form.elements.namedItem('email'); if (email) email.oninput = () => email.setCustomValidity('');
     form.onsubmit = event => {
       event.preventDefault();
@@ -123,11 +208,14 @@
       if (email && !/^[^\s@]+@[^\s@]+\.example$/i.test(email.value.trim())) { email.setCustomValidity('Använd en påhittad e-postadress som slutar med .example.'); email.reportValidity(); return; }
       if (!form.reportValidity()) return;
       capture(form);
-      if (moveinStep < 4) { moveinStep++; P.render(); focusForm(); return; }
-      if (!draft.serviceRequested || !draft.authorityDemo) { moveinStep = 3; P.render(); focusForm(); return; }
+      if (moveinStep < 4) { moveinStep++; saveDraft(); P.render(); focusForm(); return; }
+      if (!draft.serviceRequested || !draft.authorityDemo) { moveinStep = 3; saveDraft(); P.render(); focusForm(); return; }
       const at = new Date().toISOString();
       const row = { ...draft, id: uid(), createdAt: at, status: 'Underlag registrerat i test', serviceRequested: true, authorityDemo: true, handoverStatus: 'draft', processing: { trade: 'pending', network: 'pending', offerChoice: 'undecided' }, events: [{ at, actor: 'Hyresgäst · demo', text: 'Hyresgästens testunderlag registrerat. Väntar på partnerns förmedling.', visibility: 'shared' }] };
-      init(); P.state.moveins.unshift(row); const saved = P.save(); receipt = { ...row, saved }; P.render(); focusForm();
+      init(); P.state.moveins.unshift(row); const saved = P.save();
+      const draftRetained = saved ? false : saveDraft();
+      const draftCleanupFailed = saved ? !clearDraft(P.partner) : false;
+      receipt = { ...row, saved, draftRetained, draftCleanupFailed }; P.render(); focusForm();
     };
   } });
 })();
