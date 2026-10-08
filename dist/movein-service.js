@@ -50,7 +50,14 @@
     const row = findVisible(id);
     if (!canForward(row)) { P.toast('Underlaget behöver ett tjänsteval, testmarkering för fullmaktssteget och kompletta exempeluppgifter.'); return false; }
     const supplement = row.handoverStatus === 'needs_info';
+    const previousPlan = supplement ? text(row.next) : '';
+    const previousPlanDate = supplement ? text(row.nextDate) : '';
     row.handoverStatus = 'submitted'; row.updatedAt = now(); row.submittedAt = row.updatedAt;
+    row.submissionType = supplement ? 'supplement' : 'initial';
+    if (supplement) {
+      if (previousPlan) row.events.unshift(event('Tidigare kompletteringsplan avslutad vid ny förmedling: ' + previousPlan + (previousPlanDate ? ' · planerat ' + date(previousPlanDate) : '') + '.'));
+      row.next = ''; row.nextDate = '';
+    }
     row.events.unshift(event(supplement ? 'Kompletterat serviceunderlag förmedlat på nytt i test. Inget skickas till Kraftringen eller elnätsbolag.' : 'Serviceunderlag förmedlat till Kraftringens demovy. Inget skickas till Kraftringen eller elnätsbolag.'));
     P.save();
     return true;

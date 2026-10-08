@@ -1,5 +1,29 @@
 # Arbetslogg
 
+## 2026-10-08 — Rätt nästa insats efter kompletterad överlämning
+
+- Uppgift: INFLYTT-02. Koden reproducerade att ett återförmedlat
+  `needs_info`-ärende bytte ansvar till Kraftringen men behöll partnerns gamla
+  kompletteringsplan och datum i den gemensamma arbetslistan.
+- Ändring: återförmedlingen markeras som komplettering, tidigare plan och datum
+  avslutas och sparas i den delade aktivitetshistoriken, och Kraftringens lista
+  visar "Ta emot kompletterat underlag och fortsätt handläggningen". En senare
+  uttrycklig intern plan visas oförändrat.
+- Avgränsning: inga ändringar av serviceval, fullmaktsmarkering, handläggnings-
+  statusar, avtal, kommersiella fixtures eller kickback. Befintlig lokal v2-data
+  kräver ingen migrering; äldre ärenden utan den nya markeringen behåller sin
+  tidigare generella arbetslistetext.
+- Verifiering före publicering: `node --check` för berörda moduler,
+  `node qa/movein-next-action.mjs`, Python-AST för den utökade
+  `qa/movein-service.py` samt `git diff --check`. Den beroendefria regressionen
+  bekräftar ansvarsskifte, rensat datum, bevarad historik och företräde för en
+  senare intern plan. Browser-QA kördes inte eftersom föreskriven Sites-
+  browserkontroll inte var tillgänglig i detta pass.
+- Publicering: kandidat väntar på Sites-kvittens; exakt SHA, version och
+  deployment dokumenteras efter lyckad publicering.
+- Nästa uppgift: avgränsa INFLYTT-03 i gränssnittet så att ett redan registrerat
+  testkvitto kan hittas efter omladdning utan att ett nytt ärende skapas.
+
 ## 2026-10-08 — Etablering av masteragent och första förbättringspass
 
 - Uppdrag: användarens inklistrade masterprompt aktiverar självständig utveckling

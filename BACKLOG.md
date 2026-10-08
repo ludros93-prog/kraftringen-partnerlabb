@@ -23,7 +23,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-02 — Rätt nästa insats efter kompletterad överlämning
 
-- Status: redo för nästa avgränsade pass.
+- Status: implementerad och verifierad i aktuell kandidat; publiceringskvittens dokumenteras i WORKLOG.md.
 - Belägg: en needs_info-rad med "Stäm av lägenhetsuppgiften med hyresgästen"
   förmedlas på nytt. Arbetslistan byter ansvar till Kraftringen men behåller
   partnerns tidigare next/nextDate. Verifierat genom modul-API:er i isolerad VM.
@@ -34,6 +34,13 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 - Godkänt när: efter förmedling visas en mottagningsinsats hos Kraftringen;
   tidigare plan/datum tillskrivs inte automatiskt teamet; explicita senare
   uppdateringar behålls; service och ekonomi är fortsatt separata.
+- Lösning: ny förmedling av en komplettering märks som `supplement`, den tidigare
+  partnerplanen avslutas i aktivitetshistoriken och aktivt nästa steg/datum
+  rensas. Arbetslistan visar därefter Kraftringens mottagningsinsats. En senare
+  uttrycklig intern plan har fortsatt företräde.
+- Verifiering: `qa/movein-next-action.mjs`, JavaScript-syntax, Python-AST för den
+  utökade webbläsarregressionen och diffkontroll. Browser-QA återstår när Sites-
+  miljön erbjuder den föreskrivna browserkontrollen.
 
 ## INFLYTT-03 — Hitta redan registrerat testkvitto efter omladdning
 
