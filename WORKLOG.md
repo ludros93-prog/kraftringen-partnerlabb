@@ -173,3 +173,16 @@
   daniel-smail har just nu verifierad read-behörighet. Skrivinbjudan nekades
   tidigare med HTTP403; ägaren behöver ge utvecklaråtkomst i Collaborators.
   Publik läsning innebär inte skickad eller accepterad skrivinbjudan.
+- GitHubs aktiveringsrevision c777983132282ffef40c0cdde503b00eb2ab2002
+  hämtades till Sites-källan och fördes in med fast-forward. Sites-push och
+  återläst fjärr-SHA bekräftade samma revision. Dist och hostingmanifest
+  förblev identiska med den importerade Sites-basen; version 11 och
+  custom-delning är oförändrade enligt ny native Site-läsning.
+- Samma timuppgift återaktiverades. Privat återläsning bekräftade enabled,
+  exakt ny GitHub-prompt, oförändrat timschema och Europe/Stockholm. Detta
+  verifierar aktivering, inte en redan utförd körning med den nya PR-rutinen.
+  Denna efterhandskvittens är en dokumentationsrevision efter källöverföringen.
+- Ett nytt försök att bjuda in daniel-smail efter beviljad källåtkomst
+  nekades fortfarande med HTTP403. Appen har kod- och PR-behörigheter men
+  saknar behörighet att administrera Collaborators. Repoägaren behöver
+  bjuda in Daniel; källuppladdningen och timagenten är genomförda.

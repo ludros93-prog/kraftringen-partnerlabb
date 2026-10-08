@@ -15,8 +15,8 @@
   Ludwig/Codex samordnar integration till main och Sites-publicering.
 - Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` har en sparad,
   återläst prompt för färsk GitHub-main och egen agent/-gren + PR. Schema och
-  Europe/Stockholm är bevarade. Uppgiften är tillfälligt pausad under sista
-  källöverföringen; återaktivering kvitteras i WORKLOG.md.
+  Europe/Stockholm är bevarade. Uppgiften är återaktiverad; aktivering,
+  sparad prompt och oförändrat schema har lästs tillbaka och verifierats.
 
 ## Publicerad portal och källöverföring
 
@@ -32,5 +32,7 @@ https://kraftringen-partnerlabb.rosen123.chatgpt.site.
 identiska med den färska Sites-källan. Ingen ny frontendpublicering behövs.
 
 För över GitHub-main med bibehållen historik och fast-forward enligt RUNBOOK.
-Aktuell kvittens står i WORKLOG.md. Automatisk synk, GitHub Actions, grenskydd
+Första överföringen är verifierad med gemensam SHA
+`c777983132282ffef40c0cdde503b00eb2ab2002`; senare dokumentationscommits kan
+följa. Aktuell kvittens står i WORKLOG.md. Automatisk synk, GitHub Actions, grenskydd
 eller centralt delad testdata införs inte genom denna källflytt.
