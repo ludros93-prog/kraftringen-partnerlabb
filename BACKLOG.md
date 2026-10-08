@@ -6,8 +6,7 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-01 — Återuppta hyresgästens pågående underlag
 
-- Status: implementerad och verifierad i etableringspasset; publiceringskvittens
-  dokumenteras i WORKLOG.md.
+- Status: klar och publicerad i version 10; kvittens finns i WORKLOG.md.
 - Belägg: efter ifylld bostad/kontakt och stegbyte försvinner utkastet vid
   omladdning. `P.openMovein()` rensar också vid återöppning. Modulvariabler i
   property.js var enda plats för utkast och steg.

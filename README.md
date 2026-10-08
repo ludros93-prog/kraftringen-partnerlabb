@@ -172,7 +172,7 @@ Kickbackuppföljningen omfattar samtliga partnerkanaler, enligt användarens fö
 
 Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb. [MISSION.md](MISSION.md) beskriver mål och mandat, [RUNBOOK.md](RUNBOOK.md) källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer Git-källan; dessa rotfiler ingår inte i den statiska deploymenten. Ett framtida molnpass måste därför öppna aktuell Sites-källa.
 
-Återkommande timpass planeras genom en länkad Sites-molnuppgift. Sparat schema, påbörjad körning och utförd/publicerad förbättring redovisas separat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats.
+Återkommande timpass är aktiverade genom en länkad Sites-molnuppgift, **Partnerlabbs masterutvecklare**, varje hel timme i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Sparat schema, påbörjad körning och utförd/publicerad förbättring redovisas separat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 
 Första förbättringen gäller återupptagbart pågående inflyttningsunderlag per partner i samma flik. Utkastet är åtskilt från registrerade serviceärenden och ekonomiskt exempelutfall. Testa: fyll delvis i första steget → ladda om → fortsätt till Kontakt → lämna sidan → öppna samma partners hyresgästvy igen. Prova därefter **Börja om** och kontrollera att ett tomt, frivilligt flöde visas utan att något serviceärende skapats.
 
