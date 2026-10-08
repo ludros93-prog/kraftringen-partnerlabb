@@ -81,7 +81,16 @@
     const content = consumerContent[course.id];
     return { ...course, ...content, lessons: course.lessons.map((lesson, index) => ({ ...lesson, ...content.lessons[index] })) };
   });
-  const coursesForPartner = () => P.partner === 'vast' ? consumerCourses : businessCourses;
+  const elakademin = window.PartnerElakademin;
+  const academyCourse = elakademin ? {
+    id: 'elakademin', category: 'electric', title: elakademin.title, description: elakademin.description,
+    image: elakademin.cover, duration: `${elakademin.durationLabel} film`, realContent: true,
+    lessons: elakademin.modules.map(module => ({ ...module, text: module.subtitle, bullets: module.takeaways }))
+  } : null;
+  const coursesForPartner = () => {
+    const demos = P.partner === 'vast' ? consumerCourses : businessCourses;
+    return academyCourse && ['syd', 'vast'].includes(P.partner) ? [academyCourse, ...demos] : demos;
+  };
   const paths = {
     grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
     bolt: '<path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/>',
@@ -123,13 +132,13 @@
     const progress = training();
     const totalMoments = courses.reduce((count, course) => count + course.lessons.length, 0);
     const completedMoments = courses.reduce((count, course) => count + progress.completed[course.id].length, 0);
-    return { totalMoments, completedMoments, percent: Math.round(completedMoments / totalMoments * 100), completedCourses: courses.filter(course => completed(course) === course.lessons.length).length, ongoingCourses: courses.filter(course => completed(course) > 0 && completed(course) < course.lessons.length).length, bookmarkedCourses: progress.bookmarks.length };
+    return { totalCourses: courses.length, totalMoments, completedMoments, percent: Math.round(completedMoments / totalMoments * 100), completedCourses: courses.filter(course => completed(course) === course.lessons.length).length, ongoingCourses: courses.filter(course => completed(course) > 0 && completed(course) < course.lessons.length).length, bookmarkedCourses: progress.bookmarks.length };
   };
   function courseCard(course) {
     const marked = training().bookmarks.includes(course.id);
     const progress = percent(course);
     const category = categories.find(item => item.id === course.category);
-    return `<article class="ac-course"><div class="ac-course-image"><img src="${course.image}" alt="" loading="lazy"><span class="ac-course-type">${P.e(category.label)}</span><button class="ac-bookmark" data-ac-bookmark="${course.id}" aria-pressed="${marked}" aria-label="${marked ? 'Ta bort bokmärke för' : 'Bokmärk'} ${P.e(course.title)}">${icon('bookmark')}</button><button class="ac-course-play" data-ac-course="${course.id}" aria-label="Öppna ${P.e(course.title)}">${icon('play')}</button></div><div class="ac-course-body"><h3>${P.e(course.title)}</h3><p class="ac-course-description">${P.e(course.description)}</p><div class="ac-course-meta"><span>${icon('clock')}${course.duration} · demo</span><span>${icon('book')}${course.lessons.length} moment</span></div><div class="ac-progress-line" aria-label="${progress} procent klarmarkerat i demo"><span class="ac-progress-track"><span style="width:${progress}%"></span></span><b>${progress}%</b></div><button class="ac-button" data-ac-course="${course.id}">${progress === 100 ? 'Repetera kursen' : progress > 0 ? 'Fortsätt utbildningen' : 'Öppna utbildningen'} ${icon('arrow')}</button></div></article>`;
+    return `<article class="ac-course ${course.realContent ? 'ac-course-featured' : ''}"><div class="ac-course-image"><img src="${P.e(course.image)}" alt="" loading="lazy"><span class="ac-course-type">${course.realContent ? 'Elakademin · utbildningsmaterial' : P.e(category.label) + ' · demo'}</span><button class="ac-bookmark" data-ac-bookmark="${course.id}" aria-pressed="${marked}" aria-label="${marked ? 'Ta bort bokmärke för' : 'Bokmärk'} ${P.e(course.title)}">${icon('bookmark')}</button><button class="ac-course-play" data-ac-course="${course.id}" aria-label="Öppna ${P.e(course.title)}">${icon('play')}</button></div><div class="ac-course-body"><h3>${P.e(course.title)}</h3><p class="ac-course-description">${P.e(course.description)}</p>${course.realContent ? `<p class="ac-course-segment">${P.partner === 'vast' ? 'Fördjupning i företagselhandel · företagsvillkor' : 'För kunddialogen med företag & BRF'}</p>` : ''}<div class="ac-course-meta"><span>${icon('clock')}${P.e(course.duration)}${course.realContent ? ' · svenskt tal · textat' : ' · demo'}</span><span>${icon('book')}${course.lessons.length} ${course.realContent ? 'kapitel' : 'moment'}</span></div><div class="ac-progress-line" aria-label="${progress} procent lokalt klarmarkerat"><span class="ac-progress-track"><span style="width:${progress}%"></span></span><b>${progress}%</b></div><button class="ac-button" data-ac-course="${course.id}">${progress === 100 ? 'Repetera kursen' : progress > 0 ? 'Fortsätt utbildningen' : 'Öppna utbildningen'} ${icon('arrow')}</button></div></article>`;
   }
   function render() {
     const courses = coursesForPartner();
@@ -139,38 +148,115 @@
     const stats = P.academyStats();
     const progress = training();
     const visible = courses.filter(course => filter === 'all' || course.category === filter || (filter === 'bookmarked' && progress.bookmarks.includes(course.id)));
-    return `<section class="academy-page" aria-labelledby="ac-title"><div class="ac-header"><div><span class="ac-eyebrow">Partner Academy</span><h1 id="ac-title">Utbildning</h1><p>${P.e(subtitle)}</p></div><span class="ac-demo-chip">Demoinnehåll · lokala framsteg</span></div><div class="ac-layout"><div class="ac-main"><section class="ac-hero" aria-label="Dina utbildningsframsteg"><img class="ac-hero-photo" src="assets/wind.jpg" alt="" fetchpriority="high"><div class="ac-hero-copy"><span class="ac-eyebrow">Kunskap. Dialog. Samarbete.</span><h2>Utveckla din kompetens.<br>Skapa värde i mötet.</h2><p>${P.e(heroCopy)}</p><button class="ac-button primary" id="ac-explore">Utforska utbildningar ${icon('arrow')}</button></div><div class="ac-hero-ring"><span>Dina demoframsteg</span><div class="ac-ring" style="--progress:${stats.percent}" aria-label="${stats.percent} procent av demomomenten klarmarkerade"><b>${stats.percent}%</b></div><small>${stats.completedMoments} av ${stats.totalMoments} moment<br>klarmarkerade i demo</small></div></section><div class="ac-section-title"><h2>Utbildningskategorier</h2><small>Välj vad du vill utforska</small></div><div class="ac-filters" aria-label="Filtrera utbildningar">${categories.map(category => `<button class="ac-filter" data-ac-filter="${category.id}" aria-pressed="${filter === category.id}">${icon(category.icon)}${P.e(category.label)}</button>`).join('')}</div><div class="ac-section-title" id="ac-course-heading"><h2>${filter === 'bookmarked' ? 'Dina bokmärken' : 'Utvalda utbildningar'}</h2><small>${visible.length} utbildningar · demoinnehåll</small></div><div class="ac-course-grid">${visible.length ? visible.map(courseCard).join('') : '<div class="ac-empty"><strong>Inga bokmärken ännu</strong>Tryck på bokmärket i ett kurskort för att spara kursen här.</div>'}</div><div class="ac-note">${icon('info')}<p>Kurserna visar hur utbildningsdelen kan fungera. Innehåll, tider och framsteg är exempel. Godkända utbildningar och eventuella certifieringskrav behöver ni lämna underlag för.</p></div></div><aside class="ac-side" aria-label="Utbildningsöversikt"><section class="ac-panel"><h2>Mina framsteg</h2><dl class="ac-stats-list"><div><dt>${icon('check')}Klarmarkerade kurser</dt><dd>${stats.completedCourses}</dd></div><div><dt>${icon('clock')}Påbörjade kurser</dt><dd>${stats.ongoingCourses}</dd></div><div><dt>${icon('book')}Klarmarkerade moment</dt><dd>${stats.completedMoments} / ${stats.totalMoments}</dd></div><div><dt>${icon('bookmark')}Bokmärken</dt><dd>${stats.bookmarkedCourses}</dd></div></dl><p>Gäller ${P.e(P.partners[P.partner] || 'vald exempelpartner')} i denna webbläsare.</p></section><section class="ac-panel" id="ac-certifications"><h2>Certifieringar</h2><span class="ac-certificate-icon">${icon('certificate')}</span><span class="ac-cert-state">Underlag återstår</span><p>Här kan partnerns certifieringar samlas när ni har bestämt innehåll, bedömning och giltighet.</p><p class="ac-future">Klarmarkerade demomoment är inga kunskapsintyg och ger ingen certifiering.</p></section><section class="ac-panel"><h2>Kommande genomgång</h2><div class="ac-webinar"><div class="ac-calendar-date" aria-hidden="true"><b>21</b><span>OKT</span></div><div><h3>Upptäck partnerportalen</h3><p>21 oktober 2026<br>10:00–10:30 · exempelaktivitet</p><button class="ac-button" id="ac-webinar" aria-pressed="${!!progress.webinarBooked}">${progress.webinarBooked ? `${icon('check')} Markerad i demo` : 'Testa anmälan'}</button></div></div><p class="ac-future">Anmälan sparas lokalt som ett test. Ingen mötesbokning skickas.</p></section></aside></div></section>`;
+    return `<section class="academy-page" aria-labelledby="ac-title"><div class="ac-header"><div><span class="ac-eyebrow">Partner Academy</span><h1 id="ac-title">Utbildning</h1><p>${P.e(subtitle)}</p></div><span class="ac-demo-chip">Lokala framsteg</span></div><div class="ac-layout"><div class="ac-main"><section class="ac-hero" aria-label="Dina utbildningsframsteg"><img class="ac-hero-photo" src="assets/wind.jpg" alt="" fetchpriority="high"><div class="ac-hero-copy"><span class="ac-eyebrow">Kunskap. Dialog. Samarbete.</span><h2>Utveckla din kompetens.<br>Skapa värde i mötet.</h2><p>${P.e(heroCopy)}</p><button class="ac-button primary" id="ac-explore">Utforska utbildningar ${icon('arrow')}</button></div><div class="ac-hero-ring"><span>Dina klarmarkeringar</span><div class="ac-ring" style="--progress:${stats.percent}" aria-label="${stats.percent} procent av momenten lokalt klarmarkerade"><b>${stats.percent}%</b></div><small>${stats.completedMoments} av ${stats.totalMoments} moment<br>klarmarkerade lokalt</small></div></section><div class="ac-section-title"><h2>Utbildningskategorier</h2><small>Välj vad du vill utforska</small></div><div class="ac-filters" aria-label="Filtrera utbildningar">${categories.map(category => `<button class="ac-filter" data-ac-filter="${category.id}" aria-pressed="${filter === category.id}">${icon(category.icon)}${P.e(category.label)}</button>`).join('')}</div><div class="ac-section-title" id="ac-course-heading"><h2>${filter === 'bookmarked' ? 'Dina bokmärken' : 'Utvalda utbildningar'}</h2><small>${visible.length} utbildningar</small></div><div class="ac-course-grid">${visible.length ? visible.map(courseCard).join('') : '<div class="ac-empty"><strong>Inga bokmärken ännu</strong>Tryck på bokmärket i ett kurskort för att spara kursen här.</div>'}</div><div class="ac-note">${icon('info')}<p>Elakademin innehåller sex färdiga kapitelfilmer och självtest. De fyra övriga kurserna är demoinnehåll. Klarmarkeringar och testsvar sparas bara i denna webbläsare och ger ingen partnercertifiering.</p></div></div><aside class="ac-side" aria-label="Utbildningsöversikt"><section class="ac-panel"><h2>Mina framsteg</h2><dl class="ac-stats-list"><div><dt>${icon('check')}Klarmarkerade kurser</dt><dd>${stats.completedCourses}</dd></div><div><dt>${icon('clock')}Påbörjade kurser</dt><dd>${stats.ongoingCourses}</dd></div><div><dt>${icon('book')}Klarmarkerade moment</dt><dd>${stats.completedMoments} / ${stats.totalMoments}</dd></div><div><dt>${icon('bookmark')}Bokmärken</dt><dd>${stats.bookmarkedCourses}</dd></div></dl><p>Gäller ${P.e(P.partners[P.partner] || 'vald exempelpartner')} i denna webbläsare.</p></section><section class="ac-panel" id="ac-certifications"><h2>Certifieringar</h2><span class="ac-certificate-icon">${icon('certificate')}</span><span class="ac-cert-state">Underlag återstår</span><p>Här kan partnerns certifieringar samlas när ni har bestämt innehåll, bedömning och giltighet.</p><p class="ac-future">Klarmarkeringar och lokala självtest ger ingen partnercertifiering.</p></section><section class="ac-panel"><h2>Kommande genomgång</h2><div class="ac-webinar"><div class="ac-calendar-date" aria-hidden="true"><b>21</b><span>OKT</span></div><div><h3>Upptäck partnerportalen</h3><p>21 oktober 2026<br>10:00–10:30 · exempelaktivitet</p><button class="ac-button" id="ac-webinar" aria-pressed="${!!progress.webinarBooked}">${progress.webinarBooked ? `${icon('check')} Markerad i demo` : 'Testa anmälan'}</button></div></div><p class="ac-future">Anmälan sparas lokalt som ett test. Ingen mötesbokning skickas.</p></section></aside></div></section>`;
+  }
+  function quizAnswers(courseId) {
+    const progress = training();
+    if (!progress.selfTests || typeof progress.selfTests !== 'object' || Array.isArray(progress.selfTests)) progress.selfTests = {};
+    if (!progress.selfTests[courseId] || typeof progress.selfTests[courseId] !== 'object' || Array.isArray(progress.selfTests[courseId])) progress.selfTests[courseId] = {};
+    return progress.selfTests[courseId];
+  }
+  function quizAnswer(courseId, question) {
+    const saved = quizAnswers(courseId)[question.id];
+    return saved && Number.isInteger(saved.selectedIndex) && saved.selectedIndex >= 0 && saved.selectedIndex < question.options.length ? saved : null;
+  }
+  function quizFeedback(question, answer) {
+    if (!answer?.checked) return '';
+    const correct = answer.selectedIndex === question.correctIndex;
+    return `<strong>${correct ? 'Rätt svar.' : 'Prova att tänka ett varv till.'}</strong>${correct ? '' : `<p>Rätt svar: ${P.e(question.options[question.correctIndex])}</p>`}<p>${P.e(question.explanation)}</p>`;
+  }
+  function quizSummary(course) {
+    const questions = course.lessons.flatMap(lesson => lesson.quiz || []);
+    const checked = questions.filter(question => quizAnswer(course.id, question)?.checked);
+    const correct = checked.filter(question => quizAnswer(course.id, question).selectedIndex === question.correctIndex);
+    return `Självtest: ${correct.length} av ${questions.length} rätt · ${checked.length} frågor kontrollerade lokalt.`;
+  }
+  function renderQuiz(course, lesson) {
+    return `<section class="ac-self-test" aria-labelledby="ac-self-test-title"><h4 id="ac-self-test-title">Testa din förståelse</h4><p>Ett självtest med återkoppling. Dina svar sparas lokalt för ${P.e(P.partners[P.partner])}; de klarmarkerar inte kapitlet.</p>${lesson.quiz.map((question, index) => {
+      const answer = quizAnswer(course.id, question);
+      return `<form class="ac-quiz" data-ac-quiz="${P.e(question.id)}"><fieldset><legend>${index + 1}. ${P.e(question.question)}</legend>${question.options.map((option, optionIndex) => `<label class="ac-quiz-option" for="ac-choice-${question.id}-${optionIndex}"><input type="radio" name="choice" id="ac-choice-${question.id}-${optionIndex}" value="${optionIndex}" required${answer?.selectedIndex === optionIndex ? ' checked' : ''}><span>${P.e(option)}</span></label>`).join('')}</fieldset><button class="ac-button" type="submit" data-ac-check="${question.id}">${answer?.checked ? 'Kontrollera igen' : 'Kontrollera svaret'}</button><div class="ac-quiz-feedback ${answer?.checked ? (answer.selectedIndex === question.correctIndex ? 'correct' : 'retry') : ''}" data-ac-feedback="${question.id}" role="status" aria-live="polite" tabindex="-1"${answer?.checked ? '' : ' hidden'}>${quizFeedback(question, answer)}</div></form>`;
+    }).join('')}</section>`;
+  }
+  function bindQuiz(holder, course, lesson) {
+    holder.querySelectorAll('[data-ac-quiz]').forEach(form => {
+      const question = lesson.quiz.find(item => item.id === form.dataset.acQuiz);
+      const feedback = form.querySelector('[data-ac-feedback]');
+      const button = form.querySelector('[data-ac-check]');
+      form.addEventListener('change', () => {
+        const selectedIndex = Number(new FormData(form).get('choice'));
+        if (!Number.isInteger(selectedIndex) || selectedIndex < 0 || selectedIndex >= question.options.length) return;
+        quizAnswers(course.id)[question.id] = { selectedIndex, checked: false };
+        P.save(); feedback.hidden = true; feedback.innerHTML = ''; button.textContent = 'Kontrollera svaret';
+        holder.querySelector('#ac-self-test-progress').textContent = quizSummary(course);
+      });
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const selectedIndex = Number(new FormData(form).get('choice'));
+        if (!Number.isInteger(selectedIndex) || selectedIndex < 0 || selectedIndex >= question.options.length) return;
+        const answer = { selectedIndex, checked: true };
+        quizAnswers(course.id)[question.id] = answer; P.save();
+        feedback.hidden = false; feedback.className = `ac-quiz-feedback ${selectedIndex === question.correctIndex ? 'correct' : 'retry'}`;
+        feedback.innerHTML = quizFeedback(question, answer); button.textContent = 'Kontrollera igen';
+        holder.querySelector('#ac-self-test-progress').textContent = quizSummary(course); feedback.focus();
+      });
+    });
+  }
+  function academyLesson(course, lesson) {
+    return `<p class="ac-lesson-subtitle">${P.e(lesson.subtitle)}</p><figure class="ac-lesson-video"><video controls playsinline preload="metadata" poster="${P.e(lesson.video.poster)}" aria-label="Kapitelfilm: ${P.e(lesson.title)}" data-ac-video><source src="${P.e(lesson.video.url)}" type="video/mp4">Din webbläsare kan inte visa filmen här.</video><figcaption>${P.e(lesson.video.durationLabel)} · Svenskt tal · Inbränd svensk text <a href="${P.e(lesson.video.url)}" target="_blank" rel="noopener" aria-label="Öppna kapitelfilmen i en ny flik">Öppna filmen separat ${icon('arrow')}</a></figcaption><p class="ac-video-error" data-ac-video-error role="status" hidden>Filmen kunde inte laddas. Prova länken till filmen eller läs kapiteltexten nedan.</p></figure><details class="ac-transcript"><summary>Filmmanus – läs vad som sägs</summary>${lesson.script.split(/\n+/).map(paragraph => `<p>${P.e(paragraph)}</p>`).join('')}</details><div class="ac-reading">${lesson.sections.map(section => `<section><h4>${P.e(section.heading)}</h4>${section.body.map(paragraph => `<p>${P.e(paragraph)}</p>`).join('')}</section>`).join('')}</div><section class="ac-takeaways"><h4>Ta med dig</h4><ul>${lesson.takeaways.map(text => `<li>${P.e(text)}</li>`).join('')}</ul></section>${renderQuiz(course, lesson)}`;
   }
   function openCourse(id) {
     const course = courseById(id);
     if (!course) return;
     let activeLesson = course.lessons.findIndex(lesson => !training().completed[id].includes(lesson.id));
     if (activeLesson < 0) activeLesson = 0;
-    const mountHtml = '<div class="academy-page"><p class="ac-dialog-intro">Läs ett kort demomoment och testa att markera det klart.</p><div id="academy-dialog-mount"></div><p class="ac-dialog-note">Demoinnehåll för att testa portalen. Framsteg sparas i denna webbläsare för vald exempelpartner. Klarmarkering ger inget kunskapsintyg eller certifikat.</p></div>';
+    const real = course.realContent;
+    const scopeNote = P.partner === 'vast' ? 'Elmarknadsgrunderna kan användas som bakgrundskunskap. Företagsexemplen och portföljprodukterna gäller företagskunder och är fördjupning för Face2face. De beskriver inte konsumentvillkor eller konsumenterbjudanden.' : 'Utbildningen använder ett fiktivt företag för att förklara elhandel och portföljprodukter. Räkneexemplen är inga offerter; aktuella villkor gäller för varje kund.';
+    const resources = real ? `<div class="ac-b2b-note"><strong>${P.partner === 'vast' ? 'Face2face · fördjupning i företagselhandel' : 'Företagselhandel · för kunddialogen'}</strong><p>${scopeNote}</p></div><div class="ac-resources"><a class="ac-button" href="${P.e(elakademin.academyUrl)}" target="_blank" rel="noopener" aria-label="Öppna hela Elakademin i en ny flik">Hela Elakademin ${icon('arrow')}</a><a class="ac-button" href="${P.e(elakademin.guideUrl)}" target="_blank" rel="noopener" aria-label="Öppna kundguiden som PDF i en ny flik">Kundguide · PDF ${icon('book')}</a><p>Räkneverktyg, slutprov och utbildningsintyg finns i hela Elakademin. Framstegen där sparas separat från partnerportalen.</p></div>` : '';
+    const mountHtml = `<div class="academy-page"><p class="ac-dialog-intro">${real ? 'Sex kapitelfilmer, kapiteltext och tolv frågor. Se filmen, läs i din egen takt och testa din förståelse.' : 'Läs ett kort demomoment och testa att markera det klart.'}</p>${resources}<div id="academy-dialog-mount"></div>${real ? `<details class="ac-source-list"><summary>Källor och aktuella produktvillkor</summary><ul>${elakademin.sources.map(source => `<li><a href="${P.e(source.url)}" target="_blank" rel="noopener">${P.e(source.title)}</a></li>`).join('')}</ul></details>` : ''}<p class="ac-dialog-note">${real ? 'Klarmarkeringar och testsvar sparas lokalt för vald partner. Klarmarkering är din egen uppföljning och verifierar inte filmvisning, slutprov eller partnercertifiering.' : 'Demoinnehåll för att testa portalen. Framsteg sparas i denna webbläsare för vald exempelpartner. Klarmarkering ger inget kunskapsintyg eller certifikat.'}</p></div>`;
     const mount = () => {
       const holder = document.querySelector('#academy-dialog-mount');
       if (!holder) return;
       const progress = training();
       const lesson = course.lessons[activeLesson];
       const done = progress.completed[id].includes(lesson.id);
-      holder.innerHTML = `<div class="ac-dialog-body"><div><nav class="ac-lesson-menu" aria-label="Moment i utbildningen">${course.lessons.map((item, index) => `<button class="ac-lesson-nav ${index === activeLesson ? 'active' : ''}" data-ac-lesson="${index}" ${index === activeLesson ? 'aria-current="step"' : ''}><span class="ac-lesson-number ${progress.completed[id].includes(item.id) ? 'complete' : ''}">${progress.completed[id].includes(item.id) ? '✓' : index + 1}</span>${P.e(item.title)}</button>`).join('')}</nav><p class="ac-dialog-progress">${completed(course)} av ${course.lessons.length} moment klarmarkerade</p></div><article class="ac-lesson-copy"><span class="ac-demo-chip">Moment ${activeLesson + 1} av ${course.lessons.length} · demoinnehåll</span><h3 tabindex="-1" id="ac-lesson-title">${P.e(lesson.title)}</h3><p>${P.e(lesson.text)}</p><ul>${lesson.bullets.map(text => `<li>${P.e(text)}</li>`).join('')}</ul>${done ? '<p class="ac-completion">✓ Du har markerat detta demomoment klart.</p>' : ''}<div class="ac-lesson-actions"><button class="ac-button ${done ? '' : 'primary'}" id="ac-complete">${done ? 'Ångra klarmarkering' : `${icon('check')} Markera momentet klart`}</button>${activeLesson < course.lessons.length - 1 ? `<button class="ac-button" id="ac-next-lesson">Nästa moment ${icon('arrow')}</button>` : '<button class="ac-button" id="ac-close-course">Till utbildningarna</button>'}</div></article></div>`;
+      holder.innerHTML = `<div class="ac-dialog-body"><div class="ac-lesson-aside"><nav class="ac-lesson-menu" aria-label="${real ? 'Kapitel' : 'Moment'} i utbildningen">${course.lessons.map((item, index) => `<button class="ac-lesson-nav ${index === activeLesson ? 'active' : ''}" data-ac-lesson="${index}" ${index === activeLesson ? 'aria-current="step"' : ''}><span class="ac-lesson-number ${progress.completed[id].includes(item.id) ? 'complete' : ''}">${progress.completed[id].includes(item.id) ? '✓' : index + 1}</span>${P.e(item.title)}</button>`).join('')}</nav><p class="ac-dialog-progress" id="ac-course-progress">${completed(course)} av ${course.lessons.length} ${real ? 'kapitel' : 'moment'} klarmarkerade</p>${real ? `<p class="ac-dialog-progress" id="ac-self-test-progress">${quizSummary(course)}</p>` : ''}</div><article class="ac-lesson-copy"><span class="ac-demo-chip">${real ? 'Kapitel' : 'Moment'} ${activeLesson + 1} av ${course.lessons.length}${real ? ` · ${P.e(lesson.video.durationLabel)}` : ' · demoinnehåll'}</span><h3 tabindex="-1" id="ac-lesson-title">${P.e(lesson.title)}</h3>${real ? academyLesson(course, lesson) : `<p>${P.e(lesson.text)}</p><ul>${lesson.bullets.map(text => `<li>${P.e(text)}</li>`).join('')}</ul>`}<p class="ac-completion" id="ac-completion"${done ? '' : ' hidden'}>✓ Du har markerat detta ${real ? 'kapitel' : 'demomoment'} klart.</p><div class="ac-lesson-actions"><button class="ac-button ${done ? '' : 'primary'}" id="ac-complete">${done ? 'Ångra klarmarkering' : `${icon('check')} Markera ${real ? 'kapitlet' : 'momentet'} klart`}</button>${activeLesson < course.lessons.length - 1 ? `<button class="ac-button" id="ac-next-lesson">Nästa ${real ? 'kapitel' : 'moment'} ${icon('arrow')}</button>` : '<button class="ac-button" id="ac-close-course">Till utbildningarna</button>'}</div></article></div>`;
       holder.querySelectorAll('[data-ac-lesson]').forEach(button => button.addEventListener('click', () => {
         activeLesson = Number(button.dataset.acLesson); mount(); document.querySelector('#ac-lesson-title')?.focus();
       }));
       holder.querySelector('#ac-complete').addEventListener('click', () => {
         const values = training().completed[id];
-        training().completed[id] = done ? values.filter(value => value !== lesson.id) : [...values, lesson.id];
-        P.save(); P.render(); mount();
+        const wasDone = values.includes(lesson.id);
+        training().completed[id] = wasDone ? values.filter(value => value !== lesson.id) : [...values, lesson.id];
+        P.save(); P.render();
+        holder.querySelectorAll('[data-ac-lesson]').forEach(button => {
+          const index = Number(button.dataset.acLesson);
+          const number = button.querySelector('.ac-lesson-number');
+          const marked = training().completed[id].includes(course.lessons[index].id);
+          number.classList.toggle('complete', marked); number.textContent = marked ? '✓' : index + 1;
+        });
+        holder.querySelector('#ac-course-progress').textContent = `${completed(course)} av ${course.lessons.length} ${real ? 'kapitel' : 'moment'} klarmarkerade`;
+        holder.querySelector('#ac-completion').hidden = wasDone;
+        const completeButton = holder.querySelector('#ac-complete');
+        completeButton.classList.toggle('primary', wasDone);
+        completeButton.innerHTML = !wasDone ? 'Ångra klarmarkering' : `${icon('check')} Markera ${real ? 'kapitlet' : 'momentet'} klart`;
         document.querySelector('#ac-complete')?.focus();
-        P.toast(done ? 'Klarmarkeringen borttagen i demo.' : 'Demomomentet klarmarkerat. Dina framsteg har sparats lokalt.');
+        P.toast(wasDone ? 'Klarmarkeringen borttagen.' : real ? 'Kapitlet klarmarkerat lokalt. Självtest och slutprov bedöms separat.' : 'Demomomentet klarmarkerat. Dina framsteg har sparats lokalt.');
       });
       holder.querySelector('#ac-next-lesson')?.addEventListener('click', () => {
         activeLesson += 1; mount(); document.querySelector('#ac-lesson-title')?.focus();
       });
       holder.querySelector('#ac-close-course')?.addEventListener('click', () => P.closeDialog());
+      if (real) {
+        bindQuiz(holder, course, lesson);
+        holder.querySelector('[data-ac-video]')?.addEventListener('error', () => { holder.querySelector('[data-ac-video-error]').hidden = false; });
+      }
     };
+    const dialog = document.querySelector('#portal-dialog');
+    dialog?.classList.toggle('ac-elakademin-dialog', !!real);
     P.openDialog(course.title, mountHtml, mount);
-    document.querySelector('#portal-dialog')?.addEventListener('close', () => {
+    dialog?.addEventListener('close', () => {
+      dialog.querySelectorAll('video').forEach(video => video.pause());
+      dialog.classList.remove('ac-elakademin-dialog');
       document.querySelector(`[data-ac-course="${id}"]`)?.focus();
     }, { once: true });
   }

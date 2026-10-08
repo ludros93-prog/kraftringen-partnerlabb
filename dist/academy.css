@@ -12,3 +12,57 @@
 @media(max-width:640px){.ac-hero-copy{max-width:none}.ac-hero h2{font-size:24px}.ac-hero-ring{width:100%;display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 14px;text-align:left;align-items:center;justify-content:start;padding:12px 14px;background:#ffffffd9}.ac-hero-ring>span{grid-column:2;align-self:end}.ac-hero-ring small{grid-column:2;align-self:start}.ac-hero-ring .ac-ring{grid-column:1;grid-row:1/3;width:62px;height:62px}.ac-hero-ring .ac-ring:before{width:50px;height:50px}.ac-hero-ring .ac-ring b{font-size:18px}}
 @media(max-width:380px){.ac-course-grid{grid-template-columns:1fr}.ac-course-image{height:150px}.ac-hero-ring{display:none}.ac-demo-chip{white-space:normal}.ac-lesson-menu{grid-template-columns:1fr}.ac-lesson-nav{flex-direction:row}}
 @media(prefers-reduced-motion:reduce){.ac-course-play:hover{transform:translate(-50%,-50%)}}
+
+/* Elakademin är färdigt utbildningsmaterial; övriga fyra kurskort behåller demoformatet. */
+.ac-course-featured{grid-column:1/-1;display:grid;grid-template-columns:minmax(240px,.95fr) minmax(0,1.05fr);border-color:#a8c9ca;background:#fbfefe}
+.ac-course-featured .ac-course-image{height:100%;min-height:220px;background:#123b3e}
+.ac-course-featured .ac-course-image>img{object-fit:contain}
+.ac-course-featured .ac-course-body{padding:21px 23px}
+.ac-course-featured h3{font-size:18px;line-height:1.4;margin-bottom:9px}
+.ac-course-featured .ac-course-description{font-size:12px;color:#536b7a;flex:initial}
+.ac-course-featured .ac-course-meta{flex-wrap:wrap;line-height:1.6;color:#536b7a;margin-top:5px}
+.ac-course-segment{font-size:10px!important;line-height:1.7;color:#286c71;margin:0 0 9px;font-weight:650}
+#portal-dialog.ac-elakademin-dialog{width:980px;max-width:calc(100vw - 30px)}
+.ac-elakademin-dialog .ac-dialog-body{grid-template-columns:195px minmax(0,1fr);gap:25px}
+.ac-elakademin-dialog .ac-lesson-aside{position:sticky;top:0;align-self:start}
+.ac-elakademin-dialog .ac-lesson-copy{min-width:0}
+.ac-b2b-note{padding:13px 16px;border:1px solid #dce9e7;border-left:3px solid #007d82;background:#f4f9f8;border-radius:6px;margin:0 0 16px}
+.ac-b2b-note strong{display:block;font-size:12px;line-height:1.5;color:#174c51}
+.ac-b2b-note p{font-size:11px;line-height:1.8;color:#4f6874;margin:5px 0 0}
+.ac-resources{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 22px}
+.ac-resources p{flex:1 1 260px;font-size:10px;line-height:1.7;color:#5d7380;margin:0}
+.ac-lesson-video{margin:16px 0 19px;border:1px solid #dce7ea;border-radius:8px;overflow:hidden;background:#f7fafb}
+.ac-lesson-video video{display:block;width:100%;aspect-ratio:16/9;background:#11393d}
+.ac-lesson-video figcaption{font-size:10px;line-height:1.7;padding:10px 12px;color:#546d7b;display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.ac-lesson-video figcaption a{color:#006e74;font-weight:650;display:inline-flex;align-items:center;gap:4px;text-decoration:none}
+.ac-lesson-video figcaption a:hover{text-decoration:underline}
+.ac-lesson-video .ac-icon{width:13px;height:13px}
+.ac-lesson-video .ac-video-error{font-size:11px;color:#865318;margin:0;padding:0 12px 12px}
+.ac-elakademin-dialog .ac-lesson-subtitle{color:#536a78;margin:0 0 12px}
+.ac-reading h4,.ac-takeaways h4,.ac-self-test h4{font-size:14px;line-height:1.6;color:#183a4b;margin:22px 0 9px}
+.ac-reading p{margin:0 0 12px}
+.ac-transcript{border:1px solid #dce8eb;border-radius:6px;padding:12px 14px;margin:0 0 24px;background:#f8fbfb}
+.ac-transcript summary,.ac-source-list summary{font-size:11px;font-weight:650;color:#006d74;cursor:pointer;line-height:1.6}
+.ac-transcript p{font-size:11px;margin:12px 0 0}
+.ac-takeaways{padding:0 16px 3px;background:#f3f9f6;border:1px solid #deece3;border-radius:6px;margin-top:22px}
+.ac-takeaways h4{margin-top:15px}
+.ac-self-test{margin:24px 0 0;border-top:1px solid #e0e9ed;padding-top:1px}
+.ac-self-test>p{font-size:11px;color:#5e7582;margin:0 0 15px}
+.ac-quiz{border:1px solid #dce7eb;background:#fff;border-radius:7px;padding:16px;margin:14px 0}
+.ac-quiz fieldset{border:0;padding:0;margin:0 0 13px;min-width:0}
+.ac-quiz legend{font-size:12px;line-height:1.7;color:#193b4e;font-weight:650;margin-bottom:11px;padding:0;width:100%}
+.ac-quiz-option{display:flex;align-items:flex-start;gap:9px;padding:10px 11px;margin:7px 0;border:1px solid #dce6ea;border-radius:5px;font-size:11px;line-height:1.7;color:#425e70;cursor:pointer;background:#fbfdfd}
+.ac-quiz-option:hover{border-color:#a2c7ca;background:#f3f9f9}
+.ac-quiz-option:has(input:checked){border-color:#8bbabd;background:#edf7f7;color:#14565e}
+.ac-quiz-option:focus-within{outline:2px solid #007d82;outline-offset:2px}
+.ac-quiz-option input{accent-color:#007d82;flex:0 0 auto;min-width:16px;width:16px;height:16px;margin:2px 0 0}
+.ac-quiz-feedback{padding:12px 13px;border-radius:5px;background:#f0f7f2;border:1px solid #d6e8dd;margin-top:13px;font-size:11px;line-height:1.7;color:#2d6850}
+.ac-quiz-feedback.retry{background:#fff8ed;border-color:#eadcc3;color:#76541f}
+.ac-quiz-feedback p{font-size:11px;line-height:1.7;color:inherit;margin:7px 0 0}
+.ac-quiz-feedback:focus{outline:2px solid #5b9b9e;outline-offset:2px}
+.ac-source-list{margin:24px 0 0;padding:15px 0 0;border-top:1px solid #e1e9ed}
+.ac-source-list ul{padding-left:20px;margin:12px 0 0;font-size:11px;line-height:1.8}
+.ac-source-list li{padding-bottom:5px}
+.ac-source-list a{color:#006d74;overflow-wrap:anywhere}
+.ac-elakademin-dialog .ac-dialog-note{color:#597482}
+@media(max-width:720px){.ac-course-featured{display:flex}.ac-course-featured .ac-course-image{min-height:0;height:auto;aspect-ratio:16/9}.ac-course-featured .ac-course-body{padding:17px 19px}.ac-course-featured h3{font-size:16px}.ac-elakademin-dialog .ac-dialog-body{grid-template-columns:1fr;gap:19px}.ac-elakademin-dialog .ac-lesson-aside{position:static}.ac-elakademin-dialog .ac-lesson-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.ac-elakademin-dialog .ac-lesson-nav{font-size:10px;padding:10px 8px;flex-direction:row;align-items:flex-start}.ac-elakademin-dialog .ac-dialog-progress{margin:10px 0}.ac-resources{gap:8px}.ac-resources p{flex-basis:100%}.ac-quiz{padding:13px}.ac-quiz-option{padding:10px}.ac-elakademin-dialog .ac-dialog-intro{margin-bottom:14px}}

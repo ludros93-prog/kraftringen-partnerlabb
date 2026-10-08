@@ -4,7 +4,7 @@ En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvud
 
 Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Arbetsytorna är nu anpassade till dessa två segment. Fastighetspartners erbjuder frivillig inflyttningsservice vid hyresavtal och förmedlar hyresgästens underlag till Kraftringen. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
 
-Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, utbildningar och partnerresan är förslag att testa. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
+Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
 ## Starta
 
@@ -33,7 +33,7 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | Offerter & avtal | Offertstudion har fyra steg: **Välj område → Beskriv behov → Välj kund → Granska & spara**. Sparade behovsunderlag kan öppnas igen, hämtas som TXT och markeras som skickade i en simulering. |
 | Avtal & dokument | Prova lokala demosteg för fullmakt, avtal och signering samt öppna dokumentbiblioteket. |
 | Kundsidor | Skapa och redigera kundsidans rubrik, introduktion, bild och kontaktknapp. Förhandsgranska och prova kontaktformuläret. |
-| Partner Academy | Fyra demokurser med tre textmoment vardera, kategorifilter, bokmärken, klarmarkering och lokala framsteg per exempelpartner. En anmälan till en exempelgenomgång kan markeras i demo. |
+| Partner Academy | Elakademin med sex textade kapitelfilmer, kapiteltext, filmmanus, tolv självtestfrågor med facit och PDF-kundguide. Därutöver fyra bevarade demokurser med tre textmoment vardera. Kategorifilter, bokmärken, klarmarkering och testsvar sparas lokalt per partner. En anmälan till en exempelgenomgång kan markeras i demo. |
 | Material & kampanjer | Filtrera, förhandsvisa och hämta fyra TXT-mallar samt läsa en exempelbrief för kampanjplanering. |
 | Provision | Visar öppna beslut och saknat underlag. **Ingen ersättning beräknas.** |
 | Resultatrapport, internt | Ekonomiska nyckeltal och tabell för vald period och partnerurval samt CSV-export av exempelutfall. |
@@ -76,7 +76,19 @@ Ekonomiskt utfall ligger som manuella exempelvärden i `commercial.js`, separat 
 
 Framtida potential är en separat manuell ögonblicksbild och räknas inte in i utfallet. Inga belopp beräknas från elpris, avtalsvillkor, provisionsregler eller registreringar. **Intresseanmälan är varken avtal eller intäkt.** Ekonomiska definitioner och ersättningsregler behöver separat underlag.
 
-Utskick, signering, kundsidepublicering, mötesbokning och supportkontakt är simuleringar. TXT-filer är demounderlag, inga kommersiella offerter, juridiska fullmakter eller avtal. Academy ger inga verkliga certifikat. Pris, produktvillkor, partnerns mandat och eventuell ersättning kräver underlag från Ludwig och Håkan.
+Utskick, signering, kundsidepublicering, mötesbokning och supportkontakt är simuleringar. TXT-filer är demounderlag, inga kommersiella offerter, juridiska fullmakter eller avtal. Academy ger ingen verifierad partnercertifiering. Pris, aktuella produktvillkor, partnerns mandat och eventuell ersättning behöver stämmas av för den faktiska affären.
+
+## Elakademin i säljpartnernas arbetsytor
+
+**Elakademin – Förstå din elaffär** finns som en femte kurs under Utbildning för Savera (`syd`) och Face2face (`vast`). Kursen använder de sex slutliga kapitelfilmerna från den färdiga Elakademin, sammanlagt **11:29**, med svenskt tal och inbränd svensk text. Varje kapitel har full lästext, filmmanus, sammanfattning och två självtestfrågor med facit och förklaring. Inget nytt videomaterial har producerats för integrationen.
+
+Kursen behandlar företagselhandel. Savera kan använda den som stöd inför företagsdialogen. För Face2face är den märkt som fördjupning: Lundverk AB är ett fiktivt företag och portföljuppläggen gäller företagskunder. Materialet beskriver inte Face2faces konsumentvillkor eller aktuella konsumenterbjudanden.
+
+Bokmärken och kapitelmarkeringar använder befintliga `training[partner].bookmarks` respektive `training[partner].completed.elakademin`. Självtestens senaste val och kontrollstatus sparas separat i `training[partner].selfTests.elakademin[questionId]` som `{ selectedIndex, checked }`. Äldre kursframsteg och övrig portaldata behålls. Självtest ger återkoppling men klarmarkerar inte kapitel. Manuell klarmarkering verifierar inte filmvisning, ett godkänt slutprov eller partnercertifiering; ingen identitetskontroll eller delad rapportering tillkommer.
+
+Kursen länkar till [hela Elakademin](https://kraftringen-elakademin.rosen123.chatgpt.site/) för räkneverktyg, slutprov och utbildningsintyg. Den utbildningens lokala framsteg sparas separat på dess egen webbplats och synkas inte med partnerportalen. Den 12-sidiga kundguiden ligger lokalt under `dist/assets/elakademin-kundguide.pdf`. Publika kundkällor och länkar till aktuella produktvillkor finns i kursdialogen.
+
+Testa: Savera → Utbildning → Elakademin → se en kapitelfilm → kontrollera ett felaktigt och ett korrekt svar → klarmarkera ett kapitel → ladda om. Byt sedan till Face2face och kontrollera segmentmärkningen och separata framsteg. De fyra tidigare demokurserna, bokmärkena, kundunderlagen och ekonomiska exemplen ska finnas kvar.
 
 Demovyerna styr visningen utan inloggning eller åtkomstskydd; även interna anteckningar finns i webbläsaren. Inga riktiga kunduppgifter eller anslutningar till Dynamics, Oneflow eller B2B Veckokollen används.
 
@@ -90,7 +102,8 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 
 - `dist/app.js`: gemensam navigation, lokal data, kunder, pipeline, översikt och rapporter.
 - `dist/studio.js`: offertstudio och simulerade dokumentsteg.
-- `dist/academy.js`: demokurser och utbildningsframsteg.
+- `dist/academy.js`: Elakademin, bevarade demokurser och lokala utbildningsframsteg/självtest.
+- `dist/elakademin-data.js`: sex slutliga kapitelfilmer, kapiteltexter, filmmanus, tolv originalfrågor och publika kundkällor.
 - `dist/partner.js`: säljpartnerns kundsidor, material och support.
 - `dist/commercial.js`: intern resultatöversikt och partneruppföljning med ekonomisk exempeldata.
 - `dist/property.js`: fastighetsbolagens arbetsyta och hyresgästens frivilliga serviceanmälan.
