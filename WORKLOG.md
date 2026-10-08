@@ -1,5 +1,35 @@
 # Arbetslogg
 
+## 2026-10-08 — Rätt nästa insats efter kompletterad överlämning
+
+- Uppgift: INFLYTT-02. Koden reproducerade att ett återförmedlat
+  `needs_info`-ärende bytte ansvar till Kraftringen men behöll partnerns gamla
+  kompletteringsplan och datum i den gemensamma arbetslistan.
+- Ändring: återförmedlingen markeras som komplettering, tidigare plan och datum
+  avslutas och sparas i den delade aktivitetshistoriken, och Kraftringens lista
+  visar "Ta emot kompletterat underlag och fortsätt handläggningen". En senare
+  uttrycklig intern plan visas oförändrat.
+- Avgränsning: inga ändringar av serviceval, fullmaktsmarkering, handläggnings-
+  statusar, avtal, kommersiella fixtures eller kickback. Befintlig lokal v2-data
+  kräver ingen migrering; äldre ärenden utan den nya markeringen behåller sin
+  tidigare generella arbetslistetext.
+- Verifiering före publicering: `node --check` för berörda moduler,
+  `node qa/movein-next-action.mjs`, Python-AST för den utökade
+  `qa/movein-service.py` samt `git diff --check`. Den beroendefria regressionen
+  bekräftar ansvarsskifte, rensat datum, bevarad historik och företräde för en
+  senare intern plan. Browser-QA kördes inte eftersom föreskriven Sites-
+  browserkontroll inte var tillgänglig i detta pass.
+- Publicering: version 11 publicerades med native Sites-kvittens `succeeded`
+  2026-10-08 kl. 21:03:31 UTC på
+  https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Pushad/publicerad SHA: `6882cde49905a672087809b7829d23d3fa59c117`.
+  - Version-ID: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_dfa6ce6c536c8191a5af73efb1d44d44`.
+  - Deployment-ID: `appgdep_6ac80515215c8191b2610ca02802e87d`.
+  - Publiceringen använde arkivet från exakt samma SHA och bevarade Site-ID och
+    befintlig custom-åtkomst.
+- Nästa uppgift: avgränsa INFLYTT-03 i gränssnittet så att ett redan registrerat
+  testkvitto kan hittas efter omladdning utan att ett nytt ärende skapas.
+
 ## 2026-10-08 — Etablering av masteragent och första förbättringspass
 
 - Uppdrag: användarens inklistrade masterprompt aktiverar självständig utveckling

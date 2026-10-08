@@ -20,7 +20,7 @@ python -m http.server 8000 --directory dist
 
 [BENCHMARK.md](BENCHMARK.md) jämför officiellt dokumenterade arbetssätt hos Salesforce, Impartner, ZINFI, PartnerStack och impact.com, kontrollerade 7 oktober 2026. Det är inspirationsunderlag, ingen världsrankning eller vald plattform.
 
-Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och direktlänk till befintligt ärende. Listan härleds från aktuell lokal data; den skapar eller sparar inga separata uppgifter. Turordningen och handlingarna är testförslag utifrån status och sparat nästa steg, inte fastställda befogenheter eller tidslöften. Internt ligger kommersiella fakta och måttdefinitioner först. Fastighetsspåret låter partnern rätta underlaget vid komplettering och hyresgästen avstå redan i första steget.
+Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och direktlänk till befintligt ärende. Listan härleds från aktuell lokal data; den skapar eller sparar inga separata uppgifter. Turordningen och handlingarna är testförslag utifrån status och sparat nästa steg, inte fastställda befogenheter eller tidslöften. Internt ligger kommersiella fakta och måttdefinitioner först. Fastighetsspåret låter partnern rätta underlaget vid komplettering och hyresgästen avstå redan i första steget. När en komplettering förmedlas på nytt avslutas partnerns tidigare kompletteringsplan i aktivitetshistoriken; Kraftringens arbetslista visar därefter en ny mottagningsinsats utan att ärva partnerns datum.
 
 ## Arbetsplatsens vyer
 
@@ -192,7 +192,7 @@ Första förbättringen gäller återupptagbart pågående inflyttningsunderlag 
 
 ### Återkörbara webbläsarkontroller
 
-`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. De använder isolerade webbläsarkontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
+`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
 
 Med servern ovan igång, Python Playwright och Chromium tillgängliga:
 
