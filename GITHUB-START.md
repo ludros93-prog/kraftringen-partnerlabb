@@ -28,6 +28,10 @@ Arbeta i egna `claude/`, `codex/` eller `agent/`-grenar och lämna en pull
 request till `main`. Ludwig/Codex samordnar integration och publicering.
 Se COLLABORATION.md och RUNBOOK.md för hela arbetsgången.
 
+Ludwig ska godkänna Daniels konkreta PR och aktuella revision före integration
+och publicering. Daniel kan fortsätta utveckla i egen gren medan förslaget
+väntar på godkännande. Se GITHUB-ACCESS.md för åtkomst och GitHubs granskningsregel.
+
 Appen kan köras lokalt utan paketinstallation eller byggsteg:
 
 ```sh

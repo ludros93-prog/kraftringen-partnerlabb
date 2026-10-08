@@ -29,6 +29,24 @@ COLLABORATION.md och
 RUNBOOK.md. RUNBOOK-SITES.md bevarar den äldre arbetsrutinen som referens;
 utveckla inte Sites-källan separat från GitHub.
 
+Nyare användarbeslut gäller för Daniels arbete: Ludwig måste uttryckligen
+godkänna den konkreta PR:en och dess aktuella HEAD-SHA innan integration till
+`main` och Sites-publicering. Dokumentera PR, godkänd SHA och Ludwigs faktiska
+godkännande i WORKLOG.md. Nya commits eller integrationskorrigeringar i
+Daniels ändring kräver nytt godkännande av den uppdaterade revisionen.
+Granska och testa färdigt innan godkännandet begärs.
+
+En agent får inte använda Ludwigs GitHub-identitet för att skapa skenbart
+mänskligt godkännande eller kringgå skydd för Daniels arbete. Det tidigare
+byggmandatet är inget godkännande av en viss Daniel-revision; kravet följer
+hans ändring även till andra grenar. Oberoende, redan auktoriserat agentarbete
+fortsätter enligt befintligt mandat.
+
+CODEOWNERS anger Ludwig som kodägare, men obligatoriskt branch protection
+är inte verifierat. GitHub har nekat anslutningen att aktivera skyddet och
+ändra Daniels skrivbehörighet (403). Daniels verifierade åtkomst är READ;
+följ GITHUB-STATUS.md för faktisk behörighets- och skyddsstatus.
+
 ## Verksamheten
 
 **Savera** säljer elhandelsavtal till företagskunder. Utbudet är Rörligt pris,

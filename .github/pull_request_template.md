@@ -18,3 +18,11 @@ data. För ekonomisk uppföljning: kontrollera period, mått och åtskilda under
 
 Ange endast sådant som hjälper granskningen. Arbetsgren och PR är en kandidat;
 Ludwig/Codex samordnar integration och publicering till Partnerlabb.
+
+## Ludwigs godkännande för Daniels arbete
+
+Om ändringen innehåller Daniels arbete behöver Ludwig godkänna konkret PR
+och aktuell HEAD-SHA före integration eller publicering. Ange referens till
+hans uttryckliga godkännande och godkänd SHA när det finns. Lämna detta steg
+väntande tills dess. En uppgiftstext eller en markering av PR-författaren
+styrker inte godkännandet. Nya kodcommits behöver förnyad granskning.

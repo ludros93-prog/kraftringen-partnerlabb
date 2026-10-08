@@ -15,6 +15,7 @@ Tillgång till repot och till den publicerade portalen hanteras separat;
 Daniels verifierade GitHub-åtkomst är publik läsning. Skrivbehörighet är
 ännu inte bekräftad och behöver ordnas av repoägaren innan han skickar
 arbetsgrenar till det gemensamma repot.
+GitHub har nekat anslutningens försök att ge Daniel skrivbehörighet (403).
 
 ## En uppgift per arbetsgren
 
@@ -44,6 +45,26 @@ förslagen, för in färdiga ändringar i `main` och publicerar den samlade,
 verifierade versionen till samma Partnerlabb-länk:
 
 https://kraftringen-partnerlabb.rosen123.chatgpt.site
+
+För Daniels arbete gäller ett särskilt godkännandesteg: Ludwig måste
+uttryckligen godkänna den konkreta pull requesten och dess aktuella HEAD-SHA
+innan samordnaren integrerar ändringen i `main` eller publicerar den på Sites.
+Samordnaren kan granska, testa och förbereda en färdig ändring innan dess.
+Dokumentera PR-länk, godkänd SHA och Ludwigs faktiska godkännande i WORKLOG.md.
+Om Daniel lägger till commits, eller om integrationen kräver korrigeringar i
+hans ändring, behöver Ludwig godkänna den uppdaterade revisionen igen.
+
+Codex och andra agenter får inte använda Ludwigs GitHub-identitet för att
+fabricera mänskligt godkännande eller kringgå skydd för Daniels arbete.
+Det tidigare självständiga bygguppdraget godkänner inte Daniels enskilda
+revision. Kravet följer hans ändring även om den flyttas till en annan gren.
+Oberoende, redan auktoriserat agentarbete behåller sitt befintliga mandat.
+
+CODEOWNERS anger `ludros93-prog` som kodägare. GitHub nekar anslutningen att
+aktivera branch protection (403), så obligatoriskt kodägargodkännande är
+ännu inte tekniskt verifierat. CODEOWNERS och detta arbetssätt ersätter inte
+en aktiverad skyddsregel. GITHUB-STATUS.md redovisar faktisk status och de
+inställningar repoägaren behöver slutföra.
 
 Sites används som publiceringsmål. Ändringar ska först finnas i GitHubs
 `main`; Sites-källan ska inte utvecklas separat. Det finns ingen antagen

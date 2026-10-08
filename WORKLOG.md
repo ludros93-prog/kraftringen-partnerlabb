@@ -186,3 +186,28 @@
   nekades fortfarande med HTTP403. Appen har kod- och PR-behörigheter men
   saknar behörighet att administrera Collaborators. Repoägaren behöver
   bjuda in Daniel; källuppladdningen och timagenten är genomförda.
+
+## 2026-10-08 — Ludwig ska godkänna Daniels ändringar
+
+- Användaren bad uttryckligen om utvecklaråtkomst för Daniel med eget
+  godkännande av hans arbete. daniel-smail har fortsatt verifierad read.
+  Ny inbjudan med skrivåtkomst nekades med GitHub HTTP403.
+- Läsning av main-protection och en riktad ändring av kravet på kodägarens
+  granskning nekades också med HTTP403. Befintliga statuskontroller eller
+  andra branch-regler ändrades inte. Tekniskt skydd är inte verifierat.
+- .github/CODEOWNERS anger ludros93-prog som kodägare för alla filer.
+  GITHUB-ACCESS.md beskriver exakt inbjudan och branch protection som
+  repoägaren behöver slutföra. CODEOWNERS ensam ger ingen teknisk spärr.
+- Gemensamma Codex/Claude-instruktioner, RUNBOOK och PR-mall kräver Ludwigs
+  faktiska godkännande av Daniels konkreta PR och aktuella revision före
+  GitHub-APPROVE, integration och Sites-publicering. Godkänd PR, HEAD-SHA och
+  verkligt godkännande ska dokumenteras. Ny kod eller integrationskorrigering
+  behöver förnyat godkännande; kravet följer arbetet mellan grenar.
+- En agent får inte använda ägarens tekniska identitet eller tidigare
+  byggmandat som ett skenbart mänskligt godkännande. Oberoende arbete inom
+  redan godkänt mandat kan fortsätta utan att Daniels ogranskade arbete tas in.
+- Samma timagent har fått denna instruktion i sin prompt. Privat återläsning
+  bekräftade exakt sparad prompt, fortsatt enabled och oförändrat schema och
+  Europe/Stockholm. Ingen extra automation skapades.
+- Detta är arbetsinstruktioner och kodägarinformation, inga appändringar.
+  Senast publicerad frontendversion 11 och befintlig Sites-delning bevaras.

@@ -15,6 +15,7 @@ publika repot https://github.com/ludros93-prog/kraftringen-partnerlabb.
 Källkod och bevarad Git-historik har laddats upp och verifierats.
 GITHUB-STATUS.md visar faktisk aktiveringsstatus, revisioner och behörigheter.
 Daniels verifierade åtkomst är publik läsning, utan bekräftad skrivbehörighet.
+GitHub har nekat anslutningen att ändra den behörigheten (403).
 Kontrollera ditt eget kontos behörighet före push och rapportera konkreta
 åtkomsthinder. RUNBOOK-SITES.md bevarar endast den äldre arbetsrutinen.
 Den befintliga Sites-testportalens privata åtkomst ska bevaras.
@@ -26,6 +27,25 @@ Dokumentera problemet, användarnyttan och faktiskt körda kontroller i den.
 Ludwig/Codex samordnar inledningsvis integration och publicering till den
 befintliga Sites-webbplatsen. Ett avslutat utvecklingspass innebär en färdig
 kandidat eller pull request; det innebär inte automatiskt att något är live.
+
+För Daniels arbete måste Ludwig uttryckligen godkänna den konkreta PR:en och
+dess aktuella HEAD-SHA innan integration i `main` och Sites-publicering.
+Dokumentera PR, godkänd SHA och Ludwigs faktiska godkännande i WORKLOG.md.
+Nya commits eller integrationskorrigeringar kräver nytt godkännande av den
+uppdaterade revisionen. Fortsätt utveckla och testa i arbetsgrenen medan
+godkännandet saknas; presentera en färdig ändring som Ludwig kan granska.
+
+En agents användning av Ludwigs GitHub-konto är inget mänskligt godkännande.
+Skapa inte en godkännande granskning eller kringgå skydd för Daniels arbete
+utan Ludwigs faktiska samtycke till revisionen. Det tidigare bygguppdraget
+godkänner inte Daniels enskilda leverans. Flytt till en annan gren eller
+integrationskorrigering upphäver inte kravet. Oberoende, redan auktoriserat
+agentarbete behåller sitt befintliga mandat.
+
+CODEOWNERS anger Ludwig som kodägare. Branch protection är ännu inte
+verifierat; anslutningens försök att aktivera skyddet nekades av GitHub (403).
+Instruktionerna utgör därför ingen verifierad teknisk spärr. Se aktuell
+behörighets- och skyddsstatus i GITHUB-STATUS.md.
 
 Fortsätt självständigt inom det godkända prototypuppdraget och den aktiva
 arbetsrutinen. Även återkommande arbete följer separat gren och pull request.

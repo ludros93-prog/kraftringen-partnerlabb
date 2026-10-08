@@ -13,10 +13,17 @@
   honom med HTTP 403; repoägaren behöver ordna utvecklaråtkomst i Collaborators.
 - Aktiv arbetsrutin: RUNBOOK.md och COLLABORATION.md, egen gren + pull request.
   Ludwig/Codex samordnar integration till main och Sites-publicering.
+- Godkännande: Daniels ändringar behöver Ludwigs uttryckliga godkännande av
+  konkret PR och aktuell commit före integration och Sites-publicering.
+- Kodägare: .github/CODEOWNERS anger @ludros93-prog för alla filer. Tekniskt
+  grenskydd är inte verifierat: anslutningen nekades att läsa och ändra
+  granskningsregler med HTTP403. Ägaren behöver aktivera kravet i GitHub.
+  Se GITHUB-ACCESS.md. CODEOWNERS-filen ensam spärrar inte direkt push.
 - Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` har en sparad,
   återläst prompt för färsk GitHub-main och egen agent/-gren + PR. Schema och
   Europe/Stockholm är bevarade. Uppgiften är återaktiverad; aktivering,
   sparad prompt och oförändrat schema har lästs tillbaka och verifierats.
+  Daniels godkännandekrav är också sparat och återläst i samma uppdrag.
 
 ## Publicerad portal och källöverföring
 

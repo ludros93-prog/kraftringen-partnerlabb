@@ -124,6 +124,7 @@ instruktioner och arbetsminne. Destinationen är
 Git-historik har laddats upp och verifierats. Daniel har bekräftat
 GitHub-kontot `daniel-smail`; hans verifierade åtkomst är publik läsning.
 Skrivbehörighet är ännu inte bekräftad och behöver ordnas av repoägaren.
+GitHub har nekat anslutningens försök att ändra behörigheten (403).
 
 [GITHUB-STATUS.md](GITHUB-STATUS.md) visar faktisk aktiveringsstatus,
 revisioner och behörigheter. GitHub är huvudkälla och Sites är publiceringsmål.
@@ -134,6 +135,20 @@ egna grenar med pull requests till `main`. Även
 masteragentens timpass lämnar gren och PR. Ludwig/Codex samordnar
 integration och publicering till samma privata Partnerlabb-länk. Automatisk
 synk är inte förutsatt och testdata ligger kvar i respektive webbläsare.
+
+**Daniels ändringar kräver Ludwigs uttryckliga godkännande av den konkreta
+PR:en och aktuella HEAD-SHA före integration till `main` och publicering.**
+Godkännandet dokumenteras med PR och SHA i WORKLOG.md. Nya commits eller
+integrationskorrigeringar i Daniels ändring kräver nytt godkännande av den
+uppdaterade revisionen. Granskning och tester kan göras i förväg. Agenter får
+inte skapa skenbart mänskligt godkännande genom Ludwigs GitHub-konto.
+Oberoende, redan auktoriserat agentarbete behåller sitt befintliga mandat.
+
+CODEOWNERS anger Ludwig som kodägare. GitHub har nekat anslutningen att
+aktivera branch protection (403), så obligatoriskt kodägargodkännande är
+ännu inte tekniskt verifierat. [GITHUB-STATUS.md](GITHUB-STATUS.md) visar
+faktisk status; dokumentationen och CODEOWNERS är ingen verifierad teknisk
+spärr utan en aktiverad skyddsregel.
 
 [COLLABORATION.md](COLLABORATION.md) och [RUNBOOK.md](RUNBOOK.md) beskriver
 det gemensamma arbetssättet. [CLAUDE.md](CLAUDE.md) importerar gemensamma

@@ -18,7 +18,9 @@ kod och arbetsminne. Sites är publiceringsmål för den befintliga testportalen
 Rutinmässiga reversibla förbättringar inom frontendprototypen behöver ingen
 ny godkännandefråga. Arbeta självständigt fram till verifierad kandidat och
 pull request. Ludwig/Codex samordnar inledningsvis integration till `main`
-och publicering. Affärsvillkor och verkliga integrationer är fortsatt öppna
+och publicering. Daniels ändringar behöver Ludwigs uttryckliga godkännande
+av konkret pull request och aktuell commit före integration eller publicering.
+Affärsvillkor och verkliga integrationer är fortsatt öppna
 frågor enligt AGENTS.md.
 
 AGENTS.md, MISSION.md, RUNBOOK.md, COLLABORATION.md, BACKLOG.md och WORKLOG.md
@@ -58,6 +60,17 @@ Schemaläggningen ger inget bevis för processlås, oavbruten drift, garanterad
 andras schema, prompt eller aktivering.
 
 ## Samordnarens integration och publicering
+
+För Daniels ändringar ska samordnaren först presentera konkret PR, aktuell
+HEAD-SHA, användarnytta, ändringar och verifiering för Ludwig. Vänta på hans
+uttryckliga godkännande av den revisionen före GitHub-APPROVE, merge eller
+Sites-publicering. Detta gäller också vidarebearbetningar som innehåller hans
+arbete. Dokumentera godkänd PR och SHA samt var godkännandet lämnades.
+Nya kodcommits behöver förnyat godkännande. Ett allmänt bygguppdrag, repoåtkomst
+eller användning av Ludwigs tekniska GitHub-identitet är inget godkännande.
+Använd inte administratörens möjlighet att gå förbi GitHub-regler för att
+föra in Daniels arbete utan hans godkännande. Oberoende arbete inom tidigare
+mandat får fortsätta enligt instruktionerna.
 
 1. Granska färdiga pull requests, förena dem med aktuell GitHub-`main` och
    testa den samlade kandidaten. Slå ihop färdiga ändringar enligt repots
