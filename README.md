@@ -118,10 +118,11 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 
 ## Förberedd gemensam utveckling med Codex och Claude
 
-Användaren har valt ett privat GitHub-repo för kod, instruktioner och
-arbetsminne. Planerad destination är
-<https://github.com/ludros93-prog/kraftringen-partnerlabb>. Repoexistens,
-uppladdning och behörigheter är ännu inte verifierade. Daniel har bekräftat
+Användaren har uttryckligen valt att låta GitHub-repot vara publikt för kod,
+instruktioner och arbetsminne. Destinationen är
+<https://github.com/ludros93-prog/kraftringen-partnerlabb>. Repot är verifierat
+och ännu tomt; uppladdningen är inte genomförd och tilldelade behörigheter
+är inte verifierade. Daniel har bekräftat
 GitHub-kontot `daniel-smail`; någon GitHub-inbjudan är inte bekräftad här.
 
 [GITHUB-STATUS.md](GITHUB-STATUS.md) visar övergångens status. Tills den är

@@ -15,8 +15,10 @@ bekräftade fakta; nyare användarbeslut gäller före äldre resonemang.
 
 ## Förberedd gemensam utveckling
 
-Användaren har därefter valt privat GitHub för Codex och Claude. Övergången
-är förberedd, men repoexistens och uppladdning är inte verifierade. Läs
+Användaren har därefter uttryckligen valt ett publikt GitHub-repo för Codex
+och Claude: https://github.com/ludros93-prog/kraftringen-partnerlabb.
+Repot är verifierat och ännu tomt. Övergången är förberedd och koden har
+ännu inte laddats upp. Den privata Sites-åtkomsten ska bevaras. Läs
 GITHUB-STATUS.md: tills status är `active` gäller nuvarande Sites-källa och
 RUNBOOK-SITES.md. Ändra inte arbetskälla eller schema på eget initiativ.
 

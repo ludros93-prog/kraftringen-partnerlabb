@@ -5,8 +5,8 @@
 GitHubarbetssättet nedan är förberett, inte aktiverat. Läs GITHUB-STATUS.md.
 Så länge status är `prepared` gäller befintliga Sites-källan och den
 oförändrade arbetsrutinen i RUNBOOK-SITES.md. Planerad GitHub-destination är
-https://github.com/ludros93-prog/kraftringen-partnerlabb; repoexistens och
-uppladdning är ännu inte verifierade. Återkommande arbete ska inte övergå
+https://github.com/ludros93-prog/kraftringen-partnerlabb; det publika repot
+finns, men uppladdning är ännu inte verifierad. Återkommande arbete ska inte övergå
 innan samordnaren har verifierat uppladdningen och ändrat samma timuppgift.
 
 Resten av denna fil gäller när GITHUB-STATUS.md är markerad `active`.
@@ -14,7 +14,7 @@ Resten av denna fil gäller när GITHUB-STATUS.md är markerad `active`.
 ## Uppdrag och huvudkälla
 
 Arbeta enbart med Partnerlabb, Sites `appgprj_6ac600ecf7d48191923687550810c1d4`.
-Användaren har aktiverat bygguppdraget i MISSION.md och därefter valt privat
+Användaren har aktiverat bygguppdraget i MISSION.md och därefter valt publikt
 GitHub för gemensam utveckling med Codex och Claude. GitHub är huvudkälla för
 kod och arbetsminne. Sites är publiceringsmål för den befintliga testportalen.
 

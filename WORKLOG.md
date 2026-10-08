@@ -91,3 +91,16 @@
 - Ett ZIP-paket med källfiler och partnerlabb-history.bundle förbereds för
   överföring. Aktivering, GitHub-push och Daniels inbjudan återstår tills
   destinationen finns och dess privata åtkomst är verifierad.
+
+## 2026-10-08 — Publik GitHub-destination vald av användaren
+
+- Repoägaren skapade ludros93-prog/kraftringen-partnerlabb. GitHub API
+  bekräftade publik synlighet och ett tomt repo. Anslutningen nekades att
+  ändra synlighet med HTTP 403. Användaren valde därefter uttryckligen
+  att låta repot vara publikt; detta ersätter den tidigare privata planen.
+- Försök att bjuda in daniel-smail med utvecklaråtkomst nekades också med
+  HTTP 403. Repoägaren behöver ordna hans åtkomst under Collaborators.
+  Någon accepterad inbjudan eller skrivbehörighet påstås inte.
+- Samma timuppgift är tillfälligt pausad för övergången. Färsk Sites-källa
+  är fortsatt f6b0e4872885f01540a27dbd72e51a7c2bffbffc. Git-historiken
+  är bevarad, Claude-importer verifierade och frontend/manifest oförändrade.

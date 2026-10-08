@@ -1,10 +1,12 @@
 # GitHubövergångens status
 
 - Status: `prepared` — förberedd, inte aktiverad.
-- Planerad destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
-- Repoexistens, privat åtkomst och uppladdning: ännu inte verifierade.
+- Destination: https://github.com/ludros93-prog/kraftringen-partnerlabb
+- Repot finns och är publikt. Användaren valde uttryckligen att behålla
+  det publikt den 8 oktober 2026. Uppladdning är ännu inte verifierad.
 - Daniel: GitHub-kontot `daniel-smail` är bekräftat. Ingen inbjudan eller
-  tilldelad GitHub-behörighet är bekräftad här.
+  tilldelad GitHub-behörighet är bekräftad här. GitHub nekade anslutningens
+  försök att bjuda in honom med HTTP 403; ägaren behöver ordna åtkomsten.
 - Aktiv huvudkälla: det befintliga Sites-projektets Git-källa.
 - Aktiv arbetsrutin: RUNBOOK-SITES.md, med befintliga Sites-timuppgiften.
 
@@ -16,7 +18,8 @@ till huvudkälla förrän övergången är verifierad och status ändras till
 
 Samordnaren ska kontrollera att:
 
-1. Det angivna privata repot finns och rätt konton har avsedd åtkomst.
+1. Det angivna publika repot finns och samordnaren har källåtkomst.
+   Daniels utvecklaråtkomst dokumenteras separat och får inte antas.
 2. Aktuell Sites-historik, källkod och arbetsminne har laddats upp med bevarade
    commits. GitHub-huvudgrenen har rätt SHA och inga credentials ingår.
 3. CLAUDE/AGENTS/RUNBOOK är samstämmiga med GitHub som huvudkälla och gren + PR.

@@ -1,8 +1,9 @@
 # Arbeta tillsammans i Partnerlabb
 
-GitHubövergången är förberedd och ännu inte aktiverad. Målet är ett privat
-repo på https://github.com/ludros93-prog/kraftringen-partnerlabb. Att repot
-finns eller innehåller koden är ännu inte verifierat. GITHUB-STATUS.md visar
+GitHubövergången är förberedd och ännu inte aktiverad. Användaren har
+uttryckligen valt att låta repot vara publikt:
+https://github.com/ludros93-prog/kraftringen-partnerlabb. Repot är verifierat
+och ännu tomt; koduppladdningen är inte genomförd. GITHUB-STATUS.md visar
 aktuell status; tills den är `active` gäller Sites som huvudkälla och
 RUNBOOK-SITES.md som arbetsrutin.
 

@@ -11,8 +11,11 @@ Läs projektets gemensamma instruktioner och arbetsminne:
 @WORKLOG.md
 
 GitHubövergången är förberedd. Läs GITHUB-STATUS.md först: så länge status är
-`prepared` gäller den befintliga Sites-källan och RUNBOOK-SITES.md. Anta inte
-att den planerade GitHub-destinationen finns eller att du har åtkomst till den.
+`prepared` gäller den befintliga Sites-källan och RUNBOOK-SITES.md.
+Användaren har uttryckligen valt ett publikt repo på
+https://github.com/ludros93-prog/kraftringen-partnerlabb. Repot är verifierat
+och ännu tomt. Koduppladdning och din skrivbehörighet är inte verifierade.
+Den befintliga Sites-testportalens privata åtkomst ska bevaras.
 
 När samordnaren har verifierat övergången och markerat status `active` är
 GitHub utvecklingens huvudkälla. Arbeta då i en egen `claude/`-gren från

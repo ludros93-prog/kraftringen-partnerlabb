@@ -1,62 +1,52 @@
-# Överlämning till ansvarig migreringsagent
+# GitHubövergång och källöverföring
 
-Detta är arbetsanteckningar, inte en påstådd genomförd migrering. Kandidaterna
-i samma scratch-katalog har inte skrivits till projektet eller GitHub.
+Aktuell status och faktiskt verifierade resultat står i GITHUB-STATUS.md
+och WORKLOG.md. Repo: https://github.com/ludros93-prog/kraftringen-partnerlabb.
+Användaren har valt publik GitHub-kod. Sites-projektets befintliga custom-
+åtkomst hanteras separat och ska bevaras.
 
-## Säker övergång
+## Övergångens ordning
 
-1. Läs färsk Sites-källa och metadata. Notera källans HEAD och den faktiskt
-   publicerade SHA:n; arbetsloggens senare dokumentationscommit kan göra dem
-   olika utan att `dist/` har ändrats.
-2. Repo kunde inte skapas av integrationen; användaren har ombetts skapa ett
-   tomt privat repo. Behåll nuvarande Sites-huvudkälla och befintlig timagent
-   tills en verklig destination och uppladdning verifierats. Kontrollera
-   pågående ändringar igen vid faktisk övergång. Skapa ingen dubbel timagent.
-3. Importera den aktuella Sites-Git-historiken till ett privat GitHub-repo.
-   Behåll ursprungscommits så GitHub-main kan överföras tillbaka till Sites
-   med fast-forward. Undvik export + ny `git init`, som skapar separata
-   historiker och frestar till force-push vid första publiceringen.
-4. Lägg kandidatdokumenten på den importerade huvudkällan. AGENTS, MISSION och
-   README har riktade patchar för lätt granskning; RUNBOOK ersätter den gamla
-   direkta publiceringsrutinen. Applicera inte hela kandidater blint om den
-   färska källan har andra nytillkomna ändringar.
-5. Planerad destination är https://github.com/ludros93-prog/kraftringen-partnerlabb,
-   utan bekräftad existens/uppladdning. Daniel har bekräftat kontot
-   `daniel-smail`; någon inbjudan/behörighet är ännu inte bekräftad. Markera
-   GITHUB-STATUS.md `active` först efter verifierad privat uppladdning och
-   uppdaterad timuppgift. Sites-visningsåtkomst är inte GitHub-åtkomst.
-6. Uppdatera samma timagents prompt till GitHub + egen gren + PR. Kontrollera
-   att den äldre direkta Sites-byggvägen inte längre står i det sparade
-   uppdraget. Återaktivera bara när huvudkälla och instruktioner är klara;
-   verifiera den sparade uppgiften och redovisa dess faktiska aktivering.
-7. Behåll den publicerade portalen på nuvarande version under migreringen.
-   Dokumentationsövergången behöver ingen frontendpublicering. Kontrollera
-   huvudkällornas SHA:n och Git-historik; provad automatisk synk ska inte
-   påstås förrän ett sådant flöde faktiskt har körts.
+1. Pausa samma befintliga timuppgift under källbytet, läs färsk Sites-källa
+   och ta in eventuella senare ändringar. Skapa ingen andra timagent.
+2. För över aktuell källkod och Git-historik till det verifierade GitHub-
+   repot. Behåll ursprungscommits; skapa inte en ny orelaterad Git-historik.
+3. Verifiera GitHub-huvudgrenens SHA och dokumentera Daniels faktiska
+   åtkomst. Om anslutningen inte kan bjuda in honom får ägaren göra det.
+   Publik läsning och Sites-visning är inte utvecklaråtkomst.
+4. Ändra samma timagents prompt till färsk GitHub-main, egen agent/-gren
+   och pull request. Samordnaren integrerar och publicerar. Läs tillbaka
+   den sparade prompten och bevara schema och tidszon.
+5. Markera GITHUB-STATUS.md active först efter verifierad uppladdning och
+   sparad gemensam rutin. Push/verifiera aktiveringsdokumentationen.
+6. För GitHub-main till Sites-källan med fast-forward och verifiera samma
+   SHA. Behåll publicerad frontendversion när enbart dokument ändrats.
+7. Återaktivera samma timagent och läs tillbaka aktivering och schema.
+   Dokumentera kvittensen; en aktiverad uppgift bevisar inte utförd körning.
 
-## Kort schemaprompt, fyll i verklig repo-adress
+## Schemalagt utvecklingspass
 
-Hämta aktuell main från det privata Partnerlabb-repot på <VERKLIG GITHUB-URL>.
-Läs AGENTS.md, MISSION.md, RUNBOOK.md, COLLABORATION.md, BACKLOG.md och
-WORKLOG.md samt öppna pull requests. Välj en belagd, avgränsad förbättring,
-arbeta på en egen agent/-gren, implementera och testa relevanta flöden och
-lämna en pull request till main med användarnytta, tester och uppdaterat
-arbetsminne. Ludwig/Codex samordnar integration och publicering till befintliga
-Sites-projektet. Gör ingen direkt push till main eller Sites och ändra inte
-schema eller åtkomst. Om GitHub-källåtkomst eller PR-behörighet saknas,
-rapportera exakt hinder och bevara tillåtet arbete; återgå inte till Sites
-som en separat utvecklingskälla. Skilj kandidat, öppnad PR och faktisk
-publicering i rapporteringen.
+Hämta aktuell main från https://github.com/ludros93-prog/kraftringen-partnerlabb.
+Läs AGENTS.md, MISSION.md, RUNBOOK.md, COLLABORATION.md, BACKLOG.md,
+GITHUB-STATUS.md och WORKLOG.md samt öppna pull requests. Välj en belagd,
+avgränsad förbättring, arbeta på en egen agent/-gren, implementera och testa
+relevanta flöden och lämna en pull request till main med användarnytta,
+tester och uppdaterat arbetsminne. Ludwig/Codex samordnar integration och
+publicering till det befintliga Sites-projektet. Gör ingen direkt push till
+main eller Sites och ändra inte schema eller åtkomst. Om GitHub-källåtkomst
+eller PR-behörighet saknas, rapportera exakt hinder och bevara tillåtet
+arbete; återgå inte till Sites som en separat utvecklingskälla. Skilj
+kandidat, öppnad PR och faktisk publicering i rapporteringen.
 
-## Vad kandidaten inte inför
+## Första senare frontendpubliceringen
 
-Ingen ny backend, gemensam testdata, GitHub Actions, grenskydd, automatisk
-publicering eller externa aviseringar. Sådana funktioner kräver en verklig
-implementation och verifiering innan de kan beskrivas som införda.
+Följ RUNBOOK.md och aktuell Sites-skill. Hämta aktuell metadata, bevara
+projekt-ID och åtkomst, överför verifierad GitHub-main med bibehållen
+historik och paketera exakt revision. Kontrollera version och lyckad
+deployment. Denna dokumentationsövergång bevisar ingen automatisk synk
+eller GitHub-publicering av en frontendändring.
 
-PR-mallen kan laddas upp som `.github/pull_request_template.md`. QA-workflow
-är en inaktiv mall i `templates/github-actions-qa.yml`; grunduppladdningen
-kräver ingen workflow-fil eller särskild workflow-behörighet. Aktivering
-senare sker efter verifierad Actionsåtkomst genom att lägga mallen i
-`.github/workflows/quality.yml`. Mallen använder bara `contents: read`, lokala
-fiktiva testdata och befintliga Playwright-kontroller, utan deployment/secrets.
+PR-mallen finns i .github/pull_request_template.md. QA-workflow är en
+inaktiv mall i templates/github-actions-qa.yml. CI, grenskydd, ny backend,
+gemensam testdata, automatisk publicering och externa aviseringar ingår
+inte innan de har implementerats och verifierats.
