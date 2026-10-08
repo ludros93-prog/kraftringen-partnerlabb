@@ -77,3 +77,17 @@
   föra över bevarad historik, ge daniel-smail redigeringsåtkomst och ändra samma
   timuppgift till GitHub/egen gren/PR. Skapa ingen andra timagent och skriv
   inte över senare Sites-ändringar från ett äldre stagingpaket.
+
+### Stagingpaket för överföring
+
+- Staging bygger på Sites-revision f6b0e4872885f01540a27dbd72e51a7c2bffbffc
+  med bevarad Git-historik. GITHUB-STATUS.md är prepared. CLAUDE-importer,
+  PR-mall, statusstyrda samarbetsinstruktioner och GITHUB-START.md är klara.
+- templates/github-actions-qa.yml är en inaktiv kandidat. YAML, Bash och
+  inbäddad Python-syntax är validerade; Playwright 1.62.0 finns både lokalt
+  och som publicerad PyPI-version. Ingen Actions-körning påstås genomförd.
+- dist/ och .openai/hosting.json är identiska med Sites-källan. Paketeringen
+  tillför inga frontendändringar, nya affärsregler eller backend.
+- Ett ZIP-paket med källfiler och partnerlabb-history.bundle förbereds för
+  överföring. Aktivering, GitHub-push och Daniels inbjudan återstår tills
+  destinationen finns och dess privata åtkomst är verifierad.

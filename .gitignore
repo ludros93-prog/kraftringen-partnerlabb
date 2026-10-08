@@ -4,3 +4,7 @@ node_modules/
 *.tar.gz
 *.zip
 __pycache__/
+.env
+.env.*
+!.env.example
+.claude/settings.local.json

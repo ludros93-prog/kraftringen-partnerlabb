@@ -13,6 +13,19 @@ Det viktigaste målet är enklare arbete för användarna och större kommersiel
 nytta av Kraftringens partnersamarbeten. Läs alltid aktuella `AGENTS.md` för
 bekräftade fakta; nyare användarbeslut gäller före äldre resonemang.
 
+## Förberedd gemensam utveckling
+
+Användaren har därefter valt privat GitHub för Codex och Claude. Övergången
+är förberedd, men repoexistens och uppladdning är inte verifierade. Läs
+GITHUB-STATUS.md: tills status är `active` gäller nuvarande Sites-källa och
+RUNBOOK-SITES.md. Ändra inte arbetskälla eller schema på eget initiativ.
+
+Efter verifierad aktivering gäller GitHub som huvudkälla och separat gren
+plus pull request för alla utvecklingspass, även timagenten. Ludwig/Codex
+samordnar integration och Sites-publicering enligt COLLABORATION.md och
+RUNBOOK.md. Detta nyare arbetssätt ersätter då den äldre direkta
+publiceringsrutinen nedan utan att begränsa det autonoma bygguppdraget.
+
 ## Verksamheten
 
 **Savera** säljer elhandelsavtal till företagskunder. Utbudet är Rörligt pris,

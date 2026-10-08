@@ -116,18 +116,31 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 - `dist/consumer.js`: Face2faces konsumentaffärer, återkoppling, säljstöd och försäljningsrapport.
 - [ASSETS.md](ASSETS.md): bildkällor. Bilderna är illustrationer, inte antagna godkända Kraftringen-bilder.
 
-## Förslag för att bygga tillsammans
+## Förberedd gemensam utveckling med Codex och Claude
 
-Förslag: **ett gemensamt Replit Core-projekt**, varsin inloggning, redigeringsåtkomst och Teams för samtalet. Börja med en AI-ändring åt gången. Core dokumenterar en aktiv bakgrundsuppgift per projekt; Pro upp till tio parallella Agent-uppgifter. Samma filer kan ändå ge konflikter. Konton och abonnemang har inte testats här.
+Användaren har valt ett privat GitHub-repo för kod, instruktioner och
+arbetsminne. Planerad destination är
+<https://github.com/ludros93-prog/kraftringen-partnerlabb>. Repoexistens,
+uppladdning och behörigheter är ännu inte verifierade. Daniel har bekräftat
+GitHub-kontot `daniel-smail`; någon GitHub-inbjudan är inte bekräftad här.
 
-Lovable dokumenterar separata utkast som accepteras ett i taget. ChatGPT Sites dokumenterar redigeringsbehörighet inom samma workspace; samtidig AI-redigering är inte verifierad. Senare kan GitHub och Codex med separata grenar eller worktrees användas. Att dela den färdiga portalen är ett annat samarbete än att redigera byggprojektet.
+[GITHUB-STATUS.md](GITHUB-STATUS.md) visar övergångens status. Tills den är
+`active` är Sites fortsatt huvudkälla, [RUNBOOK-SITES.md](RUNBOOK-SITES.md)
+gäller och den befintliga timuppgiften följer sitt nuvarande uppdrag.
 
-Officiella källor kontrollerade 7 oktober 2026:
+Efter verifierad övergång arbetar Ludwig med ChatGPT/Codex och Daniel med
+Claude Code på egna grenar och lämnar pull requests till `main`. Även
+masteragentens timpass ska då lämna gren och PR. Ludwig/Codex samordnar
+integration och publicering till samma privata Partnerlabb-länk. Automatisk
+synk är inte förutsatt och testdata ligger kvar i respektive webbläsare.
 
-- [Replit: Invite teammates](https://docs.replit.com/build/invite-teammates)
-- [Lovable: Collaboration](https://docs.lovable.dev/features/collaboration) och [Drafts](https://docs.lovable.dev/features/drafts)
-- [ChatGPT Sites: Creating and using Sites](https://help.openai.com/en/articles/20001339-creating-and-using-chatgpt-sites)
-- [Codex: Git worktrees](https://learn.chatgpt.com/docs/environments/git-worktrees) och [Cloud](https://learn.chatgpt.com/docs/cloud)
+[COLLABORATION.md](COLLABORATION.md) och [RUNBOOK.md](RUNBOOK.md) beskriver
+arbetssättet efter aktivering. [CLAUDE.md](CLAUDE.md) importerar gemensamma
+instruktioner. En PR-mall finns i `.github/pull_request_template.md` och en
+GitHub Actions-mall för syntax och befintliga inflyttningsflöden finns i
+`templates/github-actions-qa.yml`. Actions-mallen är inte aktiverad och krävs
+inte för grunduppladdningen. Inget Actions-resultat eller automatisk
+publicering har verifierats.
 
 ## Anpassade partnersidor
 
