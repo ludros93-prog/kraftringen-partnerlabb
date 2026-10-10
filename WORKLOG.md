@@ -211,3 +211,28 @@
   Europe/Stockholm. Ingen extra automation skapades.
 - Detta är arbetsinstruktioner och kodägarinformation, inga appändringar.
   Senast publicerad frontendversion 11 och befintlig Sites-delning bevaras.
+
+## 2026-10-10 — Pilotagentens uppdrag och första arbetsminne
+
+- Ludwig bad uttryckligen ”Skapa agenten” efter resonemanget om återkommande
+  hjälp att göra Partnerlabb enkelt och användbart. Samma befintliga timuppgift
+  återanvänds; den pausades tillfälligt under konfigurationsbytet. Ingen dubbel
+  agent skapas. Aktivering kvitteras separat efter faktisk återläsning.
+- Färsk GitHub-main vid start: 347f02a1a1cdfe47e2abb33793e9f24b1575f758.
+  Arbetet görs i separat codex/partnerliv-pilotagent-worktree. Pilotmissionen
+  styr prioriteringen före generell utbyggnad medan befintliga mandat består.
+- PILOT-FACTS skiljer bekräftat, förslag och saknat underlag med källor.
+  PILOT-DECISIONS konkretiserar D-01–D-04: deltagare, godkänd process/fullmakt,
+  driftmiljö/persondata och kommersiella datakällor/ersättningsregler.
+- PILOT-ACCEPTANCE anger åtta fiktiva flödesfall samt separata förutsättningar
+  för verklig drift. Detta är ett testunderlag, ingen ny testkvittens.
+- Befintligt PR #1 (INFLYTT-03), HEAD feff078d6eb797ce0226071b855227d443a29f00
+  vid läsningen, är öppet och ska återanvändas. Ingen dubblett byggs eller
+  funktionell PR integreras som del av denna agentkonfiguration.
+- Högst två färdiga pilotförslag får vänta på granskning. Arbetsminne sparas i
+  egen gren/PR och uppgiftsrapport. Schemalagda pass gör ingen direkt push till
+  main/Sites eller publicering. Daniels konkreta PR/SHA kräver fortsatt
+  Ludwigs faktiska godkännande; tekniskt grenskydd påstås inte vara verifierat.
+- Ändringen omfattar endast uppdrag, arbetskö och dokumentation. dist/ och
+  hostingmanifest bevaras. Backend, verkliga integrationer, nya priser och
+  riktiga kundärenden har inte införts.

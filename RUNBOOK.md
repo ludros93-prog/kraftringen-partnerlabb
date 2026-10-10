@@ -23,7 +23,8 @@ av konkret pull request och aktuell commit före integration eller publicering.
 Affärsvillkor och verkliga integrationer är fortsatt öppna
 frågor enligt AGENTS.md.
 
-AGENTS.md, MISSION.md, RUNBOOK.md, COLLABORATION.md, BACKLOG.md och WORKLOG.md
+AGENTS.md, MISSION.md, PILOT-MISSION.md, PILOT-FACTS.md, PILOT-DECISIONS.md,
+PILOT-ACCEPTANCE.md, RUNBOOK.md, COLLABORATION.md, BACKLOG.md och WORKLOG.md
 är beständigt arbetsminne i GitHub. Deployment innehåller bara `dist/` och
 `.openai/hosting.json`; den publicerade HTML-sidan räcker inte för att läsa
 uppdraget. Ett färskt utvecklingspass ska hämta aktuell GitHub-källa, läsa
@@ -36,6 +37,9 @@ tidigare scratch-skript eller en lokal checkout finns i en ny miljö.
    öppna pull requests och pågående arbete. Återuppta en dokumenterad egen
    uppgift eller välj högsta genomförbara backloguppgift. Undvik konkurrerande
    implementation av samma problem.
+   Pilotmissionen styr prioriteringen. Räkna färdiga pilotförslag som väntar
+   på granskning; högst två får vänta. När gränsen nåtts, förbättra befintlig
+   verifiering eller beslutsunderlag och öppna inte ytterligare förslag.
 2. Skapa en separat arbetsgren från aktuell bas. Använd `codex/`, `claude/`
    eller `agent/` som prefix och en tydlig uppgift i namnet. Parallella
    uppgifter använder separata checkouter/worktrees.
@@ -59,6 +63,13 @@ Schemaläggningen ger inget bevis för processlås, oavbruten drift, garanterad
 återstart eller leverans varje timme. Körningen ändrar inte sitt eget eller
 andras schema, prompt eller aktivering.
 
+Spara verkliga nya fakta, beslut och nästa steg i den egna grenen/PR:en och
+uppgiftsrapporten så att nästa pass kan återuppta arbetet även innan merge.
+PILOT-FACTS ska alltid skilja källa och observation från hypotes. Rapportera
+kort enligt PILOT-MISSION, med sammanfattning av dygnets väsentliga resultat
+vid första passet efter kl. 08 svensk tid; undvik dubbla sammanfattningar
+utifrån tillgänglig tidigare rapportstatus. Detta skapar inget nytt schema.
+
 ## Samordnarens integration och publicering
 
 För Daniels ändringar ska samordnaren först presentera konkret PR, aktuell
@@ -66,7 +77,8 @@ HEAD-SHA, användarnytta, ändringar och verifiering för Ludwig. Vänta på han
 uttryckliga godkännande av den revisionen före GitHub-APPROVE, merge eller
 Sites-publicering. Detta gäller också vidarebearbetningar som innehåller hans
 arbete. Dokumentera godkänd PR och SHA samt var godkännandet lämnades.
-Nya kodcommits behöver förnyat godkännande. Ett allmänt bygguppdrag, repoåtkomst
+Nya commits eller integrationskorrigeringar behöver förnyat godkännande av
+aktuell revision. Ett allmänt bygguppdrag, repoåtkomst
 eller användning av Ludwigs tekniska GitHub-identitet är inget godkännande.
 Använd inte administratörens möjlighet att gå förbi GitHub-regler för att
 föra in Daniels arbete utan hans godkännande. Oberoende arbete inom tidigare

@@ -1,4 +1,22 @@
-# Partnerlabbs masterutvecklare
+# Partnerlabbs uppdrag
+
+## Aktivt pilotuppdrag – 10 oktober 2026
+
+Ludwig har bett oss skapa agenten för nästa pilotetapp. [PILOT-MISSION.md](PILOT-MISSION.md)
+styr nu prioriteringen: ett enkelt inflyttningsflöde för ett fastighetsbolag
+och en Kraftringen-handläggare, verifiering före utbyggnad och högst två
+färdiga förslag som väntar på granskning. [PILOT-FACTS.md](PILOT-FACTS.md)
+skiljer fakta från förslag och saknat underlag; [PILOT-DECISIONS.md](PILOT-DECISIONS.md)
+anger besluten före verklig drift. [PILOT-ACCEPTANCE.md](PILOT-ACCEPTANCE.md)
+anger vad ett fungerande flöde behöver visa.
+
+Samma befintliga timuppgift återanvänds. Den lämnar egna grenar och PR:er;
+Ludwig/Codex samordnar integration och publicering. Befintliga affärs-, data-
+och samarbetsregler gäller. Backend, persondata och verkliga integrationer
+behöver fortfarande separat underlag och mandat. Nedan bevaras det bredare
+grunduppdraget som stöd; det är inte en kö för fortsatt generell utbyggnad.
+
+## Grunduppdrag – 8 oktober 2026
 
 Detta är användarens aktiverade uppdrag, 8 oktober 2026. Partnerlabb finns på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site och tillhör Sites-projektet
