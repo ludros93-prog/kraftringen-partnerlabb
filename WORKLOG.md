@@ -633,6 +633,76 @@
   hostingmanifest ändras inte och behöver ingen extra publicering.
   D-01–D-04, verkliga kommersiella källor och ersättningsregler består.
 
+
+## 2026-10-10 — Förtydligat uppdrag: generiska säljpartners och kundsegment
+
+- Efter version 15 bekräftade Ludwig att Savera, Face2face och övriga
+  säljpartners ska ligga under Partners. Kunder & avtal och Insikter
+  ska vara generiska partnervyer; fristående globala Savera-/Insikter-
+  kategorier ersätts. Partnern ska kunna väljas för B2B, B2C eller båda
+  när den skapas. Konfigurationsändring är ett implementationsförslag
+  som ska bevara befintliga kunders och avtalsraders segment.
+- Senaste konsumentlista: Fastpris, Vintersäkrat, Opti, Kvartspris och
+  Rörligt pris. Den ersätter den äldre begränsningen till Opti/Kvartspris.
+  Företagskatalogens sex produkter består. Samma rapport-/insiktsfunktioner
+  ska användas för Face2face och Savera med separata churn-/förstartsmått.
+  Face2face använder fortsatt Beest; ingen integration eller ersättning
+  av deras säljverktyg är beställd.
+- AGENTS, MISSION, PILOT-MISSION, PILOT-FACTS, README, BACKLOG och den
+  avsedda PILOT-AGENT-PROMPT har uppdaterats för samma uppdrag.
+  Historiska kvittenser från version 15 är bevarade. Nya PARTNER-02,
+  PARTNER-03 och FACE2FACE-02 markeras under utveckling tills verifiering
+  och faktisk publicering kvitteras av samordnaren.
+- Ny partner utan resultatunderlag ska visa saknat underlag. Lokal profil
+  eller ändrat kundsegment skapar inget avtal, kundutfall eller kickback.
+  Fastighetspartnerns Excel/manuella registrering och lokal normal-/demo-
+  isolering bevaras. Verklig behörighet, gemensam lagring, datakällor och
+  kickbackregler kräver fortfarande D-01–D-04 och separat mandat.
+- Den avsedda agentprompten har ändrats i repo. Faktisk native uppdatering,
+  aktivering, schema och publiceringsrevision kvitteras separat först
+  efter samordnarens verktygsåterläsning; ingen ny leverans påstås här.
+- Datakandidatens Face2face-underlag har dokumenterad exempelavstämning:
+  437 nya avtal/1 804 års-MWh; 785 kunder aktiva vid årets början och fyra
+  separat märkta äldre väntande avtal som börjar 2026. Den äldre kön är
+  inte nya avtal sålda 2026 och inte årets öppningsaktiva churnbas.
+  Modellen ska ge 399 starter och 990 aktiva vid 7 oktober. Detta beskriver
+  konstruerad demohistorik och måltal från befintliga aggregat; faktiskt
+  körd verifiering och publiceringsrevision kvitteras separat.
+
+### Verifierad generisk partnerkandidat – 10 oktober 2026
+
+Säljpartners öppnas nu under Partners med samma Kunder & avtal och
+Insikter. Partnerinställningar väljer B2B, B2C eller båda; lokala
+profiler och historiska radsegment bevaras. Face2face har fem
+konsumentprodukter och separata churn-/förstartsbortfallsmått.
+Nya partners eller segment utan underlag visar —, inga fabricerade
+resultat, prognoser eller kickbackposter. Nya/blandade arbetsytor
+visar inte de äldre partnerdemornas kundunderlag.
+
+Faktiskt körd verifiering på kandidatens kod:
+- qa/partner-segments.py: 105 browserkontroller, inklusive omladdning,
+  normal-/demoisolering, återställning, blandade segment, perpartnerfilter,
+  nya partners, HTML-liknande namn, mobil 320/390 och desktop.
+- qa/savera-data.mjs: 23 datum-, kundbestånds-, produkt-/volym- och
+  kohortkontroller; qa/partner-registry.mjs: åtta registerkontroller.
+- qa/property-intake.py --suite service: 62; --suite integrity: fem.
+  Båda inflyttningsvägarna, riktiga lokala bilagor, förmedling och
+  separation från avtal/ekonomi fungerar fortsatt.
+- Befintliga riktade browserregressioner för Savera data/vy och
+  fastighetsutfall passerade enligt QA:s separata körningar.
+- Excel-dubblettregression: en; kvitto: tre; nästa handling: två.
+- All projekt-JavaScript parsar; git diff --check passerar.
+
+Oberoende granskning hittade och verifierade rättningar för isolering
+av nya partnerytor, borttagna partners efter reset, blandade
+företagsdialoger och förnyat avtal som inte ska bli kundchurn.
+Ingen faktisk kunddata eller integration har införts.
+
+Samma timuppgifts prompt uppdaterades med generiska partnerkrav;
+uppgiften är tillfälligt pausad under denna leverans. Återaktivering
+och publiceringskvittens dokumenteras efter native verifiering.
+Separat schemalagd kandidat PR #12 om fastighetspartnerns periodval
+är inte inkluderad eller sammanslagen i denna leverans.
 ## 2026-10-10 — Kandidat: bevara fastighetspartnerns rapportperiod
 
 - Belägg: `property-results.js` höll års-/månadsvalet endast i en modul-lokal
@@ -659,6 +729,17 @@
   `codex/property-results-period-persistence`. Nästa steg är samordnad
   browserkontroll av PARTNER-01A och därefter granskning/integration av PR:n.
 
+### Samordning med uppdaterad huvudkälla
+
+Under avslutningen sammanslogs oberoende PR #12 till main som
+042f40acc77175f257bb141335d29057b29c07b4 och Sites gick till version 16.
+Kandidaten uppdaterades genom normal merge från main. Båda arbetsloggarna
+bevarades vid dokumentkonflikten. Fastighetsperiodens nya sessionlagring
+ingår därmed i den slutliga koden; den tidigare kandidatnoteringen om
+separat väntande PR #12 beskriver status före denna samordning.
+qa/property-results-period.mjs passerade efter sammanslagningen.
+Fastighetsutfallets browserregression passerade 20 kontroller efter merge,
+inklusive periodval efter omladdning, normal-/demoisolering och mobil.
 
 ## 2026-10-10 — PR #12 integrerad och rapportperiod publicerad
 

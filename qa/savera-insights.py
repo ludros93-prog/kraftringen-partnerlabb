@@ -1,4 +1,4 @@
-"""Browser QA for the Savera ledger, insights and property-partner outcomes.
+"""Browser QA for sales-partner ledger, nested insights and property outcomes.
 
 Independent date/stock/volume expectations are calculated from the fictitious
 customer ledger, rather than repeating the implementation's report functions.
@@ -50,10 +50,10 @@ class Suite:
         await self.page.wait_for_function('window.Portal && Portal.saveraData && Portal.saveraReports && Portal.propertyResults')
 
     async def route(self, name):
-        await self.page.evaluate('(name)=>Portal.go(name)', name)
+        await self.page.evaluate('(name)=>Portal.go(({savera:"partner-sales",insikter:"partner-insights"})[name]||name)', name)
 
-    async def internal(self, name='savera'):
-        await self.page.evaluate('Portal.returnInternal()')
+    async def internal(self, name='partner-sales'):
+        await self.page.evaluate('Portal.returnInternal();Portal.selectedPartnerId="syd"')
         await self.route(name)
 
     async def partner(self, partner, name='overview'):
@@ -223,7 +223,7 @@ async def property_checks(test):
     await test.partner('vast', 'property-results')
     test.good('Face2face får ingen fastighetspartners resultatvy via direktnavigation', await page.evaluate('Portal.page') == 'overview' and await page.locator('.property-results-page').count() == 0)
     await test.partner('estate1', 'savera')
-    test.good('partner kan inte öppna den interna Savera- eller insiktsvyn', await page.evaluate('Portal.page') == 'overview' and await page.locator('#nav [data-go="savera"],#nav [data-go="insikter"]').count() == 0)
+    test.good('partner kan inte öppna den interna Savera- eller insiktsvyn', await page.evaluate('Portal.page') == 'overview' and await page.locator('#nav [data-go="partner-sales"],#nav [data-go="partner-insights"]').count() == 0)
     await test.route('insikter')
     test.good('direkt insiktsnavigation respekterar internt perspektiv', await page.evaluate('Portal.page') == 'overview')
     await test.partner('estate1')
@@ -253,7 +253,7 @@ async def ui_checks(test):
     await test.internal()
     await page.evaluate('Portal.saveraReports.reset()')
     ledger = await page.evaluate('Portal.saveraData.ledger')
-    test.good('intern navigation visar tydliga Savera- och Insikter-sidor', await page.locator('#nav [data-go="savera"]').count() == 1 and await page.locator('#nav [data-go="insikter"]').count() == 1 and await page.locator('h1').inner_text() == 'Savera')
+    test.good('kunduppföljning och Insikter ligger under Partners utan egna huvudkategorier', await page.locator('#nav [data-go="savera"],#nav [data-go="insikter"],#nav [data-go="partner-sales"],#nav [data-go="partner-insights"]').count() == 0 and await page.locator('#nav [data-go="partners"]').get_attribute('aria-current') == 'page' and await page.locator('h1').inner_text() == 'Savera')
     test.good('Savera öppnas med år, 207 avtal, 8 175 MWh och 305 aktiva kunder', await page.locator('[data-sr-mode="year"]').get_attribute('aria-pressed') == 'true' and await metric_values(page) == {'agreements': 207, 'annualMWh': 8175, 'activeCount': 305} and await page.locator('#sr-table-count').inner_text() == '207 avtal')
     page_ids = []
     while True:
@@ -283,9 +283,9 @@ async def ui_checks(test):
     combined = selection(ledger, product=PRODUCTS[0], seller=seller, region=region)
     test.good('extra säljar- och geografifilter fungerar tillsammans med elavtal', (await metric_values(page))['agreements'] == len(combined) and set(await table_ids(page)) == {row['id'] for row in combined})
     saved = await page.evaluate('Portal.saveraReports.filters()')
-    await page.locator('[data-go="insikter"]').first.click()
+    await page.locator('[data-go="partner-insights"]').first.click()
     insights = await report(test, saved, 'insights')
-    test.good('Insikter tar med samma rapportfilter från Savera', await page.locator('h1').inner_text() == 'Insikter' and await page.locator('#sr-product').input_value() == saved['product'] and await page.locator('#sr-seller').input_value() == saved['seller'] and await page.locator('#sr-region').input_value() == saved['region'])
+    test.good('Insikter tar med samma rapportfilter från Savera', await page.locator('h1').inner_text() == 'Savera' and await page.locator('.sr-partner-tabs [data-go="partner-insights"]').get_attribute('aria-current') == 'page' and await page.locator('#sr-product').input_value() == saved['product'] and await page.locator('#sr-seller').input_value() == saved['seller'] and await page.locator('#sr-region').input_value() == saved['region'])
     popular = await page.locator('.sr-product-row').inner_text()
     test.good('produktdiagrammet följer samma kombinerade kundurval', PRODUCTS[0] in popular and f"{len(combined)} avtal" in popular and await page.locator('.sr-product-row').count() == 1)
     completed_display = await page.locator('.sr-tenure-completed strong').inner_text()
@@ -294,7 +294,7 @@ async def ui_checks(test):
     expected_active = insights['active']['averageMonths']
     test.good('kundtid visas separat för avslutade och ännu aktiva kunder', (completed_display == '—' if expected_completed is None else abs(float(num_text(completed_display)) - expected_completed) <= .051) and (active_display == '—' if expected_active is None else abs(float(num_text(active_display)) - expected_active) <= .051))
     await page.reload(wait_until='networkidle')
-    test.good('rapportfilter och aktuell sida består efter omladdning', await page.evaluate('Portal.page') == 'insikter' and await page.evaluate('Portal.saveraReports.filters()') == saved)
+    test.good('rapportfilter och aktuell sida består efter omladdning', await page.evaluate('Portal.page') == 'partner-insights' and await page.evaluate('Portal.saveraReports.filters()') == saved)
     await page.locator('#sr-reset').click()
     await page.locator('[data-sr-mode="month"]').click()
     await page.locator('#sr-period').select_option('2026-10')
@@ -308,7 +308,7 @@ async def ui_checks(test):
     test.good('periodbyte fungerar med tangentbord och behåller korrekt tryckt-status', await page.locator('#sr-period').input_value() == '2026' and await page.locator('[data-sr-mode="year"]').get_attribute('aria-pressed') == 'true')
     october_label = page.locator('.sr-trend-bar').last.locator(':scope > span')
     test.good('årsdiagrammets sista stapel märks synligt som oktober 1–7, inte hel månad', await october_label.is_visible() and '1–7' in await october_label.inner_text() and '1–7 oktober' in await page.locator('.sr-trend-note').inner_text())
-    await page.locator('[data-go="savera"]').first.click()
+    await page.locator('[data-go="partner-sales"]').first.click()
     await page.locator('.sr-list-tabs [data-sr-list="active"]').click()
     ids = await table_ids(page)
     test.good('aktivkundlistan visar stock från tidigare år, inte bara årets nya avtal', await page.locator('#sr-table-count').inner_text() == '305 aktiva kunder' and await page.locator('#sr-status').is_disabled() and all(status_at(next(row for row in ledger if row['id'] == rid), '2026-10-07') == 'active' for rid in ids))
@@ -341,7 +341,7 @@ async def ui_checks(test):
     await page.goto(BASE + '#savera', wait_until='networkidle')
     test.good('vanliga labbets filter återkommer efter arbete i kunddemot', await page.evaluate('Portal.saveraReports.filters()') == normal and await page.locator('#sr-product').input_value() == PRODUCTS[3])
     await page.evaluate('Portal.saveraReports.reset()')
-    for name in ['savera', 'insikter']:
+    for name in ['partner-sales', 'partner-insights']:
         await test.route(name)
         for width in [1440, 390, 320]:
             await page.set_viewport_size({'width': width, 'height': 1000 if width == 1440 else 844})
@@ -349,7 +349,7 @@ async def ui_checks(test):
             if width != 1440:
                 sizes = await page.locator('.savera-reports input,.savera-reports select').evaluate_all('(nodes)=>nodes.map(node=>parseFloat(getComputedStyle(node).fontSize))')
                 test.good(f'{name} har minst 16px formulärtext på mobil vid {width}px', bool(sizes) and min(sizes) >= 16)
-                meaningful = '.sr-projection-note,.sr-projection>small' if name == 'insikter' else '.sr-metric>p,.sr-list-note'
+                meaningful = '.sr-projection-note,.sr-projection>small' if name == 'partner-insights' else '.sr-metric>p,.sr-list-note'
                 notes = await page.locator(meaningful).evaluate_all('(nodes)=>nodes.map(node=>parseFloat(getComputedStyle(node).fontSize))')
                 test.good(f'{name} har läsbar viktig mått- och prognosförklaring vid {width}px', bool(notes) and min(notes) >= 12)
             await test.shot(f'{name}-{width}.png')

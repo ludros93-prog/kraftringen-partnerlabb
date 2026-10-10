@@ -3,7 +3,8 @@
   const P = window.Portal;
   if (!P) return;
   const e = P.e;
-  const partnerIds = ['syd', 'vast', 'estate1', 'estate2'];
+  const partnerIds=['syd','vast','estate1','estate2'];
+  const registryIds=()=>P.partnerRegistry.map(item=>item.id);
   const months = Array.from({length:10}, (_, index) => `2026-${String(index + 1).padStart(2, '0')}`);
   const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober · 1–7 okt'];
   const cutoff = '2026-10-07';
@@ -61,15 +62,16 @@
     return '<p class="kickback-footnote">Manuella exempelposter. Faktiska villkor och beräkningsregler saknas. Beloppen är fristående från partnerkostnaden i resultatvyn.</p>';
   }
   function selectPartner(partnerId) {
-    if (P.role !== 'internal' || !partnerIds.includes(partnerId)) return;
-    selectedPartner = partnerId;
+    if (P.role !== 'internal' || !P.getPartner?.(partnerId)) return;
+    selectedPartner=partnerId;
+    P.selectedPartnerId=partnerId;
     P.go('kickback');
   }
   function bindSummary(root = document) {
     root.querySelectorAll('[data-kickback-open]').forEach(button => button.addEventListener('click', () => selectPartner(button.dataset.kickbackOpen)));
   }
   function renderSummary(partnerId, period) {
-    if (P.role !== 'internal' || !partnerIds.includes(partnerId)) return '';
+    if (P.role !== 'internal' || !P.getPartner?.(partnerId)) return '';
     const result = totalsFor([partnerId], period.current);
     const hasBasis = result.rows.length > 0;
     return `<section class="card kickback-summary" aria-label="Kickback för ${e(name(partnerId))}"><div class="panel-heading"><div><span class="commercial-eyebrow">KICKBACK / MANUELLA EXEMPEL</span><h2>Underlag, avstämning och utbetalning</h2><p class="kickback-caption">${e(period.range || period.label)}</p></div><button class="text-button" data-kickback-open="${partnerId}">Öppna kickbacköversikten ${P.icon('arrow')}</button></div><div class="kickback-metrics">${metric('Under avstämning', result.review, 'Separat från avstämt belopp', hasBasis)}${metric('Avstämt belopp', result.settled, 'Inklusive redan utbetalt', hasBasis)}${metric('Utbetalt på posterna', result.paid, 'Manuellt angivna betalningar', hasBasis)}${metric('Kvar på avstämda poster', result.remaining, 'Avstämt minus utbetalt', hasBasis)}</div>${result.missing.length ? '<p class="kickback-missing">Underlag saknas för en del av den valda perioden. Beloppen omfattar bara registrerade exempelposter.</p>' : ''}${footnote()}</section>`;
@@ -83,16 +85,17 @@
   function render() {
     if (P.role !== 'internal') return '<div class="empty">Denna vy tillhör Kraftringens interna demovy.</div>';
     const period = P.commercial?.currentPeriod?.() || {current:['2026-09'],label:'September 2026',range:'1–30 september 2026'};
-    const ids = selectedPartner === 'all' ? partnerIds : [selectedPartner];
+    if(selectedPartner!=='all'&&!P.getPartner?.(selectedPartner))selectedPartner='all';
+    const ids=selectedPartner==='all'?registryIds():[selectedPartner];
     const result = totalsFor(ids, period.current);
     const hasBasis = result.rows.length > 0;
-    return `<div class="commercial-page kickback-page"><div class="page-head commercial-head"><div><span class="commercial-eyebrow">KRAFTRINGEN / INTERN PARTNERSTYRNING</span><h1>Kickback och utbetalningar</h1><p class="muted">Följ underlag för Savera, Face2face och inflyttningspartners genom avstämning till utbetalning.</p></div><span class="pill">Manuella exempel</span></div>${P.commercial?.renderControls?.(false) || ''}<div class="kickback-partner-filter"><label class="commercial-filter-label">Partner<select id="kickback-partner"><option value="all"${selectedPartner === 'all' ? ' selected' : ''}>Alla partners</option>${partnerIds.map(id => `<option value="${id}"${id === selectedPartner ? ' selected' : ''}>${e(name(id))}</option>`).join('')}</select></label><p class="kickback-caption">Underlagsperiod: ${e(period.range || period.label)} · exempeldata till 7 oktober 2026</p></div><div class="kickback-metrics kickback-main-metrics">${metric('Under avstämning', result.review, 'Belopp ännu ej avstämt', hasBasis)}${metric('Avstämt belopp', result.settled, 'Inklusive redan utbetalt', hasBasis)}${metric('Utbetalt på posterna', result.paid, 'Betalningar kopplade till underlagen', hasBasis)}${metric('Kvar på avstämda poster', result.remaining, 'Avstämt minus utbetalt', hasBasis)}</div>${result.missing.length ? `<div class="kickback-missing">Underlag saknas: ${result.missing.map(item => `${e(name(item.partner))}, ${e(monthNames[months.indexOf(item.month)])} 2026`).join(' · ')}. Saknat underlag räknas inte som noll intjänad ersättning.</div>` : ''}<section class="card kickback-ledger"><div class="panel-heading"><div><h2>Manuellt kickbackunderlag</h2><p class="kickback-caption">${result.rows.length} exempelposter · statusar att diskutera</p></div></div><div class="table-wrap"><table class="kickback-table"><caption class="sr-only">Fiktiva kickbackposter för vald underlagsperiod. Beloppen är inte beräknade från avtal.</caption><thead><tr><th scope="col">Partner / underlag</th><th scope="col">Underlagsperiod</th><th scope="col">Status</th><th scope="col" class="kickback-number">Angivet belopp</th><th scope="col" class="kickback-number">Utbetalt</th><th scope="col" class="kickback-number">Kvar avstämt</th></tr></thead><tbody>${tableRows(result.rows)}</tbody></table></div></section><details class="kickback-guide"><summary>Vad visar beloppen?</summary><div><p><strong>Underlagsperioden</strong> är den månad exempelposten hör till. Utbetalt visar manuellt angivna betalningar på dessa poster fram till 7 oktober 2026, oavsett betalningsmånad.</p><p><strong>Under avstämning</strong> hålls separat från avstämt belopp. Kvar på avstämda poster är avstämt belopp minus angiven utbetalning. Det är underlag för uppföljning och inte ett besked om intjänad ersättning.</p><p><strong>Reglerna behöver underlag.</strong> Belopp per avtal, procentsatser, utlösande händelser och hur bortfall eller churn påverkar kickback är inte definierade. Vyn beräknar ingen ersättning från försäljning eller inflyttningsärenden.</p></div></details>${footnote()}</div>`;
+    return `<div class="commercial-page kickback-page"><div class="page-head commercial-head"><div><span class="commercial-eyebrow">KRAFTRINGEN / INTERN PARTNERSTYRNING</span><h1>Kickback och utbetalningar</h1><p class="muted">Följ era partners genom avstämning till utbetalning.</p></div><span class="pill">Manuella exempel</span></div>${P.commercial?.renderControls?.(false) || ''}<div class="kickback-partner-filter"><label class="commercial-filter-label">Partner<select id="kickback-partner"><option value="all"${selectedPartner === 'all' ? ' selected' : ''}>Alla partners</option>${registryIds().map(id => `<option value="${id}"${id === selectedPartner ? ' selected' : ''}>${e(name(id))}</option>`).join('')}</select></label><p class="kickback-caption">Underlagsperiod: ${e(period.range || period.label)} · exempeldata till 7 oktober 2026</p></div><div class="kickback-metrics kickback-main-metrics">${metric('Under avstämning', result.review, 'Belopp ännu ej avstämt', hasBasis)}${metric('Avstämt belopp', result.settled, 'Inklusive redan utbetalt', hasBasis)}${metric('Utbetalt på posterna', result.paid, 'Betalningar kopplade till underlagen', hasBasis)}${metric('Kvar på avstämda poster', result.remaining, 'Avstämt minus utbetalt', hasBasis)}</div>${result.missing.length ? `<div class="kickback-missing">Underlag saknas: ${result.missing.map(item => `${e(name(item.partner))}, ${e(monthNames[months.indexOf(item.month)])} 2026`).join(' · ')}. Saknat underlag räknas inte som noll intjänad ersättning.</div>` : ''}<section class="card kickback-ledger"><div class="panel-heading"><div><h2>Manuellt kickbackunderlag</h2><p class="kickback-caption">${result.rows.length} exempelposter · statusar att diskutera</p></div></div><div class="table-wrap"><table class="kickback-table"><caption class="sr-only">Fiktiva kickbackposter för vald underlagsperiod. Beloppen är inte beräknade från avtal.</caption><thead><tr><th scope="col">Partner / underlag</th><th scope="col">Underlagsperiod</th><th scope="col">Status</th><th scope="col" class="kickback-number">Angivet belopp</th><th scope="col" class="kickback-number">Utbetalt</th><th scope="col" class="kickback-number">Kvar avstämt</th></tr></thead><tbody>${tableRows(result.rows)}</tbody></table></div></section><details class="kickback-guide"><summary>Vad visar beloppen?</summary><div><p><strong>Underlagsperioden</strong> är den månad exempelposten hör till. Utbetalt visar manuellt angivna betalningar på dessa poster fram till 7 oktober 2026, oavsett betalningsmånad.</p><p><strong>Under avstämning</strong> hålls separat från avstämt belopp. Kvar på avstämda poster är avstämt belopp minus angiven utbetalning. Det är underlag för uppföljning och inte ett besked om intjänad ersättning.</p><p><strong>Reglerna behöver underlag.</strong> Belopp per avtal, procentsatser, utlösande händelser och hur bortfall eller churn påverkar kickback är inte definierade. Vyn beräknar ingen ersättning från försäljning eller inflyttningsärenden.</p></div></details>${footnote()}</div>`;
   }
   function bind() {
     if (P.role !== 'internal') return;
     P.commercial?.bindControls?.();
     document.querySelector('#kickback-partner')?.addEventListener('change', event => {
-      selectedPartner = partnerIds.includes(event.target.value) ? event.target.value : 'all';
+      selectedPartner=P.getPartner?.(event.target.value)?event.target.value:'all';
       P.render();
     });
   }

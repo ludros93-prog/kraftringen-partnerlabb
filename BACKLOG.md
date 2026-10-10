@@ -18,15 +18,19 @@ Hyresgästen har inga aktiva portalsteg. Verifiera aktuell kandidat; tidigare
 version 12-resultat räknas inte som test av de nya vägarna.
 
 Senaste uppföljningskravet samma dag är en uttrycklig nästa prioritet:
-Savera med enkel period-/kund-/produktuppföljning och aktivt bestånd,
-separat Insikter med kundtid/popularitet/scenario vid fortsatt tempo samt
-fastighetspartnerns egna kunder och kickback. Uppgifterna är auktoriserat
+säljpartners under Partners med generisk period-/kund-/produktuppföljning,
+aktivt bestånd och partnerns Insikter. Partnern kan väljas för B2B, B2C eller
+båda; Face2face får samma uppföljning med den femdelade konsumentkatalogen.
+Fastighetspartnerns egna kunder och kickback bevaras. Uppgifterna är auktoriserat
 frontendarbete med fiktiva data; D-01–D-04 är fortsatt öppna för verklig drift.
 
 | Prioritet / ID | Nästa leverans | Status och godkänt när |
 | --- | --- | --- |
+| Under utveckling / PARTNER-02 | Skapa och ändra säljpartner med kundsegment B2B, B2C eller båda. | Lokal partnerprofil ska bevara befintliga kunder/ärenden, ha rätt normal-/demoyta och tydligt spar-/felbesked. Ändrad konfiguration får inte skriva om historiska segment. Ny partner utan underlag ska visa saknat resultat och kickback. Ingen publiceringskvittens finns ännu för denna kandidat. |
+| Under utveckling / PARTNER-03 | Gemensam Kunder & avtal och Insikter för säljpartners under Partners. | Ta bort globala Savera-/Insikter-kategorier. Samma år/månad/vecka, segment/produkt/säljare/geografi, kundlista, aktivt bestånd, kundtid/popularitet och villkorat scenario för Savera, Face2face och framtida partners. Partner-ID och filter ska följa länkar/omladdning. Verifiera blandade segment och saknat underlag. |
+| Under utveckling / FACE2FACE-02 | Utvidga B2C-katalog och gemensamma Insikter. | Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt pris ersätter tidigare tvåproduktsurval. Fiktiva kundrader ska stämma mot befintliga månadsavtal/års-MWh; aktiv stock ska ha spårbar separat kohorthistorik. Churn efter start och bortfall före start behåller skilda baser. Ingen Beest-integration eller ersättning av Beest. |
 | Publicerad / SAVERA-01 | Enkel intern Savera-vy med nya avtal och års-MWh per år/månad/vecka, kundens avtalstyp och aktivt bestånd. | Publicerad i version 15 via PR #10. Alla sex produkter, säljare/region, periodgränser, kundrader och aktivt bestånd vid observerat periodslut är verifierade. Månatliga försäljningsceller stämmer; avtal och kundstock hålls separata. Kvittens i WORKLOG. |
-| Publicerad / INSIKTER-01 | Separat Insikter för observerad kundtid, populära avtal och scenario vid fortsatt tempo. | Publicerad i version 15 via PR #10. Samma rapportfilter, separat avslutad kundtid/aktiv kundålder, tydlig bas/observerade dagar/datum/horisont. Villkorat scenario utan garanti eller intäkts-/kickbackmodell; verifierat i 104 rapportkontroller. |
+| Publicerad / INSIKTER-01 | Version 15:s första Insikter för observerad kundtid, populära avtal och scenario vid fortsatt tempo; global kategorisering ersätts av PARTNER-03. | Publicerad i version 15 via PR #10. Samma rapportfilter, separat avslutad kundtid/aktiv kundålder, tydlig bas/observerade dagar/datum/horisont. Villkorat scenario utan garanti eller intäkts-/kickbackmodell; verifierat i 104 rapportkontroller. |
 | Publicerad / PARTNER-01 | Fastighetspartnerns egen uppföljning av kundinflöde och kickback. | Publicerad i version 15 via PR #10. Egna nya kundexempel, separat service/hjälp och egna manuella kickbackposter. Saknat underlag förblir saknat och registrering ändrar ingen resultatfixture. Partneravgränsning, mobil och filter verifierade. |
 | Publicerad / PARTNER-01A | Bevara fastighetspartnerns valda rapportperiod efter avbrott. | Integrerad via PR #12 och publicerad i version 16. Års-/månadsval bevaras per partner och isoleras mellan normal-/demoyta. Node-regressioner, lagringsfel och bevarad orelaterad data är kontrollerade. Den utökade browserregressionen återstår i browserkapabel miljö; kvittens i WORKLOG. |
 | Publicerad / INFLYTT-04 | Partnerns manuella registrering och Excel-import med fullmaktsbilagor. | Båda ingångarna är implementerade med fält/radfel, dubblettkontroll, uttrycklig registrering, rätt bilagekoppling och fullmakt-saknas-status. 109 browserkontroller passerar. Ingen aktiv hyresgästvy och ingen automatisk fullmakt/ekonomi. Publicerad i version 13 via PR #6; kvittens i WORKLOG. |

@@ -5,13 +5,20 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const portal={};
+const partners={
+  syd:{id:'syd',name:'Savera',salesAudiences:['business']},
+  vast:{id:'vast',name:'Face2face',salesAudiences:['consumer']},
+  mixed:{id:'mixed',name:'Blandad testpartner',salesAudiences:['business','consumer']},
+  empty:{id:'empty',name:'Ny partner',salesAudiences:['business','consumer']}
+};
+const portal={getPartner:id=>partners[id]};
 const context=vm.createContext({window:{Portal:portal},Date,Intl});
 for(const file of ['partner-results-data.js','savera-data.js']) {
   vm.runInContext(fs.readFileSync(path.join(root,'dist',file),'utf8'),context,{filename:file});
 }
 const D=portal.saveraData;
 const A=portal.partnerResultsData;
+const F=portal.partnerSalesData.forPartner('vast');
 let checks=0;
 function test(label,fn) {fn();checks++;console.log(`✓ ${label}`);}
 const fixedMonths=[
@@ -179,4 +186,185 @@ test('Reading filters and forecasts preserves immutable legacy reporting fixture
   assert.equal(A.summary({partnerIds:['syd']}).agreements,207);
   assert.equal(A.summary({partnerIds:['syd']}).annualMWh,8175);
 });
-console.log(`Savera data: ${checks} checks passed.`);
+test('Consumer catalog contains exactly the five user-confirmed alternatives',()=>{
+  const expected=['Fastpris','Vintersäkrat','Opti','Kvartspris','Rörligt pris'];
+  assert.deepEqual([...F.products],expected);
+  assert.deepEqual([...A.productCatalog.vast],expected);
+  assert.deepEqual([...portal.partnerSalesData.catalog.consumer],expected);
+  assert.equal(F.query({segment:'business'}).length,0);
+  assert.equal(D.query({segment:'consumer'}).length,0);
+  assert.ok(F.ledger.every(row=>row.segment==='consumer'&&expected.includes(row.product)));
+  assert.ok(D.ledger.every(row=>row.segment==='business'));
+});
+test('Face2face monthly sales, annual-MWh and all-cohort stock remain reconciled',()=>{
+  const fixed=[
+    [36,142,802],[38,151,820],[41,164,840],[44,180,860],[47,192,882],
+    [51,210,908],[52,220,933],[55,235,959],[61,260,987],[12,50,990]
+  ];
+  A.months.forEach((month,index)=>{
+    const actual=F.summary({mode:'month',value:month});
+    assert.equal(actual.agreements,fixed[index][0],month);
+    assert.equal(actual.annualMWh,fixed[index][1],month);
+    assert.equal(actual.activeCount,fixed[index][2],month);
+  });
+  const year=F.summary({mode:'year',value:'2026'});
+  assert.equal(year.agreements,437);
+  assert.equal(year.annualMWh,1804);
+  assert.equal(year.activeCount,990);
+  assert.equal(F.ledger.length,1226);
+  assert.equal(new Set(F.ledger.map(row=>row.customerId)).size,F.ledger.length);
+  for(const cell of A.rows({partnerIds:['vast']})) {
+    const rows=F.query({mode:'month',value:cell.month,product:cell.product,seller:cell.seller,region:cell.region});
+    assert.equal(rows.length,cell.agreements,JSON.stringify(cell));
+    assert.equal(rows.reduce((sum,row)=>sum+row.annualMWh,0),cell.annualMWh,JSON.stringify(cell));
+  }
+});
+test('Face2face carryover queue resolves independent activation fixtures without impossible timelines',()=>{
+  assert.equal(F.ledger.filter(row=>independentStatus(row,'2025-12-31')==='active').length,785);
+  const carry=F.ledger.filter(row=>row.carryoverPending);
+  assert.equal(carry.length,4);
+  assert.ok(carry.every(row=>row.soldDate<'2026-01-01'&&row.startDate>='2026-01-01'&&row.fictional));
+  A.months.forEach((month,index)=>{
+    const starters=F.ledger.filter(row=>row.startDate?.startsWith(month));
+    assert.equal(starters.length,A.fixtureModel.activeEntries.vast[index],month);
+  });
+  for(const row of F.ledger) {
+    assert.ok(row.annualMWh>0);
+    assert.ok(!row.startDate||row.soldDate<=row.startDate);
+    assert.ok(!row.endDate||row.startDate&&row.startDate<=row.endDate);
+    assert.ok(!row.cancelledDate||!row.startDate&&row.soldDate<=row.cancelledDate);
+    for(const value of [row.soldDate,row.startDate,row.endDate,row.cancelledDate].filter(Boolean)) {
+      assert.equal(new Date(`${value}T00:00:00Z`).toISOString().slice(0,10),value);
+    }
+  }
+  assert.equal(F.summary().statusCounts.pending,1);
+  assert.equal(F.insights().completed.count,194);
+});
+test('Churn uses the active start cohort and stays separate from pre-start sales-cohort dropout',()=>{
+  const year=F.insights();
+  assert.equal(year.churn.openingCustomers,785);
+  assert.equal(year.churn.exits,176);
+  assert.equal(year.churn.rate,176/785);
+  assert.equal(year.dropout.agreements,437);
+  assert.equal(year.dropout.cancelled,41);
+  assert.equal(year.dropout.rate,41/437);
+  assert.equal(year.dropout.observedThrough,'2026-10-07');
+  assert.notEqual(year.churn.exits,year.completed.count);
+  A.months.forEach(month=>{
+    const actual=F.insights({mode:'month',value:month});
+    const aggregate=A.cohort({partnerIds:['vast'],months:[month]});
+    assert.equal(actual.churn.openingCustomers,aggregate.openingActive,month);
+    assert.equal(actual.churn.exits,aggregate.openingCohortExited,month);
+    assert.equal(actual.churn.rate,aggregate.churnRate,month);
+    assert.equal(actual.dropout.cancelled,aggregate.preStartCancelled,month);
+    assert.equal(actual.dropout.agreements,aggregate.sold,month);
+  });
+  const sumRates=A.months.reduce((sum,value)=>sum+F.insights({mode:'month',value}).churn.rate,0);
+  assert.notEqual(year.churn.rate,sumRates);
+  assert.equal(D.insights().churn.rate,13/134);
+  assert.equal(D.insights().dropout.rate,6/207);
+});
+test('Weekly and filtered churn use dated customer rows with no future exits or cancellations',()=>{
+  for(const filters of [
+    {mode:'week',value:'2026-W01'},
+    {mode:'week',value:'2026-W41'},
+    {mode:'month',value:'2026-05',product:'Fastpris',region:'Skåne'},
+    {mode:'year',value:'2026',seller:F.sellers[0]}
+  ]) {
+    const p=F.period(filters),facts=F.insights(filters);
+    const before=new Date(`${p.observedStart}T00:00:00Z`);before.setUTCDate(before.getUTCDate()-1);
+    const beforeDate=before.toISOString().slice(0,10);
+    const match=row=>(!filters.product||row.product===filters.product)&&(!filters.region||row.region===filters.region)&&(!filters.seller||row.seller===filters.seller);
+    const opening=F.ledger.filter(row=>match(row)&&row.soldDate<=beforeDate&&independentStatus(row,beforeDate)==='active');
+    const exits=opening.filter(row=>row.endDate&&row.endDate>=p.observedStart&&row.endDate<=p.observedEnd);
+    assert.equal(facts.churn.openingCustomers,opening.length);
+    assert.equal(facts.churn.exits,exits.length);
+    const sold=F.query(filters);
+    assert.equal(facts.dropout.agreements,sold.length);
+    assert.equal(facts.dropout.cancelled,sold.filter(row=>row.cancelledDate&&row.cancelledDate<=p.observedEnd).length);
+  }
+});
+test('Consumer popularity, historical stock and conditional scenario share the same filtered ledger',()=>{
+  for(const filters of [{mode:'year',value:'2026'},{mode:'month',value:'2026-10',product:'Opti'},{mode:'week',value:'2026-W41',region:'Skåne'}]) {
+    const summary=F.summary(filters),facts=F.insights(filters),scenario=F.projection(filters),p=F.period(filters);
+    assert.equal(facts.products.reduce((sum,row)=>sum+row.agreements,0),summary.agreements);
+    assert.equal(facts.trend.reduce((sum,row)=>sum+row.annualMWh,0),summary.annualMWh);
+    const stock=F.ledger.filter(row=>row.soldDate<=p.observedEnd&&independentStatus(row,p.observedEnd)==='active'
+      && (!filters.product||row.product===filters.product)&&(!filters.region||row.region===filters.region));
+    assert.equal(summary.activeCount,stock.length);
+    if(summary.agreements) assert.equal(scenario.forecastAgreements,Math.round(F.summary({...filters,mode:'year',value:'2026'}).agreements+summary.agreements/p.daysObserved*85));
+  }
+});
+test('A mixed sales partner supports both segments including overlapping product names',()=>{
+  const rows=[...D.ledger,...F.ledger].map(row=>({...row,partner:'mixed'}));
+  const mixed=portal.partnerSalesData.createReport({partnerId:'mixed',ledger:rows});
+  const all=mixed.summary(),business=mixed.summary({segment:'business'}),consumer=mixed.summary({segment:'consumer'});
+  assert.equal(all.agreements,644);
+  assert.equal(all.annualMWh,9979);
+  assert.equal(all.activeCount,1295);
+  assert.equal(all.agreements,business.agreements+consumer.agreements);
+  assert.equal(all.annualMWh,business.annualMWh+consumer.annualMWh);
+  assert.equal(all.activeCount,business.activeCount+consumer.activeCount);
+  assert.equal(mixed.productsFor('all').length,9);
+  assert.equal(mixed.productsFor('business').length,6);
+  assert.equal(mixed.productsFor('consumer').length,5);
+  const combined=mixed.query({product:'Kvartspris'});
+  assert.equal(combined.length,mixed.query({product:'Kvartspris',segment:'business'}).length+mixed.query({product:'Kvartspris',segment:'consumer'}).length);
+  assert.ok(mixed.query({segment:'consumer'}).every(row=>row.segment==='consumer'));
+  const facts=mixed.insights();
+  assert.equal(facts.churn.openingCustomers,919);
+  assert.equal(facts.churn.exits,189);
+  assert.equal(facts.dropout.cancelled,47);
+  assert.equal(facts.dropout.rate,47/644);
+});
+test('Changing configured segments preserves historical row segments and never invents new results',()=>{
+  const before=JSON.stringify(D.ledger);
+  partners.syd.salesAudiences=['business','consumer'];
+  assert.deepEqual([...D.salesAudiences],['business','consumer']);
+  assert.equal(D.productsFor().length,9);
+  assert.equal(D.summary({segment:'consumer'}).agreements,null);
+  assert.equal(D.availableForSegment('consumer'),false);
+  assert.equal(D.insights({segment:'consumer'}).available,false);
+  assert.equal(D.insights({segment:'consumer'}).products.length,0);
+  assert.equal(D.projection({segment:'consumer'}).valid,false);
+  assert.equal(D.summary({segment:'business'}).agreements,207);
+  partners.syd.salesAudiences=['consumer'];
+  assert.deepEqual([...D.salesAudiences],['consumer']);
+  assert.deepEqual([...D.reportedAudiences],['consumer','business']);
+  assert.equal(D.summary({segment:'business'}).agreements,207);
+  assert.equal(JSON.stringify(D.ledger),before);
+  partners.syd.salesAudiences=['business'];
+});
+test('Changing product or seller does not turn a continuing customer into customer churn',()=>{
+  const base={...F.ledger[0],customerId:'K-RENEW',partner:'mixed',soldDate:'2025-12-01',cancelledDate:null,opening:true};
+  const rows=[
+    {...base,id:'RENEW-OLD',product:'Opti',seller:'Tidigare säljare',startDate:'2025-12-02',endDate:'2026-02-10'},
+    {...base,id:'RENEW-NEW',product:'Kvartspris',seller:'Ny säljare',soldDate:'2026-02-10',startDate:'2026-02-10',endDate:null}
+  ];
+  const report=portal.partnerSalesData.createReport({partnerId:'mixed',ledger:rows});
+  for(const filters of [{product:'Opti'},{seller:'Tidigare säljare'},{}]) {
+    const facts=report.insights({mode:'month',value:'2026-02',...filters});
+    assert.equal(facts.churn.openingCustomers,1);
+    assert.equal(facts.churn.exits,0);
+    assert.equal(facts.churn.rate,0);
+  }
+  assert.equal(report.summary({mode:'month',value:'2026-02'}).activeCount,1);
+});
+test('An unpopulated new partner exposes configured catalogs and missing rather than fabricated performance',()=>{
+  const empty=portal.partnerSalesData.forPartner('empty');
+  assert.equal(empty.available,false);
+  assert.equal(empty.ledger.length,0);
+  assert.equal(empty.productsFor().length,9);
+  assert.equal(empty.productsFor('consumer').length,5);
+  assert.equal(empty.summary().agreements,null);
+  assert.equal(empty.summary().annualMWh,null);
+  assert.equal(empty.summary().activeCount,null);
+  assert.equal(empty.insights().churn.rate,null);
+  assert.equal(empty.insights().dropout.rate,null);
+  assert.equal(empty.insights().completed.averageDays,null);
+  assert.equal(empty.projection().valid,false);
+  assert.equal(empty.projection().forecastAgreements,null);
+  assert.match(empty.projection().reason,/saknar försäljningsunderlag/);
+  assert.equal(portal.state,undefined);
+});
+console.log(`Partner sales data: ${checks} checks passed.`);

@@ -29,7 +29,7 @@
       output.push({ ...task, date, dateState: !date ? 'none' : date < today ? 'passed' : date === today ? 'today' : 'planned', ours: task.side === (internal ? 'internal' : 'partner') });
     }
     if (includes(options, 'business')) for (const row of P.state.records || []) {
-      if (!row || !inScope(row.partner, options) || P.getPartner?.(row.partner)?.audience !== 'business' || ['avslutad', 'closed', 'active'].includes(row.status) || row.stage === 'active') continue;
+      if (!row || !inScope(row.partner, options) || (row.partner==='vast'||!P.getPartner?.(row.partner)||P.getPartner?.(row.partner)?.type==='property') || ['avslutad', 'closed', 'active'].includes(row.status) || row.stage === 'active') continue;
       const unassigned = !text(row.owner) || row.owner === 'Ej tilldelad';
       const assignment = internal && unassigned;
       add({ id: `business:${row.id}`, recordId: row.id, channel: 'business', channelLabel: 'Företagsaffär', partner: row.partner, title: text(row.company) || 'Företagsdialog', action: internal ? 'record' : 'business', side: assignment ? 'internal' : 'partner', owner: assignment ? 'Kraftringen · behöver fördelas' : partnerName(row.partner), next: assignment ? 'Fördela kunddialogen' : text(row.next) || 'Planera nästa steg i kunddialogen', detail: assignment ? 'Intern ansvarig saknas. Öppna kunddialogen och välj Ansvar & återkoppling.' : '', date: assignment ? '' : row.date || P.state.businessDetails?.[row.id]?.nextDate || '', button: assignment ? 'Fördela dialog' : 'Öppna affär' });

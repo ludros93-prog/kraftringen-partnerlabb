@@ -11,9 +11,13 @@
   const utility = 'Elhandel';
   // Product names are supplied by the user. Their example distribution below
   // conveys no prices, terms, eligibility or actual historical product mix.
+  const segmentCatalog = Object.freeze({
+    business:Object.freeze(['Rörligt pris','Kvartspris','Poolportfölj Trygg','Poolportfölj Offensiv','Individuell portfölj','Kraftringen Stabil']),
+    consumer:Object.freeze(['Fastpris','Vintersäkrat','Opti','Kvartspris','Rörligt pris'])
+  });
   const productCatalog = Object.freeze({
-    syd:Object.freeze(['Rörligt pris','Kvartspris','Poolportfölj Trygg','Poolportfölj Offensiv','Individuell portfölj','Kraftringen Stabil']),
-    vast:Object.freeze(['Opti','Kvartspris']),
+    syd:segmentCatalog.business,
+    vast:segmentCatalog.consumer,
     estate1:Object.freeze(['Opti','Kvartspris']),
     estate2:Object.freeze(['Opti','Kvartspris'])
   });
@@ -37,7 +41,7 @@
     },
     vast: {
       sellers:['Leo Gran · exempel','Ella Sand · exempel','Sam Holm · exempel'],
-      regions:['Skåne','Västra Götaland','Stockholm'], sellerWeights:[4,3,3], regionWeights:[5,3,2], productWeights:[4,6], volumeWeights:[5,4]
+      regions:['Skåne','Västra Götaland','Stockholm'], sellerWeights:[4,3,3], regionWeights:[5,3,2], productWeights:[3,2,4,6,3], volumeWeights:[4,4,5,4,4]
     },
     estate1: {
       sellers:['Inflyttningskanal · exempel'], regions:['Lund','Malmö'],
@@ -64,7 +68,7 @@
   function segments(partner, monthIndex = 0) {
     const d = dimensions[partner];
     return d.sellers.flatMap((seller, sellerIndex) => d.regions.flatMap((region, regionIndex) => productCatalog[partner].map((product, productIndex) => ({
-      partner, seller, region, utility, product, volumeWeight:d.volumeWeights[productIndex],
+      partner, seller, region, utility, product, segment:partner==='syd' ? 'business' : 'consumer', volumeWeight:d.volumeWeights[productIndex],
       weight:d.sellerWeights[sellerIndex] * d.regionWeights[regionIndex] * d.productWeights[productIndex] * (1 + ((monthIndex + sellerIndex + regionIndex) % 3) / 8)
     }))));
   }
@@ -74,7 +78,7 @@
     const countParts = apportion(agreements, parts.map(part => part.weight));
     // No volume is allocated to a reporting cell containing zero agreements.
     const volumeParts = apportion(annualMWh, countParts.map((count, index) => count * parts[index].volumeWeight));
-    return parts.map((part,index) => Object.freeze({partner,month,seller:part.seller,region:part.region,utility,product:part.product,agreements:countParts[index],annualMWh:volumeParts[index]}));
+    return parts.map((part,index) => Object.freeze({partner,month,seller:part.seller,region:part.region,utility,segment:part.segment,product:part.product,agreements:countParts[index],annualMWh:volumeParts[index]}));
   }));
   const serviceCells = ['estate1','estate2'].flatMap(partner => months.flatMap((month, index) => {
     const d = dimensions[partner];
@@ -135,7 +139,7 @@
     return {
       partnerIds:chosen(opts.partnerIds,partnerIds).filter(id=>partnerIds.includes(id)),
       months:chosen(opts.months,months).filter(month=>months.includes(month)),
-      seller:opts.seller,region:opts.region,utility:opts.utility,product:opts.product
+      seller:opts.seller,region:opts.region,utility:opts.utility,product:opts.product,segment:opts.segment
     };
   }
   function matches(row, opts, service = false) {
@@ -143,7 +147,8 @@
       && (unfiltered(opts.region)||row.region===opts.region)
       && (service || ((unfiltered(opts.seller)||row.seller===opts.seller)
         && (unfiltered(opts.utility)||row.utility===opts.utility)
-        && (unfiltered(opts.product)||row.product===opts.product)));
+        && (unfiltered(opts.product)||row.product===opts.product)
+        && (unfiltered(opts.segment)||row.segment===opts.segment)));
   }
   function rows(opts = {}) {
     const selected = selection(opts);
@@ -190,5 +195,7 @@
       note:periodValid ? 'Fiktiva, separata kohortexempel. Bortfall före start observeras till 7 oktober 2026; de senare säljkohorterna har kortare uppföljning och är inte slutligt utvärderade.' : 'Välj en sammanhängande period för churn. Ingen giltig startkohort finns för det här periodurvalet.'
     };
   }
-  P.partnerResultsData = Object.freeze({months,cutoff,productCatalog,productsFor,rows,summary,cohort,helped,serviceRows});
+  const freezeTree=value=>value&&typeof value==='object' ? Object.freeze(Object.fromEntries(Object.entries(value).map(([key,part])=>[key,Array.isArray(part)?Object.freeze([...part]):freezeTree(part)]))) : value;
+  const fixtureModel=freezeTree({openingTotals,openingExits,activeEntries,laterExits,preStartTotals});
+  P.partnerResultsData = Object.freeze({months,cutoff,segmentCatalog,productCatalog,productsFor,rows,summary,cohort,helped,serviceRows,fixtureModel});
 })();
