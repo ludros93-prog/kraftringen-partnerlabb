@@ -19,11 +19,13 @@
   grenskydd är inte verifierat: anslutningen nekades att läsa och ändra
   granskningsregler med HTTP403. Ägaren behöver aktivera kravet i GitHub.
   Se GITHUB-ACCESS.md. CODEOWNERS-filen ensam spärrar inte direkt push.
-- Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` har en sparad,
-  återläst prompt för färsk GitHub-main och egen agent/-gren + PR. Schema och
-  Europe/Stockholm är bevarade. Uppgiften är återaktiverad; aktivering,
-  sparad prompt och oförändrat schema har lästs tillbaka och verifierats.
-  Daniels godkännandekrav är också sparat och återläst i samma uppdrag.
+- Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` heter nu
+  **Partnerlivs pilotagent**. Den 10 oktober 2026 kl. 18:39 UTC bekräftade
+  privat återläsning enabled, exakt prompt enligt PILOT-AGENT-PROMPT.txt,
+  oförändrat timschema och Europe/Stockholm. Pilotmissionen och egen
+  agent/-gren + PR styr arbetet; Daniels godkännandekrav består.
+  Ingen extra automation skapades. Detta verifierar konfiguration och
+  aktivering, inte en redan utförd körning med det nya pilotuppdraget.
 
 ## Publicerad portal och källöverföring
 

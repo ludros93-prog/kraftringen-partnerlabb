@@ -236,3 +236,29 @@
 - Ändringen omfattar endast uppdrag, arbetskö och dokumentation. dist/ och
   hostingmanifest bevaras. Backend, verkliga integrationer, nya priser och
   riktiga kundärenden har inte införts.
+
+## 2026-10-10 — Pilotagenten aktiverad och återläst
+
+- Uppdrags- och arbetsminnespaketet integrerades via PR #2:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/2.
+  GitHub bekräftade merge till main på revision
+  30fab305d1f722c407c66d727633d840d7128934 kl. 18:39:21 UTC.
+- Verifierat före integration: giltiga lokala dokumentlänkar och Claude-importer,
+  git diff --check samt ingen diff i dist/ eller .openai/hosting.json.
+  Separat granskning bekräftade konsekventa pilot-, fakta-, mandat-, kö- och
+  godkännanderegler. Inga nya funktionella appkontroller behövdes.
+- Samma Automation_e03c6b2fc3448191a58c63c969a090c0 fick titeln
+  ”Partnerlivs pilotagent” och exakt prompt enligt PILOT-AGENT-PROMPT.txt.
+  Sparad pausad konfiguration återlästes före aktivering. Därefter bekräftade
+  en ny privat lookup kl. 18:39 UTC enabled=true, samma uppgifts-ID, exakt
+  prompt, oförändrat RRULE:FREQ=HOURLY och Europe/Stockholm.
+- DTSTART;TZID=Europe/Stockholm:20261008T230000 bevarades. Inget nytt schema
+  eller någon extra automation skapades. Morgonsammanfattning är en
+  instruktion i samma uppgift, inte ett separat garanterat klockslag.
+- Lookupens senaste registrerade körning var fortfarande 18:03:50 UTC och
+  next_run_time saknade värde. Aktiveringen är verifierad; ingen utförd körning
+  med nya pilotprompten, ständig processdrift eller leverans varje timme
+  påstås. Första leveransen i detta pass är fakta-, beslut- och acceptanspaketet.
+- PR #1 är fortsatt öppet och räknas som väntande pilotförslag. Agenten ska
+  kontrollera aktuell status och ta vid befintligt arbete. Denna kvittens
+  ändrar endast dokumentation; ingen Sites-version eller delning ändras.
