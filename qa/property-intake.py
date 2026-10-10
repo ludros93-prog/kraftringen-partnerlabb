@@ -266,13 +266,15 @@ async def service_checks(test):
     test.good('samma Excel-fil visar dubbletter och kan inte skapa igen', await page.locator('.pi-row-invalid').count() == 2 and await page.locator('#pi-import-save').is_disabled() and len((await test.state())['moveins']) == before_excel + 2)
     await page.evaluate('Portal.propertyIntake.clearDrafts();Portal.propertyIntake.open("import","estate1")')
     invalid_rows = [
+        ['Testgatan 9', '1001', '222 22', 'Lund', '2026-11-22', '', 'valid@hyresgast.example', ''],
         ['Testgatan 9', '1001', '222 22', 'Lund', '2026-11-22', 'Giltig QA', 'valid@hyresgast.example', ''],
         ['Testgatan 10', '1002', '222 22', 'Lund', '2026-02-30', 'Ogiltig QA', 'invalid@hyresgast.example', ''],
         ['Testgatan 9', '1001', '222 22', 'Lund', '2026-11-22', 'Dubblett QA', 'valid@hyresgast.example', ''],
     ]
     await page.locator('#pi-excel-file').set_input_files(xlsx_file('kontrollrader.xlsx', workbook(HEADERS, invalid_rows)))
-    await page.locator('.pi-import-row').nth(2).wait_for()
-    test.good('ogiltiga datum och interna dubbletter markeras och spärras', await page.locator('.pi-row-invalid').count() == 2 and await page.locator('[data-pi-select="1"]').is_disabled() and await page.locator('[data-pi-select="2"]').is_disabled())
+    await page.locator('.pi-import-row').nth(3).wait_for()
+    test.good('en felaktig rad blockerar inte en senare korrigerad rad', not await page.locator('[data-pi-select="1"]').is_disabled() and await page.locator('[data-pi-select="1"]').is_checked())
+    test.good('ogiltiga datum och interna dubbletter markeras och spärras', await page.locator('.pi-row-invalid').count() == 3 and await page.locator('[data-pi-select="0"]').is_disabled() and await page.locator('[data-pi-select="2"]').is_disabled() and await page.locator('[data-pi-select="3"]').is_disabled())
     await page.locator('#pi-import-confirm').check()
     await page.locator('#pi-import-save').click()
     await page.locator('.pi-success').wait_for()
