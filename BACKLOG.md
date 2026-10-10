@@ -17,23 +17,32 @@ registrerar via Excel eller manuellt och bifogar befintliga fullmakter.
 Hyresgästen har inga aktiva portalsteg. Verifiera aktuell kandidat; tidigare
 version 12-resultat räknas inte som test av de nya vägarna.
 
+Senaste uppföljningskravet samma dag är en uttrycklig nästa prioritet:
+Savera med enkel period-/kund-/produktuppföljning och aktivt bestånd,
+separat Insikter med kundtid/popularitet/scenario vid fortsatt tempo samt
+fastighetspartnerns egna kunder och kickback. Uppgifterna är auktoriserat
+frontendarbete med fiktiva data; D-01–D-04 är fortsatt öppna för verklig drift.
+
 | Prioritet / ID | Nästa leverans | Status och godkänt när |
 | --- | --- | --- |
+| Verifierad / SAVERA-01 | Enkel intern Savera-vy med nya avtal och års-MWh per år/månad/vecka, kundens avtalstyp och aktivt bestånd. | Uttryckligt användarkrav 10 oktober. Alla sex produkter, säljare/region, periodgränser och unika aktiva kunder vid observerat periodslut. Kundrader stämmer av mot månadsaggregat. Avtal/kundstock är separata mått; faktisk implementation, QA och publicering kvitteras i WORKLOG. |
+| Verifierad / INSIKTER-01 | Separat Insikter för observerad kundtid, populära avtal och scenario vid fortsatt tempo. | Samma begripliga period-/produkturval. Avslutad kundtid skiljs från aktiv kunds ålder. Scenariot visar bas, observerade dagar, datadatum och horisont; det är ingen garanti eller intäkts-/kickbackmodell. Verifiera I-fallen i PILOT-ACCEPTANCE och kvittera faktisk leverans. |
+| Verifierad / PARTNER-01 | Fastighetspartnerns egen uppföljning av kundinflöde och kickback. | Egna attribuerade nya elhandelskunder skiljs från serviceärenden/hjälpta inflyttare; endast egna manuella kickbackposter med korrekt period och utan interna kostnader. Ny registrering ändrar inte kund- eller finansfixtures. Verifiera P-fallen och kvittera faktisk leverans. |
 | Publicerad / INFLYTT-04 | Partnerns manuella registrering och Excel-import med fullmaktsbilagor. | Båda ingångarna är implementerade med fält/radfel, dubblettkontroll, uttrycklig registrering, rätt bilagekoppling och fullmakt-saknas-status. 109 browserkontroller passerar. Ingen aktiv hyresgästvy och ingen automatisk fullmakt/ekonomi. Publicerad i version 13 via PR #6; kvittens i WORKLOG. |
 | Genomförd / PILOT-01 | Ny fiktiv generalrepetition för båda registreringsvägarna. | 61 service-, 13 utkast-, 30 demo- och 5 integritetskontroller passerar: faktisk .xlsx-fil, dokument, lagringsfel, omladdning, avbrott, återställning, äldre data, mobil/tangentbord och oförändrad ekonomi. Tidigare 75/34 kontroller av version 12 är historiska belägg. |
 | Publicerad / DEMO-01 | Anpassa guidningen till fastighetsbolag → underlag/fullmakter → förmedling → Kraftringen → återkoppling. | Alla aktiva portalsteg görs av fastighetsbolaget eller Kraftringen. Guiden registrerar eller förmedlar inte automatiskt; aktuell markering består efter omladdning. Befintlig isolerad demoyta återanvänds; publicerad i version 13. |
 | Bevara / DEMO-02 | Visuellt sammanhållen kunddemo. | Version 12 gav gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Bevara kvaliteten i nya Excel-/manuella vyer och verifiera igen där ändringar sker. Designval är inte uppmätt verklig användarnytta. |
 | Bevara / INFLYTT-03 | Kvittoåterupptagning från merged [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR #1 ingår i PR #4 och version 12. Återanvänd samma post/referens med aktuell status i partnerflödet; uppdatera testförväntningar när vyn ersätts. |
 | Publicerad / DEMO-03 | Behåll guidens aktuella moment efter omladdning. | URL-markören skiljer registrering/förmedling från återkoppling. Steg 3 och 5 håller rätt markering efter omladdning utan automatiska ärendehändelser; omstart rensar markören. Publicerad i version 13. |
-| 5 / PILOT-03 | Åtgärda återstående reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
-| Klar / PILOT-03A | Låt en korrigerad Excel-rad passera efter en tidigare felaktig rad med samma ärendeidentitet. | PR #8 integrerad och publicerad som Sites version 14. Node-regression visar fel på tidigare kod och PASS på rättningen; browserregression i `qa/property-intake.py` är utökad men ännu inte omkörd. Kvittens och begränsning i WORKLOG. |
+| Nästa / PILOT-03 | Åtgärda återstående reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. PR #8 är integrerad i aktuell bas; samordna framtida intakearbete med öppna PR:er. |
+| Klar / PILOT-03A | Låt en korrigerad Excel-rad passera efter en tidigare felaktig rad med samma ärendeidentitet. | PR #8 integrerad och publicerad som Sites version 14. Node-regression visar fel på tidigare kod och PASS på rättningen; den utökade servicekedjans 62 browserkontroller är nu omkörda på den samlade uppföljningskandidaten. Kvittens och begränsning i WORKLOG. |
 | 6 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering finns. Nästa ändring kräver nytt belägg; D-01–D-04 är inte besvarade och behöver inte stoppa oberoende demoarbete. |
 | 7 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
 | Senare / PILOT-04 | Gemensam ärendelagring och verklig behörighet i godkänd miljö. | Genomförande väntar på D-02/D-03 och separat mandat. Agenten får förbereda alternativ och verifieringsplan inom nuvarande uppdrag. |
 | Senare / DATA-01 | Verkligt kommersiellt utfall och kickback per kanal. | Genomförande väntar på D-04 och data-/integrationsmandat. Saknat underlag är inte nollutfall. |
 
 Generell Academy-/CPQ-/säljapputbyggnad och leverantörsresearch utan konkret
-pilotbehov prioriteras efter denna kö. Nedan bevaras tidigare belägg och
+behov i uppföljning eller inflyttning prioriteras efter denna kö. Nedan bevaras tidigare belägg och
 leveranshistorik. Historiska hyresgäststeg nedan beskriver äldre versioner
 och är inte dagens arbetssätt eller en kö för återinförande.
 

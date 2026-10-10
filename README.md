@@ -9,7 +9,9 @@ Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demou
 ## Aktiv pilotagent
 
 [PILOT-MISSION.md](PILOT-MISSION.md) styr nästa etapp: förbered en enkel pilot
-med ett fastighetsbolag och en Kraftringen-handläggare. Agenten arbetar i egna
+med ett fastighetsbolag och en Kraftringen-handläggare, och genomför nu
+Ludwigs senaste uppföljningskrav för Savera, Insikter och partnerns egna
+kunder/kickback. Agenten arbetar i egna
 grenar och PR:er med högst två färdiga förslag i väntan på granskning.
 [PILOT-FACTS.md](PILOT-FACTS.md) visar vad som är bekräftat,
 [PILOT-DECISIONS.md](PILOT-DECISIONS.md) vad som behöver beslutas och
@@ -51,6 +53,70 @@ Portalen har gemensam lokalt serverad Inter-typografi, större text och
 kontroller, en tydligare fastighetsyta, läsbara ärendekort på mobil och en
 intern resultatöversikt med nettobidrag, avtal och avtalad årsvolym främst.
 
+## Enkel Savera-uppföljning och Insikter
+
+Välj **Savera** i Kraftringens meny. Välj år, månad eller vecka och filtrera
+på elavtal, säljare och region. Tre huvudmått skiljer nya avtal, avtalad
+årsvolym i MWh och aktiva kunder. Kundlistan växlar mellan **Periodens
+avtal** och **Aktiva kunder** och visar kundens produkt, datum, säljare,
+region och status. Sökning och statusfilter i listan gäller bara kundlistan;
+period-/produkt-/säljar-/regionurvalet styr nyckeltalen.
+
+**Insikter** är en separat sida med samma rapporturval. Den visar
+avtalsfördelning, observerad kundtid och ett scenario om försäljningen
+fortsätter i valda periodens tempo. Filtervalen sparas lokalt mellan
+rapportvyerna; det ändrar inget kund- eller serviceunderlag.
+
+- **Nya avtal:** avtal stängda under vald observerad period. Varje rad i
+  detta fiktiva Savera-underlag har ett avtal och en unik kundidentitet.
+- **Aktiva kunder:** unika kunder med påbörjat, ej avslutat avtal vid
+  vald periods observerade slut, även från tidigare år. Visa alltid
+  beståndsdatumet; periodens nya avtal och aktiva kunder är olika mått.
+- **Avslutad kundtid:** tid från avtalsstart till avslut för kunder som
+  lämnade under vald period. **Aktiv kundtid** är observerad ålder vid
+  periodslut för de ännu aktiva kunderna. Den förutsäger inte när de lämnar
+  och är inte uppmätt slutlig kundlivslängd för hela kundbasen.
+- **Fortsatt tempo:** valda periodens nya avtal per observerad kalenderdag
+  används för dagarna efter 7 oktober till 31 december. Scenariot lägger
+  denna möjliga fortsättning till observerat årsutfall i samma produkt-/
+  säljar-/regionurval. Vald historisk månad/vecka är bara taktbasis;
+  prognoshorisonten börjar alltid efter datadatumet 7 oktober. Ingen
+  framtida churn, förstartsbortfall, pris eller kickback räknas fram.
+  Saknat observerat underlag eller inga avtal ger inget scenario.
+
+Datadatum är **7 oktober 2026**. Året visar 1 januari–7 oktober, oktober
+visar 1–7 oktober och den sista veckan visar endast observerade dagar.
+Vecka 1 går över årsskiftet; dagar före 1 januari har inget försäljnings-
+underlag och räknas inte som nollförsäljning eller observerade basdagar.
+
+`dist/savera-data.js` tillhandahåller ett fast, fiktivt avtalsregister,
+skilt från redigerbara företagsdialoger och inflyttningsärenden. De 207
+nya exempelavtalen 2026 och deras 8 175 MWh avtalade årsvolym stämmer av
+mot tidigare Savera-månadsaggregat, inklusive produkt/säljare/region.
+134 äldre exempelkunder tillkommer som separat kohort för bestånd och
+kundtid. Äldre kohorters påhittade datum är inte hämtade från ett verkligt
+kundsystem. Vid 7 oktober finns 305 aktiva exempelkunder; talet är ett
+kundbestånd och inte 207 nya avtal. All historik och alla utfall är exempel.
+Verkliga källor och måttdefinitioner behöver fastställas enligt D-04.
+
+## Fastighetspartnerns kunder och kickback
+
+Välj **Kunder & kickback** i fastighetspartnerns meny. Års- och månadsval
+visar partnerns egna nya kunder från det separata avtalsunderlaget och
+avstämd kickback, inklusive redan utbetalt. Utbetalt, kvar på avstämda
+poster och under avstämning visas separat. I dessa fasta exempel motsvarar
+ett nytt elhandelsavtal en ny kund; det är en demodefinition som behöver
+riktig kund-/avtalsidentifiering i nästa etapp.
+
+Serviceanmälningar och hjälpta inflyttare visas separat. En ny Excelrad,
+registrering eller slutförd handläggning skapar ingen kund eller kickback
+på resultatsidan. Årsvyn visar 1 januari–7 oktober 2026; oktober har endast
+1–7 oktober. Kickback kommer från egna manuella periodposter och har
+föreslagna statusar, inga uppfunna ersättningssatser. Saknad post visas
+som **Underlag saknas**, inte ett verkligt nollbelopp. Interna kostnader
+eller nettobidrag visas inte här. Partneravgränsningen är demovisning,
+inte riktig serverstyrd behörighet.
+
 ## Starta lokalt
 
 Kör från projektroten:
@@ -73,6 +139,8 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | --- | --- |
 | Kraftringens resultatöversikt | Resultatbidrag före partnerkostnad, partnerkostnad, nettobidrag, nya avtal och avtalad årsvolym i MWh. Välj månad, kvartal eller år, filtrera partnertyp, jämför utfall och exportera ekonomiska exempel som CSV. Framtida potential visas separat. |
 | Partners & partnerprofil | Sök och sortera partners efter exempelutfall. Granska en partner, redigera intern ansvarig, nästa steg, uppföljningsdatum och intern anteckning samt öppna partnerns arbetsyta. |
+| Savera, internt | Enkel uppföljning av nya avtal och avtalad års-MWh per år/månad/vecka, produkt/säljare/region samt aktivt kundbestånd vid observerat periodslut. Kundlista med per-kund-produkt och datum. |
+| Insikter, internt | Samma rapporturval, avtalspopularitet, avslutad kundtid separat från aktiv kunds ålder och ett tydligt scenario vid fortsatt tempo till årets slut. Alla underlag är fiktiva. |
 | Saveras översikt & pipeline | Nyckeltal från kundernas exempeldata, nästa steg, aktivitetshistorik och affärer per föreslaget steg. |
 | Företagskunder | Registrera företag eller BRF, söka och filtrera, dokumentera kontakt och nästa steg. Internt team tilldelar demoansvarig, ändrar status eller pipelinesteg och delar återkoppling. |
 | Offerter & avtal | Offertstudion har fyra steg: **Välj område → Beskriv behov → Välj kund → Granska & spara**. Sparade behovsunderlag kan öppnas igen, hämtas som TXT och markeras som skickade i en simulering. |
@@ -86,6 +154,7 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | Resultatrapport, internt | Ekonomiska nyckeltal och tabell för vald period och partnerurval samt CSV-export av exempelutfall. |
 | Rapporter, säljpartner | Antal kunder och affärer per steg, aktivitetslogg och JSON-export av kunddata, offertutkast och kundsidor för vald demovy. |
 | Partnerresan, endast internt | Följ varje partner separat genom åtta föreslagna steg: Rekrytera, Onboarda, Certifiera, Aktivera, Sälja, Leverera, Utveckla och Behålla. Två interna testaktiviteter per steg och exempelplacering kan sparas lokalt. |
+| Kunder & kickback, fastighetspartner | Partnerns egna nya elhandelskunder och manuellt redovisade kickback med års-/månadsfilter. Avstämt, utbetalt, kvar och under avstämning; hjälpta inflyttare separat. Ingen automatisk ersättning från serviceärenden. |
 | Fastighetsbolagets arbetsyta | Välj Excel-import eller manuell registrering, bifoga befintliga fullmakter och sök eller öppna lokala serviceärenden. Förmedla komplett underlag, lämna komplettering och följ Kraftringens delade återkoppling. |
 | Inflyttningsärenden, internt | Filtrera på partner och ärendestatus. Följ elhandel, elnät och erbjudandeval separat, tilldela ansvarig, begär komplettering och skriv delad återkoppling eller intern anteckning. |
 | Partnerns inflyttningsregistrering | **Excel:** ladda upp .xlsx, granska radfel och dubbletter, koppla fullmakter och registrera uttryckligt. **Manuellt:** ange fiktiv kontakt, bostad och inflyttningsdatum, bifoga befintlig fullmakt och registrera underlaget. Hyresgästen har inga aktiva steg. Avtal och ekonomi skapas inte från registreringen. |
@@ -180,6 +249,8 @@ hyresgästsida sätts inte i drift.
 - `dist/movein-attachments.js` och `.css`: lokal bilagelagring och dokumentkoppling.
 - `dist/vendor/exceljs-4.4.0.min.js`: lokalt paketerad ExcelJS för .xlsx-läsning och mall; MIT-licens följer med.
 - `dist/movein-service.js`: gemensam ärendedata, förmedling, kompletteringar och Kraftringens interna handläggningsvy.
+- `dist/savera-data.js`: fiktivt kund-/avtalsregister, perioder, bestånd, kundtid och scenario vid fortsatt tempo.
+- `dist/property-results.js` och `.css`: fastighetspartnerns egna kunder, serviceutfall och manuella kickbackposter.
 - `dist/business.js`: Saveras översikt och affärsunderlag för företagskunder.
 - `dist/consumer.js`: Face2faces konsumentaffärer, återkoppling, säljstöd och försäljningsrapport.
 - [ASSETS.md](ASSETS.md): bildkällor. Bilderna är illustrationer, inte antagna godkända Kraftringen-bilder.
@@ -293,7 +364,7 @@ Regelbakgrunden är verifierad i Ei:s nyhet 25 juni 2026: automatisk anvisning a
 
 ## Affärsutfall och kickback
 
-Öppna **Affärsutfall** internt eller en partners profil. Periodvalet är gemensamt med den ekonomiska resultatöversikten och kickbackvyn. Säljare, regioner, produktfördelning och alla belopp är manuella exempel. Nyttigheten är elhandel. Face2face har Opti och kvartspris. Saveras företagsutbud är rörligt pris, kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, individuell portfölj och Kraftringen Stabil. Filtren visar den valda partnerns elavtal; alla partners visar den samlade katalogen. Fastighetspartners tidigare produktfördelning är fortsatt exempeldata och utbudet behöver bekräftas. Det innebär inga antaganden om produktvillkor.
+Öppna **Affärsutfall** internt eller en partners profil för den bredare kanalrapporten. Dess periodval är gemensamt med den ekonomiska resultatöversikten och den interna kickbackvyn. Den nya enklare uppföljningen i **Savera** och **Insikter** har ett eget gemensamt år/månad/vecka-urval; fastighetspartnerns **Kunder & kickback** har eget år/månad-urval. Säljare, regioner, produktfördelning och alla belopp är manuella exempel. Nyttigheten är elhandel. Face2face har Opti och kvartspris. Saveras företagsutbud är rörligt pris, kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, individuell portfölj och Kraftringen Stabil. Filtren visar den valda partnerns elavtal; alla partners visar den samlade katalogen. Fastighetspartners tidigare produktfördelning är fortsatt exempeldata och utbudet behöver bekräftas. Det innebär inga antaganden om produktvillkor.
 
 För Savera prioriteras nya avtal, avtalad årsvolym i MWh, säljare och avtalstyp. MWh för september avser årsförbrukning enligt september månads nya exempelavtal, inte levererad el i september. Face2face följs efter avtalstyp och geografi, med Beest angivet som möjlig framtida datakälla. Ingen data hämtas från Beest. Fastighetspartners visar hjälpta nyinflyttare och serviceanmälningar separat från elhandelsavtal. Produktfilter ändrar endast avtal/MWh; serviceutfall avser tjänsten, inte en avtalstyp.
 
@@ -315,7 +386,7 @@ och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub;
 dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska
 därför hämta aktuell GitHub-main och läsa instruktionerna där.
 
-Den befintliga länkade Sites-molnuppgiften **Partnerlivs pilotagent** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Det avsedda aktuella uppdraget prioriterar fastighetsbolagets Excel-/manuella registrering med fullmaktsbilagor, snygg och enkel demo utan att invänta faktisk kund. Hyresgästen har inga aktiva portalsteg. Native återläsning i WORKLOG kvitterar faktisk promptuppdatering. Agenten använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
+Den befintliga länkade Sites-molnuppgiften **Partnerlivs pilotagent** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Det avsedda aktuella uppdraget prioriterar nu även Ludwigs enkla Savera-uppföljning, Insikter och partnerns egna kunder/kickback, samtidigt som fastighetsbolagets Excel-/manuella registrering med fullmaktsbilagor bevaras. Snygg och enkel frontenddemo slutförs utan att invänta faktisk kund. Hyresgästen har inga aktiva portalsteg. Native återläsning i WORKLOG kvitterar faktisk promptuppdatering. Agenten använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 
 Tidigare leveranser av utkast och kvittoåteröppning är återanvändbara
 byggstenar, men deras hyresgäststyrda gränssnitt ersätts nu av partnerns två

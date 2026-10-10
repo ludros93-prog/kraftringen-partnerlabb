@@ -1,4 +1,4 @@
-# PILOT-01 — Acceptanspaket för partnerns inflyttningsservice
+# Acceptanspaket för inflyttning, enkel partneruppföljning och Insikter
 
 Mål: fastighetsbolaget ska registrera inflyttningar via Excel eller manuellt,
 bifoga befintliga fullmakter och följa samma ärende genom Kraftringens
@@ -65,6 +65,32 @@ nyare Excel-/manuella flödet.
 Godkänn G1–G5 tillsammans med relevanta A-fall för en fungerande demo.
 Verklig användarrespons, produktionsfält och driftberedskap kräver andra
 belägg; deras frånvaro är inget skäl att lämna fiktiva flöden halvfärdiga.
+
+## SAVERA-01 / INSIKTER-01 / PARTNER-01 — Senaste uppföljningskravet
+
+Ludwigs senare instruktion den 10 oktober 2026 tillför den enkla interna
+Savera-vyn, en separat Insikter-sida och partnerns kunder/kickback. Detta
+är bekräftat frontenduppdrag; måttmodeller och all kund-/avtalshistorik i
+demon är förslag med fiktiva data. Fallen nedan är acceptanskriterier,
+ingen kvittens på genomförda kontroller eller publicering.
+
+| Fall | Handling och godkänt resultat |
+|---|---|
+| S1 — År, månad och vecka | Välj varje periodtyp och olika perioder. Nya avtal räknas efter avtalsdatum och avtalad års-MWh följer samma valda avtal. Visa faktiska periodgränser och att 2026-data slutar 7 oktober; framtida/ej observerade dagar får inte se ut som uppmätt nollförsäljning. |
+| S2 — Kundens avtal | Öppna periodens kundrader och filtrera på vardera av Saveras sex bekräftade avtalsprodukter, säljare och region. Avtal, kund, datum och års-MWh ska gå att stämma av med urvalet. Tabellsökning/visningsfilter ska ange om de endast påverkar tabellen, och inte ändra nyckeltal i smyg. |
+| S3 — Aktivt bestånd | Visa unika kunder med påbörjat och ej avslutat avtal vid vald periods observerade slut, även från äldre kohorter. Beståndet är inte antal nya avtal under perioden; framtida starter och tidigare avslut ska hanteras med tydlig datumgräns. Datum ska stå vid måttet. |
+| I1 — Observerad kundtid | Visa kundtid för kunder som faktiskt avslutats under vald period separat från ålder hos kunder som fortfarande är aktiva vid periodslut. Visa bas/antal och tydlig tomstatus. Aktiva kunder får inget fabricerat slutdatum eller slutlig kundlivslängd. |
+| I2 — Populära avtal | Produktfördelningen bygger på nya avtal i samma period- och produkt-/säljar-/regionurval. Antal och andelar summerar till urvalets bas. Saknad bas ska förklaras; en enskild produktfiltervisning får inte kallas popularitet i hela kundbasen. |
+| I3 — Scenario vid fortsatt tempo | Scenariot visar valda periodens observerade antal och kalenderdagar, takten, datadatum och återstående horisont. Visa redan observerat årsutfall separat från framtida scenario. Periodbyte/filter ska ändra rätt bas. Ingen observerad bas eller inget sålt avtal ger inget scenario; detta är inte bevis på verkligt nollutfall. Prognosen innebär inget löfte eller automatisk intäkt/kickback. |
+| P1 — Partnerns egna kunder | Fastighetspartnern ser sina attribuerade nya elhandelskunder från det separata avtalsunderlaget. Exemplet räknar ett nytt elhandelsavtal som en ny kund; riktig kundidentifiering behöver fastställas. De skiljs från serviceanmälningar och hjälpta inflyttare. Annan partners kund- eller kickbackposter och interna kostnader/nettobidrag ska inte visas i den partnerarbetsytan. Detta verifierar demovisning, inte backendbehörighet. |
+| P2 — Kickback från eget underlag | Vald partner/period visar endast relevanta manuella exempelposter, belopp och föreslagen status. Beloppen summerar till postunderlaget. Produkt-, sök- eller veckofilter får inte skapa en påhittad fördelning av månadsersättning. Tydliggör kickbackens egen period och om produkturvalet inte påverkar den. Registrering/förmedling/slutförd service ändrar inte posterna. |
+| R1 — Avstämning och bevarande | Stäm av Savera-radernas månadsvisa nya avtal och avtalad års-MWh mot befintliga aggregat. Äldre bestånds-/kundtidsfixtures är separat historik. Filter/navigation ska inte ändra serviceärenden, kunddialoger, utkast, dokument eller manuella finansfixtures. Bevara Face2face och båda inflyttningsvägarna. |
+| R2 — Mobil och begriplighet | Kontrollera berörda vyer vid 320/390/1440 px, tangentbordsåtkomst, tydliga kontrollnamn, tomma urval och återställning av filter. Tabeller får ha egen scroll men sidan ska inte skjuta ut. Period, bas, produkt och datadatum ska gå att förstå utan implementationstext i huvudarbetet. |
+
+Reproducerbar testkod, faktiskt genomförda fall, kandidat-SHA och resultat
+redovisas i WORKLOG.md. Saknad verklig kund begränsar uppmätt användarnytta
+och produktionsvalidering, men stoppar inte att S-/I-/P-/R-fallen verifieras
+med kontrollerade fiktiva underlag.
 
 ## Kodverifiering att återanvända och anpassa
 

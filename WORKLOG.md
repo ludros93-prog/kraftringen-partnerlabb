@@ -528,3 +528,73 @@
   därefter fortsätta endast från ny, reproducerad demofriktion.
 - Denna efterhandskvittens ändrar endast WORKLOG, BACKLOG och GITHUB-STATUS;
   dist/ och hostingmanifest är oförändrade jämfört med publicerad version 14.
+
+
+## 2026-10-10 — Enklare Savera-uppföljning och partnerns resultat
+
+- Ny användarstyrning: fastighetspartnern ska kunna följa kunder som den gett
+  Kraftringen samt kickback. Kraftringens Savera-uppföljning ska visa nya
+  avtal per år, månad och vecka, kundernas avtalstyper med filter och aktiva
+  kunder. En egen sida Insikter ska visa kundtid, populära avtal och en
+  villkorad prognos om försäljningstakten fortsätter. Tydlighet och enkelhet
+  prioriteras; fastighetsbolagets Excel-/manuella inflyttning kvarstår.
+- Färsk GitHub-main 3387a24101aa3d4c80a1113b37fed520ef63312c användes som bas
+  i codex/savera-insights. Timagentens separata PR #8, korrigerad Excel-rad,
+  var öppen och är inte inblandad i rapportimplementationen. Dess filer
+  lämnas orörda. Samma timuppgift pausades under samordningen, utan nytt
+  schema; återaktivering och exakt uppdrag kvitteras efter faktisk kontroll.
+- Sites-källan öppnades autentiserat och fjärrverifierat på publicerad
+  revision eaa303f8f09df2e9ed4ab74324b799607877729e. Samma projekt och custom-
+  åtkomst bevaras. GitHub är fortsatt huvudkälla; ingen separat Sites-
+  implementation och ingen import av Daniels ändringar ingår.
+- Implementation, verifiering och publicering redovisas när de faktiskt
+  är genomförda. Exempeldata, faktisk ersättning och framtidsprognos är
+  fortfarande skilda underlag; nya serviceärenden skapar inget utfall.
+
+- Ny huvudrevision upptäcktes före integration: GitHub-main
+  247644ac1e5d42db5902a72b4e5509b605bc235e har PR #8 och dess kvittens-PR #9.
+  Native Sites-läsning bekräftade att version 14 redan publicerats av annan
+  samordning. Den nya importlogiken och båda kvittenserna bevaras i kandidaten.
+  Samtidiga dokumenttillägg förenades utan att historik eller andras
+  ändringar skrevs över; uppföljningskoden utvecklades oberoende. Den
+  kombinerade kandidaten verifieras efter integration, inklusive den
+  uppdaterade servicekedjan som version 14-kvittensen saknade browserbelägg för.
+
+
+## 2026-10-10 — Samlad Savera-/Insikter-kandidat verifierad
+
+- Kodkandidat efter integration med aktuell huvudkälla:
+  0329c3c48570aff8e7cddf5c8051491400b48e16. Ny intern Savera-sida och
+  separat Insikter delar period-/produkt-/säljar-/områdesfilter. Sökning
+  och status gäller bara kundlistan. Aktiva kunder är hela beståndet vid
+  observerat periodslut, inte antalet nya avtal i perioden.
+- Ny fiktiv kundledger stämmer exakt mot alla tidigare månads- och
+  dimensionsceller för försäljning och års-MWh. Exempel till 7 oktober:
+  207 nya avtal, 8 175 års-MWh och 305 aktiva kunder. Vecka 1 observeras
+  från 1 januari och senaste vecka till 7 oktober. Ny service skapar
+  inga kunder, avtal, MWh eller kickback i denna uppföljning.
+- Insikter håller avslutad kundtid separat från aktiva kunders tid hittills.
+  Scenariot adderar vald periods observerade dagstakt över årets återstående
+  85 dagar till samma urvals årsutfall hittills. Detta är ett villkorat
+  räkneexempel; ingen prognos för kundstock, intäkt eller kickback.
+- Fastighetspartnern får Kunder & kickback för sina egna månads-/årsutfall,
+  separata hjälpta inflyttningar och manuella avstämnings-/betalningsposter.
+  Saknat underlag är fortsatt saknat; ett nytt avtal motsvarar en kund
+  endast i den uttryckligt beskrivna exempelmodellen.
+- Faktiskt körda browserkontroller efter integration:
+  - qa/savera-insights.py: 104 passerar; inga JavaScript-fel.
+  - qa/property-intake.py --suite service: 62 passerar, inklusive
+    regressionen från PR #8 för felaktig → korrigerad Excel-rad.
+  - qa/property-intake.py --suite integrity: 5 passerar.
+  - Desktop 1440 och mobil 390/320 px är visuellt granskade, utan overflow.
+- Node-kontroller: qa/savera-data.mjs 13 passerar,
+  qa/property-intake-dedup.mjs 1 passerar, qa/movein-receipt.mjs 3 passerar
+  och qa/movein-next-action.mjs 2 passerar. JS-syntax, Python-AST och
+  diffkontroll passerar på den frysta kandidaten.
+- Oberoende granskning hittade fel i intern partnerselektion och fokus vid
+  sidbläddring. Båda är korrigerade och browserverifierade; mobilens viktiga
+  förklaringar är minst 12 px, formulärfält 16 px och knappar 44 px.
+- Samma timuppgift har fått exakt nya PILOT-AGENT-PROMPT.txt medan pausad;
+  schema och tidszon är oförändrade. Återaktivering och native publicering
+  kvitteras separat efter faktisk leverans. Verklig drift/data och
+  besluten D-01–D-04 är fortfarande inte införda av denna demoförbättring.
