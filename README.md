@@ -6,7 +6,18 @@ Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face ti
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
-## Starta
+## Aktiv pilotagent
+
+[PILOT-MISSION.md](PILOT-MISSION.md) styr nästa etapp: förbered en enkel pilot
+med ett fastighetsbolag och en Kraftringen-handläggare. Agenten arbetar i egna
+grenar och PR:er med högst två färdiga förslag i väntan på granskning.
+[PILOT-FACTS.md](PILOT-FACTS.md) visar vad som är bekräftat,
+[PILOT-DECISIONS.md](PILOT-DECISIONS.md) vad som behöver beslutas och
+[PILOT-ACCEPTANCE.md](PILOT-ACCEPTANCE.md) vilka flöden som behöver verifieras.
+Samma befintliga timuppgift används. Detta sätter inte backend eller riktiga
+kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
+
+## Starta lokalt
 
 Kör från projektroten:
 
@@ -199,7 +210,13 @@ Kickbackuppföljningen omfattar samtliga partnerkanaler, enligt användarens fö
 
 ## Masteragent och återkommande utveckling
 
-Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb. [MISSION.md](MISSION.md) beskriver mål och mandat, [RUNBOOK.md](RUNBOOK.md) källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub-källan; dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska därför hämta aktuell GitHub-main och läsa instruktionerna där.
+Användaren har aktiverat ett självständigt bygguppdrag för Partnerlabb.
+[PILOT-MISSION.md](PILOT-MISSION.md) styr nu prioriteringen;
+[MISSION.md](MISSION.md) bevarar grunduppdraget. [RUNBOOK.md](RUNBOOK.md)
+beskriver källåtkomst och leverans, [BACKLOG.md](BACKLOG.md) belagda uppgifter
+och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub;
+dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska
+därför hämta aktuell GitHub-main och läsa instruktionerna där.
 
 Den befintliga länkade Sites-molnuppgiften **Partnerlabbs masterutvecklare** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Dess sparade uppdrag använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 

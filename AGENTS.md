@@ -1,5 +1,11 @@
 # Instruktioner för arbete i Kraftringen Partnerportal
 
+## Aktiv pilotprioritering – 10 oktober 2026
+
+- Användaren har bett oss skapa agenten för att göra Partnerlabb redo för en enkel verklig pilot. Läs PILOT-MISSION.md, PILOT-FACTS.md, PILOT-DECISIONS.md och PILOT-ACCEPTANCE.md tillsammans med arbetsminnet vid varje pass. Pilotmissionen styr prioritering före generell funktionsutbyggnad; affärs-, data-, frontend- och samarbetsgränserna nedan består.
+- Förbered ett fastighetsbolag och en handläggare, verifiera först flödet med fiktiva ärenden och ersätt antaganden med källbelagda fakta. Pilotdeltagare, fullmakt, faktiska nödvändiga fält, driftmiljö och kickbackregler saknas; agentens skapande är inte ett godkännande av backend eller persondata.
+- Återanvänd samma timuppgift och befintliga PR:er. Högst två färdiga pilotförslag väntar på granskning samtidigt. Därefter förbättras befintlig verifiering och beslutsunderlag; skapa inte fler förslag eller tomma ändringar för att fylla arbetspass.
+
 ## Förankrade fakta och öppna beslut
 
 - Ludwig Rosenberg är teamchef för B2B-sälj på Kraftringen Kundcenter sedan juni 2026. Håkan Rusk är hans chef; någon ytterligare titel för Håkan är inte angiven.

@@ -4,6 +4,26 @@ Källor: användarens aktiverade masterprompt, aktuell kod och isolerade
 reproduktioner 8 oktober 2026. Detta är ingen undersökning av verkligt
 användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
+## Aktiv pilotkö – 10 oktober 2026
+
+PILOT-MISSION.md styr prioriteringen. Uppgifter nedan använder fiktiva data
+inom nuvarande frontendmandat. Högst två färdiga pilotförslag väntar på
+granskning; kontrollera öppna PR:er innan ny leverans.
+
+| Prioritet / ID | Nästa leverans | Status och godkänt när |
+| --- | --- | --- |
+| 1 / INFLYTT-03 | Granska befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1); återanvänd kandidat för testkvitto efter omladdning. | Öppen PR, räknas som ett väntande förslag. Riktad kodregression finns; browser-QA återstår. Inget dubbelbygge eller merge från timpasset. |
+| 2 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering levererad i PILOT-FACTS och PILOT-DECISIONS. Nästa ändring kräver nytt belägg; öppna beslut D-01–D-04 är inte besvarade. |
+| 3 / PILOT-01 | Gör kriterierna i PILOT-ACCEPTANCE till ett reproducerbart granskningsunderlag med faktiska testresultat. | Initialt acceptanspaket finns. Kör berörda tester och dokumentera återstående luckor, utan att beskriva lokala tester som riktig pilotdrift. |
+| 4 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
+| 5 / PILOT-03 | Åtgärda en reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
+| Senare / PILOT-04 | Gemensam ärendelagring och verklig behörighet i godkänd miljö. | Genomförande väntar på D-02/D-03 och separat mandat. Agenten får förbereda alternativ och verifieringsplan inom nuvarande uppdrag. |
+| Senare / DATA-01 | Verkligt kommersiellt utfall och kickback per kanal. | Genomförande väntar på D-04 och data-/integrationsmandat. Saknat underlag är inte nollutfall. |
+
+Generell Academy-/CPQ-/säljapputbyggnad och leverantörsresearch utan konkret
+pilotbehov prioriteras efter denna kö. Nedan bevaras tidigare belägg och
+leveranshistorik.
+
 ## INFLYTT-01 — Återuppta hyresgästens pågående underlag
 
 - Status: klar och publicerad i version 10; kvittens finns i WORKLOG.md.
@@ -44,11 +64,14 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## INFLYTT-03 — Hitta redan registrerat testkvitto efter omladdning
 
-- Status: behöver avgränsas och reproduceras i gränssnittet.
+- Status: öppet [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1), HEAD `feff078d6eb797ce0226071b855227d443a29f00` vid inventeringen 10 oktober 2026. Inte integrerat eller publicerat; kontrollera färsk PR-status varje pass.
 - Belägg: receipt ligger modullokalt; serviceposten sparas redan i moveins.
 - Möjlig nytta: hitta befintligt underlag utan att registrera samma sak igen.
 - Avgränsning: återanvänd faktiskt sparad post och dess aktuella status.
   Skapa inte automatisk dubblett, kund, avtal eller hypotetisk bekräftelse.
+- Verifiering i förslaget: `qa/movein-receipt.mjs`, befintlig nästa-insatsregression,
+  syntax-/AST- och diffkontroller. Browser-QA återstår; använd aktuell PR för
+  fortsättningen och skapa inte en konkurrerande implementation.
 
 ## RESEARCH-01 — Identifiera Saleshub och tillämpa en relevant princip
 

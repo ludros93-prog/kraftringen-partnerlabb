@@ -5,10 +5,18 @@ Läs projektets gemensamma instruktioner och arbetsminne:
 @AGENTS.md
 @GITHUB-STATUS.md
 @MISSION.md
+@PILOT-MISSION.md
+@PILOT-FACTS.md
+@PILOT-DECISIONS.md
+@PILOT-ACCEPTANCE.md
 @RUNBOOK.md
 @COLLABORATION.md
 @BACKLOG.md
 @WORKLOG.md
+
+Pilotmissionen styr nu prioriteringen före generell funktionsutbyggnad.
+Fakta, förslag och saknat verksamhetsunderlag ska hållas isär. Samma data-
+och godkännanderegler gäller; agentens skapande inför ingen riktig pilotdrift.
 
 GitHub är utvecklingens huvudkälla. Användaren har uttryckligen valt det
 publika repot https://github.com/ludros93-prog/kraftringen-partnerlabb.

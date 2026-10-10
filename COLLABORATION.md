@@ -19,7 +19,8 @@ GitHub har nekat anslutningens försök att ge Daniel skrivbehörighet (403).
 
 ## En uppgift per arbetsgren
 
-1. Läs AGENTS.md, MISSION.md, RUNBOOK.md, BACKLOG.md och senaste WORKLOG.md.
+1. Läs AGENTS.md, MISSION.md, PILOT-MISSION.md, PILOT-FACTS.md,
+   PILOT-DECISIONS.md, PILOT-ACCEPTANCE.md, RUNBOOK.md, BACKLOG.md och senaste WORKLOG.md.
    Läs öppna pull requests innan du börjar, så att samma uppgift inte byggs
    två gånger.
 2. Hämta aktuell `main`. Skapa en egen gren, exempelvis
