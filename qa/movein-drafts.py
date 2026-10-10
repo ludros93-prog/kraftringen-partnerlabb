@@ -6,7 +6,7 @@ OUT = pathlib.Path(tempfile.mkdtemp(prefix='partnerlabb-draft-qa-'))
 KEY = 'partnerlabb.moveinDraft.v1.'
 
 def step(page):
-    return page.locator('.property-form-heading .property-eyebrow').inner_text()
+    return page.locator('.property-form-heading .property-eyebrow').inner_text().split(' · ', 1)[0]
 
 def next_step(page):
     page.locator('#property-movein-form button[type=submit]').click()

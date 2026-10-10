@@ -38,7 +38,8 @@
       { at: '2026-10-07T07:30:00Z', actor: 'Savera · demo', text: 'Fiktiv företagsaffär att förbereda tillsammans med Kraftringen.', visibility: 'shared' }
     ] }
   ];
-  const STORAGE = 'partnerlabb.portal.v2';
+  const demoMode = new URLSearchParams(location.search).get('demo') === 'inflyttning';
+  const STORAGE = demoMode ? 'partnerlabb.customerDemo.v1' : 'partnerlabb.portal.v2';
   const partnerRegistry = [
     {id:'syd',name:'Savera',type:'sales',typeLabel:'Företagsförsäljning',audience:'business',description:'Säljer Kraftringens elhandelsavtal till företagskunder. Underlag och resultat här är exempel.'},
     {id:'vast',name:'Face2face',type:'field',typeLabel:'Konsumentförsäljning',audience:'consumer',description:'Säljer Kraftringens elhandelsavtal till konsumenter i Beest. Portalen visar intern resultatuppföljning med manuella exempeldata.'},
@@ -58,10 +59,11 @@
   function readState() {
     try { const value=JSON.parse(localStorage.getItem(STORAGE)); if(value && Array.isArray(value.records) && value.records.every(r=>r && partners[r.partner] && statuses[r.status] && typeof r.company==='string' && Array.isArray(r.events))) return {...seed(),...value}; } catch {}
     const state=seed();
+    if(demoMode) return state;
     try { const old=JSON.parse(localStorage.getItem('partnerlabb.active.v1'));if(Array.isArray(old)&&old.every(r=>r && partners[r.partner] && statuses[r.status] && Array.isArray(r.events))){state.records=old.map(r=>({...r,stage:r.stage||'lead'}));} } catch {}
     return state;
   }
-  const P=window.Portal={state:readState(),role:'internal',partner:'syd',page:'overview',routes:{},partners,partnerRegistry,e,escape:e,icon};
+  const P=window.Portal={state:readState(),demoMode,role:'internal',partner:'syd',page:'overview',routes:{},partners,partnerRegistry,e,escape:e,icon};
   let selectedId,toastTimer,storageFailed=false;
   P.register=(id,route)=>{P.routes[id]=route;};
   P.getRecords=()=>P.state.records.filter(r=>r.partner!=='vast'&&(P.role==='internal'||r.partner===P.partner));
@@ -71,6 +73,13 @@
   P.previewPartner=id=>{if(!P.getPartner(id))return;P.role='partner';P.partner=id;selectedId=undefined;P.go('overview');};
   P.returnInternal=()=>{P.role='internal';selectedId=undefined;P.go('overview');};
   P.save=()=>{try{localStorage.setItem(STORAGE,JSON.stringify(P.state));storageFailed=false;return true;}catch{storageFailed=true;P.toast('Webbläsaren kunde inte spara. Ändringarna finns i denna flik; exportera innan du stänger.');return false;}};
+  if(demoMode) P.resetDemo=()=>{
+    if(!confirm('Börja om kunddemot? Endast kunddemots fiktiva ärenden och utkast återställs. Dina vanliga testdata behålls.')) return false;
+    const draftsCleared=P.propertyDrafts?.clearAll?.()!==false;
+    P.state=seed();const saved=P.save();selectedId=undefined;customerQuery='';customerFilter='all';P.role='internal';P.partner='estate1';P.go('demo');
+    P.toast(!saved?'Kunddemot har börjat om i den här fliken. Webbläsaren kunde inte spara.':draftsCleared?'Kunddemot är redo för nästa visning.':'Kunddemot har börjat om. Webbläsaren kunde inte rensa alla demoutkast.');
+    return saved&&draftsCleared;
+  };
   P.toast=message=>{if(storageFailed&&!message.includes('kunde inte'))message+=' · Kunde inte sparas i webbläsaren.';$('#toast').textContent=message;$('#toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').hidden=true,6000);};
   P.download=(filename,content,type='text/plain;charset=utf-8')=>{const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);};
   P.openDialog=(title,html,mount)=>{$('#dialog-title').textContent=title;$('#dialog-body').innerHTML=html;if(!$('#portal-dialog').open)$('#portal-dialog').showModal();mount?.();};
@@ -84,7 +93,7 @@
   const consumerPages=['consumer-overview','consumer-sales','consumer-followup','consumer-material','consumer-reports'];
   const businessPages=['business-overview','business-brief'];
   const propertyNav=[['overview','Inflyttningsservice','home'],['property-registrations','Inflyttningsärenden','users'],['movein','Hyresgästens sida','link'],['support','Hjälp & support','headphones']];
-  const titles=Object.fromEntries([...salesNav,...consumerNav,...internalNav,...propertyNav,['partner-detail','Partnerprofil'],['agreements','Avtal & fullmakter'],['documents','Dokument'],['support','Hjälp & support'],['settings','Test & beslut'],['certs','Certifieringar']].map(a=>[a[0],a[1]]));
+  const titles=Object.fromEntries([...salesNav,...consumerNav,...internalNav,...propertyNav,['partner-detail','Partnerprofil'],['agreements','Avtal & fullmakter'],['documents','Dokument'],['support','Hjälp & support'],['settings','Test & beslut'],['certs','Certifieringar'],['demo','Kunddemo']].map(a=>[a[0],a[1]]));
   const internalPages=['partners','partner-detail','journey','internal-overview','internal-reports','movein-cases','partner-results','kickback'];
   const propertyPages=['property-overview','movein','property-registrations'];
   function navForView(){return P.role==='internal'?internalNav:P.getPartner()?.type==='property'?propertyNav:P.getPartner()?.audience==='consumer'?consumerNav:salesNav;}
@@ -102,7 +111,7 @@
     $('#current-page').textContent=P.page==='overview'?(internal?'Kraftringens översikt':property?'Inflyttningsservice':P.getPartner()?.audience==='consumer'?'Face2face · konsumentförsäljning':'Savera · företagsförsäljning'):navForView().find(n=>n[0]===P.page)?.[1]||titles[P.page]||'Partnerportal';
     $('#nav').innerHTML=navForView().map(([id,label,ic])=>{const active=id===P.page||(id==='offers'&&['agreements','documents'].includes(P.page))||(id==='partners'&&P.page==='partner-detail');return `<button class="nav-button ${active?'active':''}" data-go="${id}" aria-current="${active?'page':'false'}">${icon(ic)}<span>${label}</span></button>`;}).join('');
     document.body.classList.toggle('property-resident-preview',P.page==='movein');
-    const route=routeForView();$('#view').innerHTML=route?route.render():'<div class="empty">Vyn förbereds.</div>';route?.bind?.();
+    const route=routeForView();$('#view').innerHTML=route?route.render():'<div class="empty">Vyn förbereds.</div>';route?.bind?.();P.afterRender?.();
   };
   const badge=status=>`<span class="pill status-${e(status)}">${statuses[status]||e(status)}</span>`;
   const head=(title,subtitle,action='')=>`<div class="page-head"><div><span class="eyebrow">PARTNERPORTAL / ${P.role==='internal'?'INTERNT TEAM':e(partners[P.partner])}</span><h1>${title}</h1><p class="muted">${subtitle}</p></div>${action}</div>`;
@@ -180,6 +189,7 @@
     const workspacePartner=params.get('workspace');
     if(P.getPartner(workspacePartner)?.audience){P.role='partner';P.partner=workspacePartner;}
     const internalPartner=params.get('partner');if(P.getPartner(internalPartner))P.selectedPartnerId=internalPartner;
-    if(P.getPartner(residentPartner)?.type==='property'){P.role='partner';P.partner=residentPartner;P.go('movein');}else P.go(location.hash.slice(1)||'overview');
+    document.body.classList.toggle('customer-demo-mode',demoMode);
+    if(P.getPartner(residentPartner)?.type==='property'){P.role='partner';P.partner=residentPartner;P.go('movein');}else P.go(location.hash.slice(1)||(demoMode?'demo':'overview'));
   });
 })();

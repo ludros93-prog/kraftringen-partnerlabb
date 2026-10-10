@@ -17,6 +17,38 @@ grenar och PR:er med högst två färdiga förslag i väntan på granskning.
 Samma befintliga timuppgift används. Detta sätter inte backend eller riktiga
 kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 
+## Visa kunddemot
+
+Öppna https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning#demo
+eller välj **Visa kunddemot** i portalens övre demolist. Samma privata
+Sites-åtkomst gäller. Demot använder befintliga funktioner och fiktiva
+uppgifter i fem perspektiv:
+
+1. Fastighetsbolaget erbjuder inflyttningsservice och visar hyresgästens sida.
+2. Hyresgästen fyller exempeluppgifter, väljer tjänsten/fullmaktsdemot och
+   granskar underlaget innan ett serviceärende registreras.
+3. Partnern öppnar det registrerade underlaget och väljer att förmedla det.
+4. Kraftringen handlägger elhandel och elnät separat, begär vid behov
+   komplettering och dokumenterar återkoppling.
+5. Partnern följer återkopplingen. Kraftringens kommersiella resultat och
+   kickback är separata exempelunderlag; serviceärendet ändrar inte ekonomin.
+
+Guidens knappar byter perspektiv. Registrering, förmedling och återkoppling
+kräver sina egna handlingar i respektive befintligt flöde. **Öppna ditt
+testunderlag** tar fram den faktiskt registrerade posten, utan en dubblett.
+Savera och Face2face har egna ingångar till sin interna partneruppföljning.
+
+**Börja om** i guiden återställer endast kunddemots exempeldata efter ett
+uttryckligt val. `partnerlabb.customerDemo.v1` är en separat localStorage-nyckel
+och `partnerlabb.demo.moveinDraft.v1.<partner-id>` sparar dess flikutkast.
+Ordinarie `partnerlabb.portal.v2`, v1-migrering och vanliga inflyttningsutkast
+bevaras. Kopierade hyresgästlänkar från demot behåller demoläget. Detta är
+lokal dataisolering, ingen delad kundlagring eller riktig behörighetsstyrning.
+
+Portalen har gemensam lokalt serverad Inter-typografi, större text och
+kontroller, en tydligare fastighetsyta, läsbara ärendekort på mobil och en
+intern resultatöversikt med nettobidrag, avtal och avtalad årsvolym främst.
+
 ## Starta lokalt
 
 Kör från projektroten:
@@ -116,6 +148,8 @@ Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är
 ## Filer
 
 - `dist/app.js`: gemensam navigation, lokal data, kunder, pipeline, översikt och rapporter.
+- `dist/design.css`: gemensam typografi, kontrast, knappar och portalens visuella standard.
+- `dist/demo.js` och `dist/demo.css`: kunddemots fem perspektiv och guidade navigation.
 - `dist/studio.js`: offertstudio och simulerade dokumentsteg.
 - `dist/academy.js`: Elakademin, bevarade demokurser och lokala utbildningsframsteg/självtest.
 - `dist/elakademin-data.js`: sex slutliga kapitelfilmer, kapiteltexter, filmmanus, tolv originalfrågor och publika kundkällor.
@@ -218,7 +252,7 @@ och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub;
 dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska
 därför hämta aktuell GitHub-main och läsa instruktionerna där.
 
-Den befintliga länkade Sites-molnuppgiften **Partnerlabbs masterutvecklare** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Dess sparade uppdrag använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
+Den befintliga länkade Sites-molnuppgiften **Partnerlivs pilotagent** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Det senaste uppdraget prioriterar en snygg, enkel kunddemo utan att invänta en faktisk kund. Agenten använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 
 Första förbättringen gäller återupptagbart pågående inflyttningsunderlag per partner i samma flik. Utkastet är åtskilt från registrerade serviceärenden och ekonomiskt exempelutfall. Testa: fyll delvis i första steget → ladda om → fortsätt till Kontakt → lämna sidan → öppna samma partners hyresgästvy igen. Prova därefter **Börja om** och kontrollera att ett tomt, frivilligt flöde visas utan att något serviceärende skapats.
 

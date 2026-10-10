@@ -2,6 +2,10 @@
 
 Aktivt uppdrag från Ludwig den 10 oktober 2026: förbered Partnerlabb för en
 enkel verklig pilot med ett fastighetsbolag och en ansvarig på Kraftringen.
+Nyare styrning samma dag: kom så långt som möjligt utan en faktisk kund och
+leverera en mycket snygg, enkel och intuitiv kunddemo. Slutför självständigt
+allt oberoende frontend-, test- och demoarbete; avsaknad av pilotkund är
+inte ett stoppvillkor för en färdig fungerande demo.
 Detta styr prioriteringen före generell funktionsutbyggnad i MISSION.md.
 AGENTS.md:s affärs-, data- och samarbetsregler gäller fortfarande.
 
@@ -15,15 +19,27 @@ ska enkelt kunna erbjuda tjänsten, förmedla komplett underlag och följa
 återkopplingen. Kraftringens handläggare ska se vad som behöver göras, vem
 som ansvarar och vad som saknas. Börja med ett tydligt sammanhängande flöde.
 
-1. Verifiera inflyttningsflödet och handläggningen med fiktiva ärenden.
-   Ta vid befintliga förslag; skapa inte samma förbättring på nytt.
-2. Förbered delad ärendelagring och verklig behörighetsstyrning som ett
+1. Slutför en sammanhängande fiktiv generalrepetition: partner → hyresgäst
+   → förmedling → Kraftringen → återkoppling. Gör varje nästa handling tydlig,
+   med lugn visuell hierarki, lättläst svenska och få konkurrerande val.
+   Visuella riktlinjer är våra designval; verkligt användarbeteende är ännu
+   inte verifierat. Ta vid befintliga förslag och undvik dubbelarbete.
+2. Verifiera mobil, tangentbord, utkast och återfinnande av samma kvitto.
+   Generalrepetitionen ska kunna startas om och upprepas med fiktiva data
+   utan att ändra labbets ordinarie lokala data eller andra partners utkast.
+   En separat demoyta via `?demo=inflyttning`, egna lagringsnycklar och guidad
+   navigation är implementationsval, inte en ny backend eller behörighetsgräns.
+3. Förbered delad ärendelagring och verklig behörighetsstyrning som ett
    konkret beslutsunderlag. Implementera dem först när godkänd driftmiljö,
    nödvändiga verksamhetsregler och separat mandat har lämnats.
-3. Förbered kommersiell uppföljning från kontrollerade underlag för alla tre
+4. Förbered kommersiell uppföljning från kontrollerade underlag för alla tre
    partnerkanalerna. Börja med en liten importmall och fiktiv provdata;
    faktisk data och kickbackregler måste godkännas och lämnas av Kraftringen.
-4. Utöka efter dokumenterad återkoppling från piloten.
+5. Anpassa verklig pilotdrift efter verksamhetsbeslut och användaråterkoppling.
+
+En demo är färdig när dess fiktiva huvudflöde, avbrott och återställning kan
+genomföras och verifieras. Faktiska kunder behövs för verkliga användarutfall
+och förankrade produktionskrav; de behövs inte för att slutföra den demon.
 
 Academy-utbyggnad, avancerad offertmotor, ny säljapp, automatiska betalningar
 och komplett drift för alla kanaler prioriteras senare. Bevara fungerande
@@ -67,6 +83,8 @@ Pilotpartner, handläggare, godkänd fullmakt, nödvändiga uppgifter, driftmilj
 och ersättningsregler saknas fortfarande. Håll en kort konkret beslutskö i
 PILOT-DECISIONS. Förbered granskningsbara underlag före frågor och fortsätt
 med oberoende tillåtet arbete. Fråga inte samma sak på nytt utan ny information.
+Parkera bara den uppgift som faktiskt beror på ett saknat beslut. Slutför
+övrig demo, tester och visuell kvalitet utan att invänta en verklig kund.
 
 Partnerns förmedling av underlaget är bekräftad. En direktlänk eller QR där
 hyresgästen skickar direkt till Kraftringen är ett förenklingsförslag som

@@ -291,3 +291,36 @@
 - PR #1 är fortsatt öppet och räknas som väntande pilotförslag. Agenten ska
   kontrollera aktuell status och ta vid befintligt arbete. Denna kvittens
   ändrar endast dokumentation; ingen Sites-version eller delning ändras.
+
+## 2026-10-10 — Kunddemo färdig och lokalt verifierad
+
+- Ludwig bad att komma så långt som möjligt utan en faktisk kund och göra
+  portalen mycket snygg, enkel och intuitiv inför kundmöten. Aktuell
+  GitHub-main d547135059d3fe9ab8ec4209478dbec4159bcb60 hämtades till den egna
+  grenen codex/customer-demo. Sites-källan öppnades och fjärrverifierades på
+  347f02a1a1cdfe47e2abb33793e9f24b1575f758 före ändringarna.
+- Befintliga PR #1, HEAD feff078d6eb797ce0226071b855227d443a29f00, införlivades
+  med bevarad historik. Återupptagning av befintligt kvitto återanvänds;
+  ingen parallell kvittolösning eller Daniel-ändring ingår i leveransen.
+- ?demo=inflyttning öppnar en separat lokal kunddemo med fem guidade
+  perspektiv, verkliga testhandlingar och återöppning av den registrerade
+  posten. Omstart kräver ett eget val och återställer enbart demoytans
+  exempeldata och utkast; ordinarie labbdata och utkast bevaras.
+- Gemensam lokalt serverad Inter-typografi, större kontroller, en
+  bostadsillustration, lugnare fastighetssida och responsiva ärendekort
+  infördes. Kommersiell översikt visar nettobidrag, avtal och avtalad
+  årsvolym först. Mått, ekonomiska exempel och partnerutbud bevaras.
+- Verifierat: 75 browserkontroller i qa/movein-service.py, hela
+  qa/movein-drafts.py och 34 kontroller i qa/customer-demo.py passerar.
+  De två vardera kontrollerna i movein-receipt.mjs och movein-next-action.mjs
+  passerar. JavaScript-syntax och git diff --check är godkända.
+  Desktop, 390/320 px, tangentbord, omladdning, komplettering, överlämning,
+  handläggning, kvitto, avstående, lagringsfel och isolerad omstart ingår.
+  Visuell granskning genomfördes i Chromium med sparade skärmbilder.
+- En befintlig utkastkontroll anpassades till formulärets tydligare rubrik
+  med stegets namn; samma steg- och återställningsbeteende kontrolleras.
+  Serviceregistrering och guidning skapar inte avtal, intäkt eller kickback.
+- Agentens uppdrag och acceptansfall uppdaterades till samma mål. Timuppgiften
+  är tillfälligt pausad under samordnad integration/publicering. Faktisk
+  GitHub-merge, Sites-publicering och återaktivering kvitteras separat.
+  All ärende- och resultatinformation är fortfarande fiktiv och lokal.
