@@ -875,3 +875,12 @@ inklusive periodval efter omladdning, normal-/demoisolering och mobil.
 - Denna efterhandskvittens ändrar enbart dokumentation. `dist/` och
   hostingmanifest är identiska med publicerad version 18. Gemensam
   lagring/hantering av verkliga inspelningar återstår som separat beslut.
+# 2026-10-11 · PARTNER-04 · Resultat och utbildning, inte sälj-CRM
+
+- Källa: Ludwigs direkta förtydligande att affärernas nästa steg ligger hos säljpartnern utanför portalen. Oberoende Codex-arbete på `codex/results-only-workbench`, bas `4107ded20c282d84324539e116c2f2fd03b66aca`.
+- Säljpartners får gemensam utbildnings-/stödingång. Intern profil behåller Kunder & avtal, Insikter, resultat och kickback men visar inte operativa affärsuppgifter, pipelinepotential eller kunddialogaktivitet. Äldre säljflödeslänkar leder till relevant översikt. Arbetslistan omfattar fastighetsärenden och fastighetssamarbete.
+- Äldre records, consumerSales och offers bevaras, ingen datamigrering eller omtolkning till resultathistorik. Registrering och handläggning för fastighet består. Academy/B2C-samtalsbibliotek och rapportmoduler ändras inte.
+- Verifierat: alla sju `qa/*.mjs` passerar, inklusive nytt VM-test av faktisk navigation/profilrendering och databevarande, 23 resultatdatakontroller, 8 partnerregisterkontroller samt tidigare kvitto-/dubblett-/lagrings-/periodkontroller. `node --check` för samtliga dist-JS och `git diff --check` passerar.
+- Begränsning: ingen webbläsar-QA i detta pass; tillgänglig miljö saknar Sites föreskrivna browser-kapabilitet. 320/390/1440 px, tangentbord och verklig omladdning behöver visuell kontroll före integration. VM-kontroller är inte användarutfall.
+- Före slutförande: färsk main oförändrad, inga öppna PR:er. Ingen Daniels-kod hämtad. Inget nytt verksamhetsbeslut krävs för denna avgränsning; D-01–D-04 kvarstår för verklig pilot.
+- Checkpoint: kandidat för PR, inte integrerad eller publicerad. Nästa steg är visuell kontroll och samordnarens integration av granskad revision; senaste publicerade version lämnas orörd. Ingen schema-/prompt-/åtkomständring.
