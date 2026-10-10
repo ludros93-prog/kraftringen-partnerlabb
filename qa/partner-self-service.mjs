@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import {webcrypto} from 'node:crypto';
+const nodes=new Map(), session=new Map(), local=new Map();
+function node(key){if(!nodes.has(key))nodes.set(key,{innerHTML:'',classList:{remove(){},add(){}},setAttribute(){},addEventListener(){},querySelectorAll:()=>[]});return nodes.get(key);}
+const storage=map=>({getItem:k=>map.get(k)||null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)});
+const document={querySelector:node,querySelectorAll:()=>[],getElementById:node,addEventListener(){},body:node('body')};
+const c=vm.createContext({window:{scrollTo(){}},document,localStorage:storage(local),sessionStorage:storage(session),location:{search:'',href:'https://demo.example/'},history:{replaceState(){}},URL,URLSearchParams,structuredClone,crypto:webcrypto,console,setTimeout,clearTimeout});
+const run=file=>vm.runInContext(fs.readFileSync('dist/'+file+'.js','utf8'),c);
+for(const file of ['app','commercial','partner-results-data','savera-data','savera-reports','elakademin-data','property-defaults','product-facts','movein-service'])run(file);
+const P=c.window.Portal;
+for(const id of ['syd','vast']){
+ P.role='partner';P.partner=id;P.selectedPartnerId=id==='syd'?'vast':'syd';
+ P.go('partner-sales');assert.equal(P.page,'partner-sales');
+ const html=node('#view').innerHTML;
+ assert.match(html,new RegExp('<h1>'+P.getPartner(id).name+'</h1>'));
+ assert.doesNotMatch(html,/data-sr-configure|data-sr-kickback|data-go="partner-detail"|Nettobidrag|Partnerkostnad/);
+ P.partnerSalesReports.setFilters({mode:'month',value:'2026-09'});
+ assert.match(node('#view').innerHTML,/September|september/);
+ P.go('partner-insights');assert.equal(P.page,'partner-insights');
+ P.go('product-facts');assert.match(node('#view').innerHTML,/Se film:/);
+ assert.equal(P.productFacts.rows.filter(row=>row[0]===(id==='syd'?'business':'consumer')).length,id==='syd'?6:5);
+}
+P.partner='estate1';P.role='partner';
+assert.equal(P.propertyDefaults.get(),'Kvartspris');
+assert.equal(P.propertyDefaults.set('Opti'),true);
+P.partner='estate2';assert.equal(P.propertyDefaults.get(),'Kvartspris');P.partner='estate1';
+const save=P.save;P.save=()=>false;assert.equal(P.propertyDefaults.set('Rörligt månadspris'),false);assert.equal(P.propertyDefaults.get(),'Opti');P.save=save;
+const input={partner:'estate1',name:'Test',email:'test@kund.example',address:'Testgatan 1',postcode:'22222',city:'Lund',moveDate:'2026-11-01',desiredProduct:'Opti'};
+const result=P.moveinService.createPartnerRecords([input],{source:'manual'});
+assert.equal(result.ok,true);assert.equal(result.created[0].desiredProduct,'Opti');assert.equal(result.created[0].processing.offerChoice,'undecided');
+P.propertyDefaults.set('Kvartspris');assert.equal(result.created[0].desiredProduct,'Opti');
+const again=P.moveinService.createPartnerRecords([{...input,desiredProduct:'Kvartspris'}],{source:'excel'});assert.equal(again.created.length,0);
+const before=JSON.stringify(P.state);P.save=()=>false;
+const fail=P.moveinService.createPartnerRecords([{...input,address:'Annan 2'}],{source:'excel'});assert.equal(fail.saved,false);assert.equal(JSON.stringify(P.state),before);P.save=save;
+run('property-intake');
+let html=P.routes['property-manual'].render();assert.match(html,/<option selected>Kvartspris/);
+P.propertyDefaults.set('Opti');html=P.routes['property-manual'].render();assert.match(html,/<option selected>Kvartspris/);
+html=P.routes['property-import'].render();assert.match(html,/<option selected>Opti/);
+session.set(P.propertyIntake.draftPrefix+'estate2:manual',JSON.stringify({version:1,partner:'estate2',mode:'manual',fields:{address:'',postcode:'',city:'',moveDate:'',name:'',email:''},authorityFiles:[]}));
+P.partner='estate2';html=P.routes['property-manual'].render();assert.match(html,/Inget tidigare val/);
+console.log('PASS own reports, filters, facts/videos, default isolation, draft snapshots, old drafts, duplicate and storage rollback');
