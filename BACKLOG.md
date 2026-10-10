@@ -9,14 +9,19 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 PILOT-MISSION.md styr prioriteringen. Uppgifter nedan använder fiktiva data
 inom nuvarande frontendmandat. Högst två färdiga pilotförslag väntar på
 granskning; kontrollera öppna PR:er innan ny leverans.
+Nyare styrning: kom så långt som möjligt utan faktisk kund. Färdigställ
+självständigt oberoende demo-, frontend- och testarbete. Saknad pilotkund
+blockerar verkliga användarutfall, inte en fungerande fiktiv kunddemo.
 
 | Prioritet / ID | Nästa leverans | Status och godkänt när |
 | --- | --- | --- |
-| 1 / INFLYTT-03 | Granska befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1); återanvänd kandidat för testkvitto efter omladdning. | Öppen PR, räknas som ett väntande förslag. Riktad kodregression finns; browser-QA återstår. Inget dubbelbygge eller merge från timpasset. |
-| 2 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering levererad i PILOT-FACTS och PILOT-DECISIONS. Nästa ändring kräver nytt belägg; öppna beslut D-01–D-04 är inte besvarade. |
-| 3 / PILOT-01 | Gör kriterierna i PILOT-ACCEPTANCE till ett reproducerbart granskningsunderlag med faktiska testresultat. | Initialt acceptanspaket finns. Kör berörda tester och dokumentera återstående luckor, utan att beskriva lokala tester som riktig pilotdrift. |
-| 4 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
-| 5 / PILOT-03 | Åtgärda en reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
+| Levererad kandidat / DEMO-01 | Fem guidade moment: partner → hyresgäst → förmedling → Kraftringen → återkoppling. | Implementerad och browserverifierad kunddemokandidat; faktisk integration/publicering kvitteras i WORKLOG. Navigationshopp skapar inga tjänsteval eller ärendehändelser. Bygg inte en ny kopia. |
+| Levererad kandidat / DEMO-02 | Visuellt sammanhållen kunddemo. | Gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Mobil/desktop och relevanta tangentbordsflöden kontrollerade. Designval är inte uppmätt verklig användarnytta. |
+| Levererad kandidat / INFLYTT-03 | Kvittoåterupptagning från befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR-koden är införlivad i kunddemokandidaten och browserverifierad. Samma post återfinns med aktuell status utan dubblett. Kontrollera main/WORKLOG innan nytt kvittoarbete. |
+| Levererad kandidat / PILOT-01 | Fiktiv generalrepetition. | 75 befintliga flödeskontroller, utkastregression och 34 nya demokontroller passerar. Omladdning/omstart bevarar ordinarie labbdata och ekonomi. Ny verifiering behövs när ändringar eller nya fynd motiverar den. |
+| 5 / PILOT-03 | Åtgärda återstående reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
+| 6 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering finns. Nästa ändring kräver nytt belägg; D-01–D-04 är inte besvarade och behöver inte stoppa oberoende demoarbete. |
+| 7 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
 | Senare / PILOT-04 | Gemensam ärendelagring och verklig behörighet i godkänd miljö. | Genomförande väntar på D-02/D-03 och separat mandat. Agenten får förbereda alternativ och verifieringsplan inom nuvarande uppdrag. |
 | Senare / DATA-01 | Verkligt kommersiellt utfall och kickback per kanal. | Genomförande väntar på D-04 och data-/integrationsmandat. Saknat underlag är inte nollutfall. |
 
@@ -72,6 +77,14 @@ leveranshistorik.
 - Verifiering i förslaget: `qa/movein-receipt.mjs`, befintlig nästa-insatsregression,
   syntax-/AST- och diffkontroller. Browser-QA återstår; använd aktuell PR för
   fortsättningen och skapa inte en konkurrerande implementation.
+- Lösning: första steget visar den senaste lokalt registrerade posten för vald
+  fastighetspartner, med referens och aktuell ärendestatus. Användaren kan öppna
+  samma post och hämta ett uppdaterat testkvitto. Seedade exempel, äldre
+  intressen och andra partners poster erbjuds inte som återställbara kvitton.
+- Verifiering: beroendefria `qa/movein-receipt.mjs`, befintliga
+  `qa/movein-next-action.mjs`, JavaScript-syntax, Python-AST för den utökade
+  webbläsarregressionen och diffkontroll passerar. Browser-QA kunde inte köras
+  utan den föreskrivna browserkontrollen i detta pass.
 
 ## RESEARCH-01 — Identifiera Saleshub och tillämpa en relevant princip
 

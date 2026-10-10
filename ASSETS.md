@@ -1,5 +1,13 @@
 # Bildkällor
 
+## Typografi
+
+`dist/assets/inter-variable.woff2` är Inter Variable från projektets officiella
+källa: https://github.com/rsms/inter/tree/master/docs/font-files.
+Den hämtades den 10 oktober 2026 och serveras lokalt utan extern fontförfrågan.
+SIL Open Font License finns i `dist/assets/inter-license.txt` och originalet på
+https://github.com/rsms/inter/blob/master/LICENSE.txt.
+
 Prototypen använder följande bilder från Unsplash. Filerna är sparade lokalt under `dist/assets/`.
 
 | Fil | Källa |
@@ -7,6 +15,7 @@ Prototypen använder följande bilder från Unsplash. Filerna är sparade lokalt
 | `dist/assets/wind.jpg` | [Unsplash – vindkraft](https://images.unsplash.com/photo-1466611653911-95081537e5b7) |
 | `dist/assets/office.jpg` | [Unsplash – kontorsmiljö](https://images.unsplash.com/photo-1497366811353-6870744d04b2) |
 | `dist/assets/solar.jpg` | [Unsplash – solenergi](https://images.unsplash.com/photo-1509391366360-2e959784a276) |
+| `dist/assets/home.jpg` | [Unsplash – bostadsillustration](https://images.unsplash.com/photo-1600585154340-be6161a56a0c) |
 
 Bilderna illustrerar energi och arbetsmiljö i översikten, Academy, materialvyn och kundsideförhandsvisningar. De visar inte verifierade kunder, anläggningar eller verksamhetsplatser hos Kraftringen och antas inte vara godkända Kraftringen-bilder. En solenergibild innebär inte att solprodukter ingår i portalens beslutade produktutbud.
 

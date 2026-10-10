@@ -4,6 +4,9 @@ Mål: ett fastighetsbolag och en utsedd handläggare på Kraftringen ska kunna
 följa samma inflyttningsärende från frivilligt tjänsteval till återkoppling.
 Detta är ett föreslaget acceptanspaket, inte ett fastställt arbetssätt eller
 en kvittens på att Partnerlabb kan ta emot riktiga ärenden.
+Nyare användarstyrning: slutför en mycket snygg, enkel och intuitiv kunddemo
+utan att invänta en faktisk kund. Testfallen nedan kan genomföras med helt
+fiktiva ärenden; verkliga pilotförutsättningar redovisas separat sist.
 
 ## Testunderlag och gräns
 
@@ -25,7 +28,8 @@ ett separat förslag; byt inte förmedlingssätt innan beslut finns.
 Kör fallen i ordning mot en isolerad testprofil. Anteckna källrevision,
 testfall, faktiskt resultat och eventuellt fel. Ett fall utan genomförd
 verifiering märks `Ej testat`; en saknad beslutad förutsättning märks
-`Blockerat`.
+`Blockerat` endast för den uppgift som faktiskt kräver beslutet. Saknad
+pilotkund blockerar inte frontend-, test- eller demoarbete.
 
 | Fall | Handling | Godkänt resultat i lokal demo |
 |---|---|---|
@@ -40,6 +44,25 @@ verifiering märks `Ej testat`; en saknad beslutad förutsättning märks
 
 A8 verifierar endast demots visningslogik. Perspektivbyte i samma
 webbläsare är inte ett test av riktig autentisering eller åtkomstkontroll.
+
+## Reproducerbar kunddemo utan riktig kund
+
+Den separata demoytan via `?demo=inflyttning` är ett implementationsval.
+Verifiera den på levererad kandidat; denna lista påstår inte att den redan
+är publicerad eller testad.
+
+| Fall | Godkänt när |
+|---|---|
+| G1 — Fem sammanhängande moment | Partner → hyresgäst → förmedling → Kraftringen → återkoppling kan genomföras i ordning. Varje moment visar perspektiv, aktuell status och begriplig nästa handling. Guidade hopp skapar inte själva tjänsteval, förmedling eller bekräftelse. |
+| G2 — Visuell kvalitet | Valda vyer har konsekvent hierarki, lättläst text, tydliga knappar och fungerande fel-/sparbesked. Vid 320/390/1440 px täcks inga centrala handlingar; tangentbord, etiketter och synlig fokus fungerar. Detta är en verifiering av gränssnittet, ingen undersökning av verkliga användare. |
+| G3 — Ett ärende genom avbrott | Omladdning och återöppning behåller rätt utkast eller samma registrerade post. Kvittot visar aktuell status; generalrepetitionen skapar ingen dubblett eller automatisk affär. A1–A8 gäller även när guidningen används. |
+| G4 — Lokal isolering | Ärenden och utkast i demon använder separata lagringsnycklar. Registrering, navigation och återställning i demon ändrar inte ordinarie labbdata, andra partners utkast eller kommersiella exempelvärden. Återgång till ordinarie labbet visar bevarad data. |
+| G5 — Upprepning och kvittens | Starta om endast demoytan och genomför samma generalrepetition igen med fiktiv provdata. Dokumentera kandidat-SHA, faktiska kontroller och kvarvarande fel. Ingen verklig signering, kontakt med elnätsbolag eller skickad återkoppling påstås. |
+
+Godkänn G1–G5 tillsammans med relevanta A-fall för en fungerande demo.
+Verklig användarrespons, godkända produktionsfält och driftberedskap kräver
+andra belägg. Frånvaron av dessa belägg är inget skäl att lämna demoflödet
+halvfärdigt.
 
 ## Befintlig kodverifiering att återanvända
 

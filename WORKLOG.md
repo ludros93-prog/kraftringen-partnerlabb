@@ -1,5 +1,34 @@
 # Arbetslogg
 
+## 2026-10-09 — Kandidat: hitta sparat testunderlag efter omladdning
+
+- Uppgift: INFLYTT-03. `receipt` i `property.js` var endast modulminne, trots
+  att samma registrering redan sparades i `moveins`. Efter omladdning visades
+  därför ett nytt tomt flöde utan direkt väg tillbaka till testkvittot.
+- Kandidat: hyresgästsidans första steg visar den senaste återställbara lokala
+  registreringen för vald fastighetspartner. Den öppnar samma `moveins`-post,
+  visar aktuell teststatus och anpassat nästa steg samt kan skapa ett nytt
+  TXT-testkvitto. Knappen för ny registrering säger uttryckligen att det gäller
+  ett annat underlag.
+- Avgränsning: återställning skapar ingen ny post, kund, affär, intäkt eller
+  kickback. Seedade exempel, äldre intressen utan uttryckligt tjänsteval och
+  andra partners poster filtreras bort. All data är fortsatt lokal och fiktiv.
+- Verifiering: `node --check dist/property.js`,
+  `node qa/movein-receipt.mjs`, `node qa/movein-next-action.mjs`, Python-AST
+  för den utökade `qa/movein-service.py` och `git diff --check` passerar.
+  Den nya modulregressionen kontrollerar senaste post, partnerisolering,
+  seedfiltrering, aktuell status och oförändrat antal ärenden. Browser-QA
+  kördes inte eftersom föreskriven Sites-browserkontroll saknades i passet.
+- Leveransläge: egen gren `codex/inflytt-03-kvitto`, kandidatcommit
+  `4d99e14f40967f6870f63e45f79b3fae3fb28531` och GitHub PR #1:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1.
+  PR:en är öppnad mot oförändrad `main` på
+  `347f02a1a1cdfe47e2abb33793e9f24b1575f758`. Ingen integration till `main`
+  eller Sites-publicering gjordes i detta utvecklingspass.
+- Nästa uppgift efter granskning: välj en ny belagd backlogpunkt; DATA-01 väntar
+  fortsatt på verkligt verksamhetsunderlag och RESEARCH-01 kräver säker
+  identifiering av Saleshub.
+
 ## 2026-10-08 — Rätt nästa insats efter kompletterad överlämning
 
 - Uppgift: INFLYTT-02. Koden reproducerade att ett återförmedlat
@@ -262,3 +291,36 @@
 - PR #1 är fortsatt öppet och räknas som väntande pilotförslag. Agenten ska
   kontrollera aktuell status och ta vid befintligt arbete. Denna kvittens
   ändrar endast dokumentation; ingen Sites-version eller delning ändras.
+
+## 2026-10-10 — Kunddemo färdig och lokalt verifierad
+
+- Ludwig bad att komma så långt som möjligt utan en faktisk kund och göra
+  portalen mycket snygg, enkel och intuitiv inför kundmöten. Aktuell
+  GitHub-main d547135059d3fe9ab8ec4209478dbec4159bcb60 hämtades till den egna
+  grenen codex/customer-demo. Sites-källan öppnades och fjärrverifierades på
+  347f02a1a1cdfe47e2abb33793e9f24b1575f758 före ändringarna.
+- Befintliga PR #1, HEAD feff078d6eb797ce0226071b855227d443a29f00, införlivades
+  med bevarad historik. Återupptagning av befintligt kvitto återanvänds;
+  ingen parallell kvittolösning eller Daniel-ändring ingår i leveransen.
+- ?demo=inflyttning öppnar en separat lokal kunddemo med fem guidade
+  perspektiv, verkliga testhandlingar och återöppning av den registrerade
+  posten. Omstart kräver ett eget val och återställer enbart demoytans
+  exempeldata och utkast; ordinarie labbdata och utkast bevaras.
+- Gemensam lokalt serverad Inter-typografi, större kontroller, en
+  bostadsillustration, lugnare fastighetssida och responsiva ärendekort
+  infördes. Kommersiell översikt visar nettobidrag, avtal och avtalad
+  årsvolym först. Mått, ekonomiska exempel och partnerutbud bevaras.
+- Verifierat: 75 browserkontroller i qa/movein-service.py, hela
+  qa/movein-drafts.py och 34 kontroller i qa/customer-demo.py passerar.
+  De två vardera kontrollerna i movein-receipt.mjs och movein-next-action.mjs
+  passerar. JavaScript-syntax och git diff --check är godkända.
+  Desktop, 390/320 px, tangentbord, omladdning, komplettering, överlämning,
+  handläggning, kvitto, avstående, lagringsfel och isolerad omstart ingår.
+  Visuell granskning genomfördes i Chromium med sparade skärmbilder.
+- En befintlig utkastkontroll anpassades till formulärets tydligare rubrik
+  med stegets namn; samma steg- och återställningsbeteende kontrolleras.
+  Serviceregistrering och guidning skapar inte avtal, intäkt eller kickback.
+- Agentens uppdrag och acceptansfall uppdaterades till samma mål. Timuppgiften
+  är tillfälligt pausad under samordnad integration/publicering. Faktisk
+  GitHub-merge, Sites-publicering och återaktivering kvitteras separat.
+  All ärende- och resultatinformation är fortfarande fiktiv och lokal.
