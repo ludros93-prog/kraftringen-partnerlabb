@@ -784,3 +784,32 @@ inklusive periodval efter omladdning, normal-/demoisolering och mobil.
   browsermiljö finns. Inga nya verksamhetsbeslut krävs för denna rättning;
   D-01–D-04 består. Denna efterhandskvittens ändrar endast dokumentation;
   dist/ och hostingmanifest förblir identiska med publicerad version 16.
+
+## 2026-10-10 — Publiceringskvittens: generiska partnersidor
+
+- PR #13 slogs ihop som 3ca57eb96816a5eae16f4dd9d96e8f7289361807
+  den 10 oktober kl. 21:19:35 UTC. Testad kandidat-HEAD var
+  b81150e8ab7215b43f4f14affcff2468fa0b145b. dist/ och hostingmanifest
+  är identiska mellan testad kandidat och publicerad merge.
+- Källan överfördes fast-forward till befintligt Sites-projekt och
+  source helper verifierade push av exakt samma SHA. Arkiv:
+  /workspace/library-files/partnerlabb-partner-segments-v17.tar.gz.
+- Native save gav version **17**, ID
+  appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cd98ef6a3bd481918dd7ea256e03d789,
+  med arkivets sha256:23abedba2fb01a4134cb8c8cc47353be5d4dc193b20d8ad94656353ded9924b3.
+- Deployment appgdep_6acaac334bcc8191aab0aadc92004c4f bekräftade
+  **succeeded** kl. 21:21:08 UTC på
+  https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+- Färsk metadata bekräftar samma projekt, version 17, samma länk och
+  custom-delning med policyrevision 4. Inga åtkomständringar gjordes.
+- Samma timuppgift Automation_e03c6b2fc3448191a58c63c969a090c0
+  återaktiverades. Privat återläsning kl. 21:21 UTC verifierade enabled=true
+  och exakt aktuell PILOT-AGENT-PROMPT.txt med oförändrat timschema och
+  Europe/Stockholm. Senaste registrerade körning: 21:08:14 UTC;
+  next_run_time=null. Detta är konfigurationsbevis, inte bevis för att
+  den nya prompten redan har körts.
+- Verifieringen ovan gäller funktionerna med fiktiva data. Nya/blandade
+  partners, historiska segment, kundbestånd, kohorter, missing-data,
+  kickbackurval, sparfel, reset, migration och mobil är kontrollerade.
+- Denna efterhandskvittens ändrar enbart dokumentation. dist/ och
+  hostingmanifest förblir identiska med den publicerade versionen.

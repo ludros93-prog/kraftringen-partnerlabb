@@ -20,15 +20,16 @@
   granskningsregler med HTTP403. Ägaren behöver aktivera kravet i GitHub.
   Se GITHUB-ACCESS.md. CODEOWNERS-filen ensam spärrar inte direkt push.
 - Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` heter
-  **Partnerlivs pilotagent**. Den 10 oktober 2026 kl. 20:53 UTC bekräftade
+  **Partnerlivs pilotagent**. Den 10 oktober 2026 kl. 21:21 UTC bekräftade
   privat återläsning enabled=true och exakt prompt enligt
   PILOT-AGENT-PROMPT.txt, med oförändrat timschema och Europe/Stockholm.
-  Uppdraget omfattar nu enkel Savera-uppföljning, Insikter och partnerns
-  kunder/kickback tillsammans med stabil Excel-/manuell inflyttning.
+  Uppdraget omfattar nu generiska säljpartners under Partners, valbara
+  B2B/B2C/båda, gemensamma Kunder & avtal och Insikter samt fem B2C-produkter.
+  Kunder/kickback och stabil Excel-/manuell inflyttning består.
   Fastighetsbolaget gör allt aktivt portalarbete; hyresgästen har inga
   portalsteg. Egen agent/-gren + PR och Daniels godkännandekrav består.
   Ingen extra automation skapades. Senaste registrerade körning är
-  20:06:42 UTC; next_run_time saknar värde. Detta verifierar konfiguration
+  21:08:14 UTC; next_run_time saknar värde. Detta verifierar konfiguration
   och aktivering, inte att den nya prompten redan har körts.
 
 ## Publicerad portal och källöverföring
@@ -38,28 +39,33 @@ Sites är publiceringsmål för det befintliga projektet
 åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
 Sites-inloggningen.
 
-Senast verifierade lyckade publicering är version 16 med SHA
-`042f40acc77175f257bb141335d29057b29c07b4` på
+Senast verifierade lyckade publicering är version 17 med SHA
+`3ca57eb96816a5eae16f4dd9d96e8f7289361807` på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
-PR #12 bevarar fastighetspartnerns rapportperiod efter omladdning.
-Alla tidigare publicerade moduler och historik är bevarade; jämfört med
-version 15 ändras endast dist/property-results.js i publiceringsinnehållet.
+PR #13 samlar säljpartners under Partners med valbara kundsegment,
+gemensam avtalsöversikt/Insikter och fem konsumentprodukter. Den parallellt
+sammanslagna PR #12 om fastighetspartnerns rapportperiod bevarades.
 GitHub-main överfördes fast-forward till Sites utan force-push.
 
-Native deployment `appgdep_6acaab2f57c88191bb7afa714431b704` bekräftade
-`succeeded` den 10 oktober 2026 kl. 21:16:36 UTC. Version-ID:
-`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_67a3b4aaca588191b2f391ce2fcd4bac`.
-Färsk metadata bekräftade version 16 och exakt oförändrad custom-delning,
-policyrevision 4 och tre externa visningsbehörigheter.
-Alla fem Node-regressioner (20 kontroller), syntax/AST och extra
-lagrings-/isoleringsfall passerar. Browserregressionen är utökad men
-inte omkörd i denna miljö; historiska version 15-tester är separata belägg.
-Detaljer och kvarvarande browserkontroll finns i WORKLOG.
+Native deployment `appgdep_6acaac334bcc8191aab0aadc92004c4f` bekräftade
+`succeeded` den 10 oktober 2026 kl. 21:21:08 UTC. Version-ID:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cd98ef6a3bd481918dd7ea256e03d789`.
+Färsk metadata bekräftade version 17 och oförändrad custom-delning,
+policyrevision 4. Paketet är byggt från och pushat med samma SHA.
 
-Savera öppnas via `#savera`, Insikter via `#insikter`, fastighetspartnerns
-resultat via `?workspace=estate1#property-results`. Kunddemot finns kvar
-via `?demo=inflyttning#demo`. Detta är fortfarande fiktiv, lokal frontenddata.
-Efterhandskvittensen ändrar endast dokumentation, inte dist/ eller hostingmanifest.
+Verifiering: 105 generiska browserkontroller, 23 data- och åtta
+registerkontroller; inflyttningskedjans 62 service- och fem
+integritetskontroller samt riktade befintliga regressioner passerade.
+Efter merge av PR #12 passerade fastighetsperiodens Node-kontroll och
+20 browserkontroller. Mobil 320/390 och desktop, perpartnerfilter,
+blandade segment, datum, sparfel, migration och reset är kontrollerade.
+
+Öppna Partners och välj Savera eller Face2face. Direktlänkar:
+`?partner=syd#partner-sales`, `?partner=vast#partner-insights`.
+Äldre `#savera` och `#insikter` öppnar samma Savera-underflöden.
+Fastighetspartnerns resultat finns via `?workspace=estate1#property-results`
+och kunddemot via `?demo=inflyttning#demo`. All data är fiktiv och lokal.
+Efterhandskvittensen ändrar endast dokumentation, inte dist/ eller manifest.
 
 För över GitHub-main med bibehållen historik och fast-forward enligt RUNBOOK.
 Första överföringen är verifierad med gemensam SHA
