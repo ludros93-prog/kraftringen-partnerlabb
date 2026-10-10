@@ -38,23 +38,28 @@ Sites är publiceringsmål för det befintliga projektet
 åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
 Sites-inloggningen.
 
-Senast verifierade lyckade publicering är version 15 med SHA
-`3e1b873f5a2fdacf1dbd14e733155a226d53f5ed` på
+Senast verifierade lyckade publicering är version 16 med SHA
+`042f40acc77175f257bb141335d29057b29c07b4` på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+PR #12 bevarar fastighetspartnerns rapportperiod efter omladdning.
+Alla tidigare publicerade moduler och historik är bevarade; jämfört med
+version 15 ändras endast dist/property-results.js i publiceringsinnehållet.
+GitHub-main överfördes fast-forward till Sites utan force-push.
+
+Native deployment `appgdep_6acaab2f57c88191bb7afa714431b704` bekräftade
+`succeeded` den 10 oktober 2026 kl. 21:16:36 UTC. Version-ID:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_67a3b4aaca588191b2f391ce2fcd4bac`.
+Färsk metadata bekräftade version 16 och exakt oförändrad custom-delning,
+policyrevision 4 och tre externa visningsbehörigheter.
+Alla fem Node-regressioner (20 kontroller), syntax/AST och extra
+lagrings-/isoleringsfall passerar. Browserregressionen är utökad men
+inte omkörd i denna miljö; historiska version 15-tester är separata belägg.
+Detaljer och kvarvarande browserkontroll finns i WORKLOG.
+
 Savera öppnas via `#savera`, Insikter via `#insikter`, fastighetspartnerns
 resultat via `?workspace=estate1#property-results`. Kunddemot finns kvar
-via `?demo=inflyttning#demo`. PR #10 integrerades i GitHub-main och fördes
-fast-forward till Sites-källan utan att PR #8:s importkorrigering eller
-andras historik skrevs över.
-Native deployment `appgdep_6acaa585ed088191b855c17684a773c3` bekräftade
-`succeeded` den 10 oktober 2026 kl. 20:52:37 UTC. Version-ID:
-`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_948b364251f08191a24280bf34cc0866`.
-Färsk metadata bekräftade version 15, custom-åtkomst och policyrevision 4.
-104 browserkontroller för rapporterna, 62 för servicekedjan och 5 för
-integritet passerar; även Node-regressioner, syntax och visuell mobil-/
-desktopkontroll passerar. Den tidigare browserluckan för PR #8 är därmed
-verifierad i denna samlade leverans. Detta är fortfarande fiktiv, lokal
-frontenddata. Efterhandskvittensen ändrar endast dokumentation.
+via `?demo=inflyttning#demo`. Detta är fortfarande fiktiv, lokal frontenddata.
+Efterhandskvittensen ändrar endast dokumentation, inte dist/ eller hostingmanifest.
 
 För över GitHub-main med bibehållen historik och fast-forward enligt RUNBOOK.
 Första överföringen är verifierad med gemensam SHA

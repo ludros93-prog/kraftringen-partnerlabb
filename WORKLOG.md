@@ -740,3 +740,47 @@ separat väntande PR #12 beskriver status före denna samordning.
 qa/property-results-period.mjs passerade efter sammanslagningen.
 Fastighetsutfallets browserregression passerade 20 kontroller efter merge,
 inklusive periodval efter omladdning, normal-/demoisolering och mobil.
+
+## 2026-10-10 — PR #12 integrerad och rapportperiod publicerad
+
+- Ludwig bad uttryckligen i den direkta konversationen att integrera och
+  publicera med hänsyn till tidigare ändringar. Detta var samordning efter
+  utvecklingspasset; inget schema, prompt, aktivering eller åtkomst ändrades.
+- PR #12, oberoende Codex-arbete, granskades vid HEAD
+  `33d179614ee2a5b15ed23bb46da514ea9d8ff395`:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/12.
+  Färsk main var `d19380699f4d6e810d8b4b58c63b00889a66243e`.
+  GitHub bekräftade merge till `042f40acc77175f257bb141335d29057b29c07b4`.
+  Inga Daniel-bidrag, skenbara godkännanden eller admin-bypass ingick.
+- Bevarandekontroll: Sites version 15 och fjärrkällan kontrollerades före
+  överföring. Källhistoriken förenades fast-forward utan force-push.
+  Den samlade GitHub-main har exakt samma filträd som testad PR-HEAD.
+  Jämfört med version 15 ändras endast `dist/property-results.js` i
+  publiceringsinnehållet; inga filer tas bort. Savera, Insikter, Excel/
+  manuell inflyttning, bilagor, migreringar och övriga moduler är oförändrade.
+- Faktiskt körda kontroller: JavaScript-syntax i alla dist-moduler,
+  alla fem qa/*.mjs (20 rapporterade kontroller), Python-AST i samtliga
+  QA-skript samt git diff --check. Samtliga Node-regressioner kördes om
+  efter merge på den exakta huvudrevisionen och passerade.
+- Ytterligare VM-kontroller på faktisk rapportmodul passerade: nekad
+  läsning/skrivning i sessionStorage, ogiltiga lagrade JSON-värden,
+  ogiltigt månadsevent, fördröjt event efter partnerbyte, separata
+  demo-/normalval efter omladdning och oförändrade orelaterade datanycklar.
+  Sparfel behåller fungerande filter i minnet men garanterar inte återläsning.
+- Begränsning: visuell browser-/tangentbordskontroll och den utökade
+  qa/savera-insights.py kördes inte om här. Managed Sites-miljön saknar
+  tillgänglig control-browser. Enligt Sites-skill installerades ingen
+  alternativ browser/previewväg; relevant kod-QA och publicering genomfördes.
+  Version 15:s historiska browserbelägg är inte en ny browserkörning.
+- Native Sites-kvittens: version 16, succeeded 2026-10-10 kl. 21:16:36 UTC.
+  - SHA: `042f40acc77175f257bb141335d29057b29c07b4`.
+  - Version-ID: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_67a3b4aaca588191b2f391ce2fcd4bac`.
+  - Deployment-ID: `appgdep_6acaab2f57c88191bb7afa714431b704`.
+  - URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  Arkivet byggdes från samma rena, fjärrverifierade GitHub-SHA.
+  Efter publicering bekräftades version 16 och exakt oförändrad
+  custom-delning, policyrevision 4 och tre externa visningsbehörigheter.
+- Nästa steg: kör den utökade browserregressionen när föreskriven
+  browsermiljö finns. Inga nya verksamhetsbeslut krävs för denna rättning;
+  D-01–D-04 består. Denna efterhandskvittens ändrar endast dokumentation;
+  dist/ och hostingmanifest förblir identiska med publicerad version 16.
