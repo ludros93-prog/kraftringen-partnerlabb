@@ -146,7 +146,7 @@ Grundexemplet Savera har 207 nya avtal 2026, 8 175 MWh avtalad årsvolym och
 134 äldre exempelkunder. Det publicerade version 15-underlaget hade 305
 aktiva exempelkunder den 7 oktober; alla dessa värden är exempel, inte
 verkliga affärsresultat. Äldre kohorters datum är inget verkligt kundutdrag.
-Kandidatens Face2face-underlag behåller tidigare månadsutfall: 437 nya
+Det publicerade Face2face-underlaget behåller tidigare månadsutfall: 437 nya
 exempelavtal 2026 och 1 804 MWh avtalad årsvolym. Femproduktsfördelningen
 är fiktiv. 785 kunder är aktiva vid årets start; fyra separat märkta äldre
 väntande avtal börjar 2026. De hör till en fiktiv kökohort, inte till

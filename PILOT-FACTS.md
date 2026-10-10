@@ -40,7 +40,7 @@ inte levererad el under månaden. Verklig energi, avtalsutfall och ekonomiskt
 resultat kräver egna källor och definitioner. Regeluppgifter som inte behövs
 för pilotuppgiften får inte förvandlas till produktlöften.
 
-- Den generiska rapportkandidaten skiljer datatäckning per segment från
+- Den generiska rapporten skiljer datatäckning per segment från
   partnerns valda konfiguration. Nytt segment utan historik visar saknat
   underlag, inte observerad nollförsäljning. Nya/blandade partnerarbetsytor
   visar egna kataloger, utbildning och support utan att läsa andra partners
