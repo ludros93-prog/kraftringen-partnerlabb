@@ -415,3 +415,37 @@
   inflyttning-testbilaga.pdf kan hämtas från båda registreringsvägarna för
   filprov; den är tydligt märkt och är ingen fullmaktsmall. Båda länkarna
   laddar ned identiska bytes och saknar mobilöverflöde.
+
+## 2026-10-10 — Partnerns Excel-/manuella flöde publicerat
+
+- Kandidaten edeed4148316d2c7f877bfdc704d7179f35164fa öppnades som PR #6:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/6.
+  GitHub bekräftade merge till main eaa303f8f09df2e9ed4ab74324b799607877729e
+  kl. 19:30:33 UTC. Inga nya Daniel-bidrag, administrativ bypass eller
+  skenbar mänsklig granskning ingår.
+- Färsk Sites-fjärrkälla c956ab385493df4479338cec6a60ccfed1f69bc3 förenades
+  fast-forward med exakt GitHub-main. Rent arbetsutrymme och fjärrverifierad
+  push användes för arkivet med endast dist/ och .openai/hosting.json.
+- Native publicering bekräftade succeeded kl. 19:31:55 UTC:
+  - Version: 13.
+  - Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_25c3f58b9e748191b7ecad2c9f30f564.
+  - Deployment-ID: appgdep_6aca929a5bc081919ed8eae49a118b38.
+  - SHA: eaa303f8f09df2e9ed4ab74324b799607877729e.
+  - URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Partnerdemo: https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning&workspace=estate1#overview.
+- Färsk Sites-läsning kl. 19:32 UTC bekräftade version 13, rätt URL och
+  bevarad custom-åtkomst med policyrevision 4 och tre externa visningsanvändare.
+- Samma Automation_e03c6b2fc3448191a58c63c969a090c0 fick exakt den uppdaterade
+  PILOT-AGENT-PROMPT.txt medan pausad och återaktiverades efter publicering.
+  Privat återläsning kl. 19:32 UTC bekräftade enabled=true och exakt prompt,
+  oförändrat RRULE:FREQ=HOURLY, DTSTART;TZID=Europe/Stockholm:20261008T230000
+  samt default_timezone Europe/Stockholm. Inga nya scheman skapades.
+- Agenten ska fortsätta med fastighetsbolagets två vägar och befintliga
+  bilagor; aktiva hyresgäststeg/QR återinförs inte. Schemats senaste
+  registrerade körning är fortfarande 18:03:50 UTC, next_run_time saknar
+  värde. Uppdaterad aktivering är verifierad, ingen redan genomförd körning
+  med den nya prompten påstås.
+- Denna efterhandskvittens ändrar bara dokumentation. dist/ och
+  hostingmanifest är identiska med publicerad version 13. Verklig
+  fullmaktsgiltighet, gemensam lagring och produktionsprocess har inte
+  verifierats eller införts genom frontenddemon.

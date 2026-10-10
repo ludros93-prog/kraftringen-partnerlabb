@@ -20,11 +20,13 @@
   granskningsregler med HTTP403. Ägaren behöver aktivera kravet i GitHub.
   Se GITHUB-ACCESS.md. CODEOWNERS-filen ensam spärrar inte direkt push.
 - Samma timuppgift `Automation_e03c6b2fc3448191a58c63c969a090c0` heter nu
-  **Partnerlivs pilotagent**. Den 10 oktober 2026 kl. 19:07 UTC bekräftade
+  **Partnerlivs pilotagent**. Den 10 oktober 2026 kl. 19:32 UTC bekräftade
   privat återläsning enabled, exakt prompt enligt PILOT-AGENT-PROMPT.txt,
   oförändrat timschema och Europe/Stockholm. Det senaste uppdraget är att
   färdigställa och förbättra en snygg, enkel kunddemo utan att invänta en
-  faktisk kund. Pilotmissionen och egen agent/-gren + PR styr arbetet;
+  faktisk kund. Fastighetsbolaget sköter allt aktivt portaljobb via Excel eller
+  manuell registrering med fullmaktsbilagor; hyresgästen har inga aktiva
+  portalsteg. Pilotmissionen och egen agent/-gren + PR styr arbetet;
   Daniels godkännandekrav består.
   Ingen extra automation skapades. Detta verifierar konfiguration och
   aktivering, inte en redan utförd körning med det nya pilotuppdraget.
@@ -36,13 +38,13 @@ Sites är publiceringsmål för det befintliga projektet
 åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
 Sites-inloggningen.
 
-Senast verifierade lyckade publicering är version 12 med SHA
-`c956ab385493df4479338cec6a60ccfed1f69bc3` på
+Senast verifierade lyckade publicering är version 13 med SHA
+`eaa303f8f09df2e9ed4ab74324b799607877729e` på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
-Kunddemot öppnas via `?demo=inflyttning#demo`. PR #4 integrerades i GitHub-main,
+Kunddemot öppnas via `?demo=inflyttning#demo`. PR #6 integrerades i GitHub-main,
 fördes fast-forward till Sites-källan och publicerades från exakt samma SHA.
-Native deployment `appgdep_6aca8cc17318819186048a8a728e1ed9` bekräftade
-`succeeded` den 10 oktober 2026 kl. 19:06 UTC. Custom-åtkomst, policyrevision 4
+Native deployment `appgdep_6aca929a5bc081919ed8eae49a118b38` bekräftade
+`succeeded` den 10 oktober 2026 kl. 19:31 UTC. Custom-åtkomst, policyrevision 4
 och tre externa visningsanvändare bevarades. Verifiering och versions-ID
 finns i WORKLOG.md. Efterhandskvittensen ändrar endast dokumentation.
 
