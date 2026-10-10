@@ -77,3 +77,14 @@ Första överföringen är verifierad med gemensam SHA
 `c777983132282ffef40c0cdde503b00eb2ab2002`; senare dokumentationscommits kan
 följa. Aktuell kvittens står i WORKLOG.md. Automatisk synk, GitHub Actions, grenskydd
 eller centralt delad testdata införs inte genom denna källflytt.
+
+## 2026-10-11 · PR #18 integrerad och publicerad som version 19
+
+Ludwigs direkta uppdrag ”Publicera” följde presentationen av PR #18. Oberoende Codex-revision `04b542964614b326675c6feaf1289b0ed8f825bd` integrerad genom PR #18; GitHub-main och exakt publicerad Sites-källa: `35874dfc5ef017926316cc09593a904e4dd1a8e0`. Sites överfördes fast-forward från v18, utan att skriva över nyare arbete.
+
+- Version: `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_edd41b5f23048191843ec65203f42847` (19).
+- Deployment: `appgdep_6acab861afa88191acd51fcda0072721`, `succeeded` 2026-10-10 22:13:04 UTC (11 oktober 00:13 Stockholm).
+- URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site
+- Befintlig custom-delning revision 4 bevarad; inget åtkomst- eller schemaarbete.
+- Alla sju qa/*.mjs samt syntaxkontroll av alla dist/*.js passerade på överföringskandidaten; mergeträdet är identiskt. Webbläsar-/mobil-/tangentbordskontroll kunde inte köras med miljöns tillgängliga kapabiliteter och är fortfarande en verifieringsbegränsning. Ingen verklig kund- eller produktionsvalidering påstås.
+- PARTNER-04 är integrerad och publicerad. Tidigare kandidatstatus ovan är historik. Denna efterhandskvittens ändrar enbart dokumentation; dist/ är oförändrad och kräver ingen ny publicering.
