@@ -47,6 +47,7 @@ async def main():
   current=await state();good('no customers offers consumers from movein',all(len(current[key])==counts[key] for key in counts));good('economy unchanged after registration',await finances()==basefin)
   async with page.expect_download() as event:await page.locator('#property-receipt-download').click()
   dl=await event.value;await dl.save_as(str(OUT/'movein-test-receipt.txt'));receipt=pathlib.Path(OUT/'movein-test-receipt.txt').read_text();good('receipt marked non-contract','INGET ELAVTAL' in receipt and 'utan rättsverkan' in receipt)
+  await page.reload(wait_until='networkidle');good('saved receipt can be found after reload',await page.locator('#property-receipt-recover').count()==1);before_recovery=len((await state())['moveins']);await page.locator('#property-receipt-recover').click();good('recovery reuses existing case',len((await state())['moveins'])==before_recovery and rid.upper() in await page.locator('.property-receipt-number').inner_text())
   await page.locator('#property-return-partner').click();await page.locator('#nav [data-go="property-registrations"]').click();await page.locator(f'[data-movein-detail="{rid}"]').first.click()
   good('partner explicit handover offered',await page.locator('#movein-service-forward-form').count()==1)
   await page.locator('#movein-service-forward-form textarea').fill('QA partnerns meddelande');await page.locator('#movein-service-forward-form button[type=submit]').click();good('handover explicit submitted',(await row(rid))['handoverStatus']=='submitted')

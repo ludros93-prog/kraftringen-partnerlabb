@@ -188,7 +188,7 @@ Den bekräftade affärsmodellen är att fastighetsbolag, BRF:er och förvaltare 
 
 Frontendflödet går att testa som: hyresgästunderlag → partnerns förmedling → Kraftringens Inflyttningsärenden → handläggning/komplettering → återkoppling. Elhandel, elnät och erbjudandeval har separata demostatusar. Fullmaktsmarkeringen är en UI-simulering utan rättsverkan; godkänd fullmaktsmall, omfattning, identifiering och signeringsprocess återstår att lämna underlag för. Inga verkliga avtal eller externa utskick görs.
 
-`dist/movein-service.js` är gemensam ärendedata och intern handläggningsvy. Den kompletterar `moveins` med `serviceRequested`, `authorityDemo`, `handoverStatus`, `processing` och `events`. Tidigare intresseanmälningar behålls men får inte automatiskt samtycke, fullmakt eller förmedlingsstatus. Nya fiktiva serviceexempel är uttryckligt markerade.
+`dist/movein-service.js` är gemensam ärendedata och intern handläggningsvy. Den kompletterar `moveins` med `serviceRequested`, `authorityDemo`, `handoverStatus`, `processing` och `events`. Tidigare intresseanmälningar behålls men får inte automatiskt samtycke, fullmakt eller förmedlingsstatus. Nya fiktiva serviceexempel är uttryckligt markerade. Efter omladdning kan den senaste registreringen för vald fastighetspartner återöppnas från hyresgästsidans första steg. Den återanvänder den sparade `moveins`-posten, visar aktuell teststatus och skapar inget nytt ärende.
 
 Kommersiellt resultat visas fortfarande först på den interna partnerprofilen. Ärendeantal, underlag, kompletteringar och demobekräftelser är operativ uppföljning för alla datum. Ekonomiska fixtures för vald period är fristående och ändras inte när ett serviceärende registreras, förmedlas eller bekräftas.
 
@@ -224,7 +224,7 @@ Första förbättringen gäller återupptagbart pågående inflyttningsunderlag 
 
 ### Återkörbara webbläsarkontroller
 
-`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
+`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. `qa/movein-receipt.mjs` kontrollerar återöppning, partnerisolering, aktuell status och att inget dubblettärende skapas. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
 
 Med servern ovan igång, Python Playwright och Chromium tillgängliga:
 

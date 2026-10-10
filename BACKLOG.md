@@ -72,6 +72,14 @@ leveranshistorik.
 - Verifiering i förslaget: `qa/movein-receipt.mjs`, befintlig nästa-insatsregression,
   syntax-/AST- och diffkontroller. Browser-QA återstår; använd aktuell PR för
   fortsättningen och skapa inte en konkurrerande implementation.
+- Lösning: första steget visar den senaste lokalt registrerade posten för vald
+  fastighetspartner, med referens och aktuell ärendestatus. Användaren kan öppna
+  samma post och hämta ett uppdaterat testkvitto. Seedade exempel, äldre
+  intressen och andra partners poster erbjuds inte som återställbara kvitton.
+- Verifiering: beroendefria `qa/movein-receipt.mjs`, befintliga
+  `qa/movein-next-action.mjs`, JavaScript-syntax, Python-AST för den utökade
+  webbläsarregressionen och diffkontroll passerar. Browser-QA kunde inte köras
+  utan den föreskrivna browserkontrollen i detta pass.
 
 ## RESEARCH-01 — Identifiera Saleshub och tillämpa en relevant princip
 
