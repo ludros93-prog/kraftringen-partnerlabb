@@ -632,3 +632,29 @@
 - Efterhandskvittensen uppdaterar endast dokumentation. dist/ och
   hostingmanifest ändras inte och behöver ingen extra publicering.
   D-01–D-04, verkliga kommersiella källor och ersättningsregler består.
+
+## 2026-10-10 — Kandidat: bevara fastighetspartnerns rapportperiod
+
+- Belägg: `property-results.js` höll års-/månadsvalet endast i en modul-lokal
+  `Map`. Septembervyn återställdes därför till helår efter omladdning, trots
+  att Savera/Insikter redan bevarar sina filter. Inga öppna PR:er fanns och
+  färsk `main` var `d19380699f4d6e810d8b4b58c63b00889a66243e`.
+- Ändring: valt år/månadsläge och månad sparas i `sessionStorage` per
+  fastighetspartner. Ordinarie labb och `?demo=inflyttning` använder separata
+  nycklar. Saknad, ogiltig eller otillgänglig lagring ger tidigare säkra
+  standardläge utan att ändra kund-, service-, avtals- eller kickbackdata.
+- Nytta: fastighetspartnern kan lämna rapporten eller ladda om och fortsätta
+  på samma period, utan att estate1:s val följer med estate2 eller demoytan.
+- Verifiering: `node --check dist/property-results.js`, ny beroendefri
+  `qa/property-results-period.mjs`, `qa/savera-data.mjs`,
+  `qa/property-intake-dedup.mjs`, `qa/movein-receipt.mjs`,
+  `qa/movein-next-action.mjs`, Python-AST och `git diff --check` passerar.
+  Den befintliga browserregressionen är utökad med omladdningsfallet men
+  kunde inte köras här: managed Sites-miljön saknar `control-browser`,
+  Chromium och Python Playwright. Ingen browser installerades eller
+  alternativ previewväg improviserades enligt aktuell Sites-skill.
+- Avgränsning: inga affärsmått, priser, ersättningsregler, integrationer,
+  fullmaktsbedömningar eller verkliga data ändras. Ingen merge, Sites-push
+  eller publicering görs i detta schemalagda pass. Arbetsgren:
+  `codex/property-results-period-persistence`. Nästa steg är samordnad
+  browserkontroll av PARTNER-01A och därefter granskning/integration av PR:n.
