@@ -74,9 +74,11 @@
     const seen = new Set();
     return draft.rows.map(row => {
       const id = identity({ ...row.fields, partner: draft.partner });
-      const duplicate = existing.has(id) ? 'Finns redan bland era ärenden' : seen.has(id) ? 'Samma inflyttning finns tidigare i filen' : '';
-      seen.add(id);
       const errors = [...row.parseErrors, ...rowErrors(row.fields)];
+      // En rad som ändå inte kan registreras ska inte blockera en senare,
+      // korrigerad rad med samma identitet i filen.
+      const duplicate = existing.has(id) ? 'Finns redan bland era ärenden' : !errors.length && seen.has(id) ? 'Samma inflyttning finns tidigare i filen' : '';
+      if (!errors.length && !duplicate) seen.add(id);
       return { row, errors, duplicate, valid: !errors.length && !duplicate };
     });
   }

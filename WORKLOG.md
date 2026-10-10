@@ -450,6 +450,85 @@
   fullmaktsgiltighet, gemensam lagring och produktionsprocess har inte
   verifierats eller införts genom frontenddemon.
 
+## 2026-10-10 — Kandidat: korrigerad Excel-rad efter felaktig dubblett
+
+- Uppgift: PILOT-03A. Filgranskningen lät en felaktig rad reservera sin
+  ärendeidentitet. En senare fullständig rad för samma inflyttning märktes då
+  som dubblett fast den första raden inte kunde registreras.
+- Ändring: endast rader utan rad- eller parsefel deltar nu i den interna
+  dubblettkontrollen. En korrigerad rad förblir vald och registrerbar, medan en
+  ytterligare giltig upprepning fortfarande spärras. Befintliga dubbletter mot
+  partnerns sparade underlag blockeras oförändrat.
+- Avgränsning: inga fält, bilagor, fullmaktsbedömningar, servicehändelser,
+  avtal, ekonomi eller lagringsnycklar har ändrats. Regeln är fortsatt ett
+  tekniskt demoförslag och använder inga riktiga kunduppgifter.
+- Verifiering: `node --check dist/property-intake.js`,
+  `python -m py_compile qa/property-intake.py` och
+  `node qa/property-intake-dedup.mjs` passerar. Den fokuserade kontrollen
+  reproducerar felaktig → korrigerad → verklig dubblett. Browserregressionen i
+  `qa/property-intake.py` är utökad men kunde inte köras i passet eftersom
+  Chromium/Python Playwright saknas i exekveringsmiljön.
+- Samordning: aktuell `main` var
+  `3387a24101aa3d4c80a1113b37fed520ef63312c` och inga PR:er var öppna före
+  arbetet. Egen gren `codex/pilot03-excel-corrected-row`; kodcheckpoint
+  `9cde5371afba83472e72ce45c28eccef917566b7`. Ingen direkt push till
+  `main`, merge, Sites-ändring eller publicering gjordes.
+- Beslut: inga nya verksamhetsbeslut krävs för denna avgränsade korrigering.
+- Nästa steg: granska PR-kandidaten och kör hela
+  `qa/property-intake.py --suite service` i Chromium före integration och
+  samordnad publicering.
+
+## 2026-10-10 — PILOT-03A integrerad och publicerad som version 14
+
+- Ludwigs direkta uppmaning ”Fixa fixa fixa! Kör” följdes som ett
+  samordnaruppdrag att slutföra den befintliga kandidaten, PR #8:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/8.
+  PR-HEAD var 644c776d666ab79edb2dc8cb0f8a16a7d848aa04 och aktuell main
+  3387a24101aa3d4c80a1113b37fed520ef63312c. PR #8 var ensam öppen och
+  konfliktfri. Inga Daniel-bidrag eller fabricerade mänskliga godkännanden ingår.
+- Nytta: en tidigare felaktig Excel-rad blockerar inte längre en senare
+  fullständig rad för samma inflyttning. En verklig giltig upprepning spärras
+  fortfarande. Inga fält, fullmaktsregler, lagringsnycklar eller affärsdata ändras.
+- Faktiskt körd verifiering på kandidat: `git diff origin/main --check`,
+  `node --check dist/property-intake.js`, Python-AST för
+  `qa/property-intake.py` samt Node-kontrollerna
+  `qa/property-intake-dedup.mjs`, `qa/movein-next-action.mjs` och
+  `qa/movein-receipt.mjs` passerade. Regressionstestet kördes dessutom mot
+  tidigare mains property-intake.js och föll med AssertionError på det
+  tidigare felet; samma test passerade på rättningen.
+- GitHub bekräftade merge till main b05a5d5863852349ea372e089f34b679bb10f728.
+  Hela trädet var identiskt med den testade PR-kandidaten. De tre
+  Node-kontrollerna kördes om och passerade på exakt denna revision.
+- Begränsning och verifieringsbeslut: den tidigare planerade fullständiga
+  browserkörningen före integration kunde inte genomföras. Miljön är managed
+  Linux utan control-browser, Chromium eller Python Playwright. Aktuell
+  Sites-skill förbjuder improviserad browserinstallation/preview i detta
+  läge och medger riktad verifiering när inget hårt browserkrav finns.
+  Samordnaren slutförde denna lilla logikkorrigering med direkt körning av
+  verklig renderings- och ärendekod. Browserregression, visuell kontroll och
+  hela servicekedjan har inte körts om i denna leverans. Tidigare browser-
+  belägg för version 13 är historiska, inte nya testresultat.
+- Aktuell Sites-källa öppnades före överföring. GitHubs sammanslagna main
+  överfördes med bibehållen historik och vanlig fast-forward-push. Helpern
+  verifierade fjärr-SHA och paketerade rent, oförändrat källträd.
+- Native publiceringskvittens:
+  - Version: 14.
+  - Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_4ee014a9b6748191ac63c26986715477.
+  - Deployment-ID: appgdep_6acaa273de2c8191a9b7a0c0baf051fa.
+  - SHA: b05a5d5863852349ea372e089f34b679bb10f728.
+  - Status: succeeded, 2026-10-10T20:39:30.317193+00:00.
+  - URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Kunddemo: https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning#demo.
+- Återläst Sites-metadata bekräftade version 14, rätt URL, custom-åtkomst,
+  policyrevision 4 och tre externa visningsanvändare. Ingen åtkomst,
+  schemakonfiguration eller aktivering ändrades.
+- Beslut: inga nya verksamhetsbeslut krävs för rättningen. D-01–D-04 består.
+  Nästa genomförbara steg i browserkapabel miljö är att köra
+  `qa/property-intake.py --suite service` med den nya regressionen och
+  därefter fortsätta endast från ny, reproducerad demofriktion.
+- Denna efterhandskvittens ändrar endast WORKLOG, BACKLOG och GITHUB-STATUS;
+  dist/ och hostingmanifest är oförändrade jämfört med publicerad version 14.
+
 
 ## 2026-10-10 — Enklare Savera-uppföljning och partnerns resultat
 
@@ -471,3 +550,12 @@
 - Implementation, verifiering och publicering redovisas när de faktiskt
   är genomförda. Exempeldata, faktisk ersättning och framtidsprognos är
   fortfarande skilda underlag; nya serviceärenden skapar inget utfall.
+
+- Ny huvudrevision upptäcktes före integration: GitHub-main
+  247644ac1e5d42db5902a72b4e5509b605bc235e har PR #8 och dess kvittens-PR #9.
+  Native Sites-läsning bekräftade att version 14 redan publicerats av annan
+  samordning. Den nya importlogiken och båda kvittenserna bevaras i kandidaten.
+  Samtidiga dokumenttillägg förenades utan att historik eller andras
+  ändringar skrevs över; uppföljningskoden utvecklades oberoende. Den
+  kombinerade kandidaten verifieras efter integration, inklusive den
+  uppdaterade servicekedjan som version 14-kvittensen saknade browserbelägg för.
