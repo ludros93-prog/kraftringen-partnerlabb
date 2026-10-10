@@ -1,5 +1,9 @@
 # Prioriterad utvecklingskö
 
+## Bekräftad inriktning: resultat och utbildning (2026-10-11)
+
+Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
+
 Källor: användarens aktiverade masterprompt, aktuell kod och isolerade
 reproduktioner 8 oktober 2026. Detta är ingen undersökning av verkligt
 användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
@@ -132,3 +136,6 @@ och är inte dagens arbetssätt eller en kö för återinförande.
   integrationsmandat och bekräftat erbjudande för inflyttningskanalen.
 - Ingen beräkning eller verklig anslutning får uppfinnas. Rapportexemplen,
   årsvolymdefinitionen och separata churnmått ska förbli spårbara.
+
+### PARTNER-04 · Resultat och utbildning utan aktiv säljpipeline
+Kandidat på `codex/results-only-workbench`: pensionera äldre säljflödens navigation och nästa-steg-kort; bevara lokal data, generiska resultat och utbildning samt fastighetsflöden. Inte integrerad/publicerad. Verifiering och nästa steg i WORKLOG.
