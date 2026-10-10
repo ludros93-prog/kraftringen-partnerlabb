@@ -6,6 +6,12 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 
 ## Aktiv pilotkö – 10 oktober 2026
 
+Aktuellt direktuppdrag i utbildningschatten: **B2C-SAMTAL-01**, möjlighet att
+lägga till lyckade telefonsamtal som utbildningsexempel. Avgränsad lokal
+Academy-funktion för konsumentpartners; ingen delad lagring eller verkliga
+inspelningar införs. Kandidat i `codex/b2c-call-examples`, verifiering och
+publiceringsstatus kvitteras i WORKLOG innan den beskrivs som levererad.
+
 PILOT-MISSION.md styr prioriteringen. Uppgifter nedan använder fiktiva data
 inom nuvarande frontendmandat. Högst två färdiga pilotförslag väntar på
 granskning; kontrollera öppna PR:er innan ny leverans.
