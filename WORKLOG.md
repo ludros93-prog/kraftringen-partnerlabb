@@ -728,3 +728,15 @@ Separat schemalagd kandidat PR #12 om fastighetspartnerns periodval
   eller publicering görs i detta schemalagda pass. Arbetsgren:
   `codex/property-results-period-persistence`. Nästa steg är samordnad
   browserkontroll av PARTNER-01A och därefter granskning/integration av PR:n.
+
+### Samordning med uppdaterad huvudkälla
+
+Under avslutningen sammanslogs oberoende PR #12 till main som
+042f40acc77175f257bb141335d29057b29c07b4 och Sites gick till version 16.
+Kandidaten uppdaterades genom normal merge från main. Båda arbetsloggarna
+bevarades vid dokumentkonflikten. Fastighetsperiodens nya sessionlagring
+ingår därmed i den slutliga koden; den tidigare kandidatnoteringen om
+separat väntande PR #12 beskriver status före denna samordning.
+qa/property-results-period.mjs passerade efter sammanslagningen.
+Fastighetsutfallets browserregression passerade 20 kontroller efter merge,
+inklusive periodval efter omladdning, normal-/demoisolering och mobil.
