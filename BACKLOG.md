@@ -12,14 +12,19 @@ granskning; kontrollera öppna PR:er innan ny leverans.
 Nyare styrning: kom så långt som möjligt utan faktisk kund. Färdigställ
 självständigt oberoende demo-, frontend- och testarbete. Saknad pilotkund
 blockerar verkliga användarutfall, inte en fungerande fiktiv kunddemo.
+Senaste arbetssätt ersätter den aktiva hyresgästdemon: fastighetsbolaget
+registrerar via Excel eller manuellt och bifogar befintliga fullmakter.
+Hyresgästen har inga aktiva portalsteg. Verifiera aktuell kandidat; tidigare
+version 12-resultat räknas inte som test av de nya vägarna.
 
 | Prioritet / ID | Nästa leverans | Status och godkänt när |
 | --- | --- | --- |
-| Publicerad / DEMO-01 | Fem guidade moment: partner → hyresgäst → förmedling → Kraftringen → återkoppling. | Implementerad, browserverifierad och publicerad i version 12 via PR #4; kvittens i WORKLOG. Navigationshopp skapar inga tjänsteval eller ärendehändelser. Bygg inte en ny kopia. |
-| Publicerad / DEMO-02 | Visuellt sammanhållen kunddemo. | Version 12: gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Mobil/desktop och relevanta tangentbordsflöden kontrollerade. Designval är inte uppmätt verklig användarnytta. |
-| Publicerad / INFLYTT-03 | Kvittoåterupptagning från befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR #1 ingår i PR #4 och är merged. Samma post återfinns med aktuell status utan dubblett. Publicerad i version 12; skapa ingen ny kvittokopia. |
-| Genomförd / PILOT-01 | Fiktiv generalrepetition. | 75 befintliga flödeskontroller, utkastregression och 34 nya demokontroller passerar. Omladdning/omstart bevarar ordinarie labbdata och ekonomi. Version 12 publicerad. Ny verifiering behövs när ändringar eller nya fynd motiverar den. |
-| 5 / DEMO-03 | Behåll guidens markering för steg 5 efter omladdning. | Slutgranskningen reproducerade att rätt partnerunderlag visas men guiden markerar steg 3. Endast orientering påverkas. Bevara aktuellt perspektiv utan att skapa ärendehändelser eller ändra vanliga data; kontrollera omladdning och omstart. |
+| Verifierad kandidat / INFLYTT-04 | Partnerns manuella registrering och Excel-import med fullmaktsbilagor. | Båda ingångarna är implementerade med fält/radfel, dubblettkontroll, uttrycklig registrering, rätt bilagekoppling och fullmakt-saknas-status. 109 browserkontroller passerar. Ingen aktiv hyresgästvy och ingen automatisk fullmakt/ekonomi. Faktisk publicering kvitteras i WORKLOG. |
+| Genomförd / PILOT-01 | Ny fiktiv generalrepetition för båda registreringsvägarna. | 61 service-, 13 utkast-, 30 demo- och 5 integritetskontroller passerar: faktisk .xlsx-fil, dokument, lagringsfel, omladdning, avbrott, återställning, äldre data, mobil/tangentbord och oförändrad ekonomi. Tidigare 75/34 kontroller av version 12 är historiska belägg. |
+| Verifierad kandidat / DEMO-01 | Anpassa guidningen till fastighetsbolag → underlag/fullmakter → förmedling → Kraftringen → återkoppling. | Alla aktiva portalsteg görs av fastighetsbolaget eller Kraftringen. Guiden registrerar eller förmedlar inte automatiskt; aktuell markering består efter omladdning. Befintlig isolerad demoyta återanvänds. |
+| Bevara / DEMO-02 | Visuellt sammanhållen kunddemo. | Version 12 gav gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Bevara kvaliteten i nya Excel-/manuella vyer och verifiera igen där ändringar sker. Designval är inte uppmätt verklig användarnytta. |
+| Bevara / INFLYTT-03 | Kvittoåterupptagning från merged [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR #1 ingår i PR #4 och version 12. Återanvänd samma post/referens med aktuell status i partnerflödet; uppdatera testförväntningar när vyn ersätts. |
+| Verifierad kandidat / DEMO-03 | Behåll guidens aktuella moment efter omladdning. | URL-markören skiljer registrering/förmedling från återkoppling. Steg 3 och 5 håller rätt markering efter omladdning utan automatiska ärendehändelser; omstart rensar markören. |
 | 5 / PILOT-03 | Åtgärda återstående reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
 | 6 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering finns. Nästa ändring kräver nytt belägg; D-01–D-04 är inte besvarade och behöver inte stoppa oberoende demoarbete. |
 | 7 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
@@ -28,7 +33,8 @@ blockerar verkliga användarutfall, inte en fungerande fiktiv kunddemo.
 
 Generell Academy-/CPQ-/säljapputbyggnad och leverantörsresearch utan konkret
 pilotbehov prioriteras efter denna kö. Nedan bevaras tidigare belägg och
-leveranshistorik.
+leveranshistorik. Historiska hyresgäststeg nedan beskriver äldre versioner
+och är inte dagens arbetssätt eller en kö för återinförande.
 
 ## INFLYTT-01 — Återuppta hyresgästens pågående underlag
 

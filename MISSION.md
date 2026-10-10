@@ -10,6 +10,12 @@ skiljer fakta från förslag och saknat underlag; [PILOT-DECISIONS.md](PILOT-DEC
 anger besluten före verklig drift. [PILOT-ACCEPTANCE.md](PILOT-ACCEPTANCE.md)
 anger vad ett fungerande flöde behöver visa.
 
+Senaste användarbeslutet: fastighetsbolaget sköter allt portalarbete. Två
+vägar ska finnas: Excel-import med bifogade befintliga fullmakter eller
+manuell registrering med fullmaktsbilaga. Hyresgästen har inga aktiva steg
+i portalen. Det ersätter äldre antaganden om en hyresgäststyrd demoresa.
+Fortsätt göra demon snygg och enkel utan att invänta en faktisk kund.
+
 Samma befintliga timuppgift återanvänds. Den lämnar egna grenar och PR:er;
 Ludwig/Codex samordnar integration och publicering. Befintliga affärs-, data-
 och samarbetsregler gäller. Backend, persondata och verkliga integrationer
@@ -79,13 +85,14 @@ churn efter avtalsstart, bortfall före avtalsstart och kickback. Beest är en
 möjlig framtida datakälla; någon integration finns inte i prototypen.
 
 **Fastighetsbolag, BRF:er och förvaltare** har kontakten när hyresavtalet
-tecknas och erbjuder frivillig inflyttningsservice. Hyresgästen väljer
-tjänsten och lämnar underlag och nödvändig fullmakt. Partnern förmedlar till
-Kraftringen, som hanterar elhandel, nödvändig elnätshantering och återkoppling.
-Gör erbjudandet, överlämningen och statusuppföljningen enkla. Hyresgästen ska
-förstå vad hen väljer och vad som händer sedan. Serviceanmälan, slutförd hjälp
-och nytt elhandelsavtal är separata händelser. Partnerns egen elförbrukning
-är en separat företagsaffär.
+tecknas och sköter hela registreringen i portalen. De kan ladda upp Excel,
+granska hyresgästrader och bifoga befintliga fullmakter, eller fylla i ett
+enstaka underlag manuellt med fullmaktsbilaga. Partnern förmedlar underlaget
+till Kraftringen, som hanterar elhandel, nödvändig elnätshantering och
+återkoppling. Hyresgästen gör inget aktivt i portalen. Giltigt uppdrag och
+separat avtalsval följer den godkända processen; filuppladdning bevisar dem
+inte. Serviceanmälan, slutförd hjälp och nytt elhandelsavtal är separata
+händelser. Partnerns egen elförbrukning är en separat företagsaffär.
 
 Kickback följs för samtliga partnerkanaler. Faktiska ersättningsregler måste
 komma från Kraftringen och får inte uppfinnas.
