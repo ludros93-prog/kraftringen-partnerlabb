@@ -4,7 +4,8 @@
 
 Ludwig har bett oss skapa agenten för nästa pilotetapp. [PILOT-MISSION.md](PILOT-MISSION.md)
 styr nu prioriteringen tillsammans med Ludwigs senaste uppföljningskrav:
-ett enkelt inflyttningsflöde, enkel Savera-uppföljning och Insikter,
+ett enkelt inflyttningsflöde och generisk säljpartneruppföljning med
+Kunder & avtal/Insikter under Partners,
 verifiering före utbyggnad och högst två
 färdiga förslag som väntar på granskning. [PILOT-FACTS.md](PILOT-FACTS.md)
 skiljer fakta från förslag och saknat underlag; [PILOT-DECISIONS.md](PILOT-DECISIONS.md)
@@ -18,10 +19,14 @@ i portalen. Det ersätter äldre antaganden om en hyresgäststyrd demoresa.
 Fortsätt göra demon snygg och enkel utan att invänta en faktisk kund.
 
 Ludwigs senare förtydligande samma dag: fastighetspartnern ska se kunderna
-samarbetet gett och sin kickback. Kraftringen ska kunna följa Savera med
-år/månad/vecka, kundernas avtalstyper och aktiva kunder. En separat sida
-**Insikter** visar kundtid, populära avtal och prognos vid fortsatt tempo med
-begripliga filter. Detta är ett nytt uttryckligt frontenduppdrag som ska
+samarbetet gett och sin kickback. Säljpartners ligger under **Partners**
+med samma generiska **Kunder & avtal** och **Insikter** för Savera, Face2face
+och framtida partners. Välj företag (B2B), konsument (B2C) eller båda när
+partner skapas; konfigurationen kan ändras utan att skriva om historik.
+Följ år/månad/vecka, kundernas avtalstyper och aktiva kunder, med segment-,
+produkt-, säljar- och geografifilter. **Insikter** är den valda partnerns
+sida för kundtid, populära avtal och scenario vid fortsatt tempo, inte en
+separat global kategori. Detta är ett nytt uttryckligt frontenduppdrag som ska
 utvecklas tillsammans med det bevarade inflyttningsflödet; det behöver
 inte invänta verklig pilotkund. Datakällor och måttmodeller är fortfarande
 fiktiva förslag tills verksamhetsunderlag finns.
@@ -83,6 +88,14 @@ följ GITHUB-STATUS.md för faktisk behörighets- och skyddsstatus.
 
 ## Verksamheten
 
+Säljpartnern konfigureras för företag (B2B), konsument (B2C) eller båda.
+Kataloger och rapporter följer kundsegmentet, inte namnet på partnern.
+Varje kund-/avtalsrad behåller sitt eget segment; ändrad konfiguration
+får inte skriva om historik. Nya partnerprofiler är lokal frontenddata och
+får inte skapa avtalsutfall eller ersättning. Utan underlag visas saknat
+resultat, inte påhittad nollförsäljning. Fastighet/inflyttning är ett
+separat partnerarbetssätt.
+
 **Savera** säljer elhandelsavtal till företagskunder. Utbudet är Rörligt pris,
 Kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, Individuell portfölj och
 Kraftringen Stabil. Följ stängda avtal, avtalad årsvolym i MWh, produkter,
@@ -92,8 +105,11 @@ visar observerad kundtid, avtalspopularitet och ett tydligt scenario vid
 fortsatt tempo. Framtida användning av portalen
 som säljverktyg är möjlig men ännu inte beslutad.
 
-**Face2face** säljer Opti och kvartspris till konsumenter och arbetar i Beest.
-Partnerlabb ger främst intern uppföljning av antal avtal, avtalstyp, geografi,
+**Face2face** säljer Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt pris
+till konsumenter och arbetar i Beest. Den senaste produktlistan ersätter det
+tidigare tvåproduktsurvalet. Partnerlabb ger samma interna Kunder & avtal
+och Insikter som för andra säljpartners: period/produkt/segment, aktiva
+kunder, kundtid, popularitet och scenario vid fortsatt tempo, samt separat
 churn efter avtalsstart, bortfall före avtalsstart och kickback. Beest är en
 möjlig framtida datakälla; någon integration finns inte i prototypen.
 

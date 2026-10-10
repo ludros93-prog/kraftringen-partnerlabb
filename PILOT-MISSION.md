@@ -10,10 +10,14 @@ Detta styr prioriteringen före generell funktionsutbyggnad i MISSION.md.
 AGENTS.md:s affärs-, data- och samarbetsregler gäller fortfarande.
 
 Senare samma dag utökade Ludwig det konkreta uppföljningsuppdraget:
-fastighetspartnern ska se kundinflöde och kickback; Kraftringen ska ha en
-mycket enkel Savera-vy med avtal per år/månad/vecka, kundernas avtalstyper
-med filter och aktivt kundbestånd. En separat **Insikter** visar kundtid,
-populära avtal och prognos vid fortsatt tempo med tydliga filter. Detta är
+fastighetspartnern ska se kundinflöde och kickback. Säljpartners ska ligga
+under **Partners**, med samma generiska **Kunder & avtal** och **Insikter**
+för Savera, Face2face och framtida partners. Välj företag (B2B), konsument
+(B2C) eller båda när partnern skapas eller ändras. Avtal per år/månad/vecka,
+kundens avtalstyp, aktivt bestånd, kundtid, popularitet och scenario vid
+fortsatt tempo ska ha tydliga filter. Insikter är partnerns sida, ingen
+separat global kategori. Face2face får samma rapportfunktioner och de fem
+konsumentprodukterna Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt pris. Detta är
 bekräftad nästa prioritet inom frontendmandatet, inte generell utbyggnad.
 Bevara samtidigt det fungerande inflyttningsflödet.
 
@@ -35,15 +39,20 @@ bifoga befintliga fullmakter, förmedla komplett underlag och följa
 handläggare ska se vad som behöver göras, vem som ansvarar och vad som
 saknas. Börja med ett tydligt sammanhängande flöde.
 
-1. Gör Savera-uppföljningen lätt att läsa och filtrera: år/månad/vecka,
-   nya avtal, kundens avtalstyp, avtalad års-MWh och aktiva kunder. Bestånd
-   och periodinflöde är olika mått. Kundtabellen ska visa rätt avtal, datum
-   och säljare utan att ändra sparade kunddialoger eller kommersiella regler.
-2. Leverera separat **Insikter** med samma begripliga period-/produkturval:
+1. Gör gemensam säljpartneruppföljning under **Partners** lätt att läsa:
+   skapa/ändra partnerns B2B-, B2C- eller båda segment; visa år/månad/vecka,
+   nya avtal, kundens produkt, avtalad års-MWh och aktiva kunder. Filtrera
+   blandade partners på segment. Bestånd och periodinflöde är olika mått.
+   Namnet på partnern får inte styra funktioner, och ändrad konfiguration
+   får inte skriva om kundhistorik. Ny partner utan resultatunderlag ska
+   visa saknat underlag, inte påhittade nollresultat eller prognoser.
+2. Ge varje säljpartner **Insikter** med samma period-/segment-/produkturval:
    kundtid för avslutade kunder, observerad ålder för aktiva kunder,
-   populära avtal och ett scenario om valda periodens försäljningstakt
-   fortsätter. Ange urval, observerade dagar, datadatum och horisont.
-   Historik och prognos är exempelunderlag; verkligt underlag saknas.
+   populära avtal och ett scenario vid fortsatt försäljningstakt. Visa
+   churn efter start och bortfall före start som separata mått med egen
+   bas. Ange urval, observerade dagar, datadatum och horisont. Historik och
+   prognos är exempelunderlag; verkligt underlag saknas. Insikter är ingen
+   separat global kategori och uppföljningen ersätter inte Beest.
 3. Ge fastighetspartnern en egen, avgränsad uppföljning av kunder som
    samarbetet gett Kraftringen och manuellt redovisad kickback. Håll nya
    elhandelskunder, registrerade serviceärenden och slutförd hjälp isär.
@@ -76,7 +85,8 @@ funktioner. Färre steg och tydligt ansvar väger tyngre än fler menyer.
   PILOT-ACCEPTANCE, BACKLOG och senaste WORKLOG. Kontrollera öppna PR:er,
   uppgiftsrapporter och parallellt arbete innan en uppgift väljs.
 - Fortsätt en befintlig egen uppgift när det är möjligt. Välj annars högsta
-  genomförbara uppgift i Savera/Insikter, partnerresultat eller stabil
+  genomförbara uppgift i generisk säljpartneruppföljning under Partners,
+  partnerresultat eller stabil
   inflyttning och dokumentera problem och avgränsning.
 - Arbeta i egen agent/-gren eller isolerad worktree. Återanvänd en egen gren
   för fortsättningsarbete, bevara andras commits och hämta nya basändringar.
@@ -125,6 +135,11 @@ Befintliga fullmakter kan bifogas som fiktiva binära testfiler i IndexedDB,
 med skilda demo-/normalscope. Det är ingen gemensam dokumentlagring och
 JSON-exporten innehåller inte filernas innehåll. En filbilaga innebär inte
 att fullmakten eller samtycket har juridiskt verifierats.
+Lokala partnerprofiler och kundsegment är frontendkonfiguration, inget
+partneravtal eller behörighet. Bevara normal-/demoisolering och befintliga
+kundsegment; ändrad konfiguration skriver inte om historiska rader.
+Konsumentkatalogen har Fastpris, Vintersäkrat, Opti, Kvartspris och Rörligt
+pris. B2B-katalogen behåller sina sex bekräftade produkter.
 Rapporternas kund- och avtalsrader får vara fiktiva fixtures. Förklara
 brytdatum, period och kohort. Aktiva kunder är ett bestånd; aktiva kunders
 ålder är ännu inte deras slutliga kundlivslängd. Försäljningsprognosen är
