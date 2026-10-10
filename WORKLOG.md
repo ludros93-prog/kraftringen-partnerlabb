@@ -449,3 +449,31 @@
   hostingmanifest är identiska med publicerad version 13. Verklig
   fullmaktsgiltighet, gemensam lagring och produktionsprocess har inte
   verifierats eller införts genom frontenddemon.
+
+## 2026-10-10 — Kandidat: korrigerad Excel-rad efter felaktig dubblett
+
+- Uppgift: PILOT-03A. Filgranskningen lät en felaktig rad reservera sin
+  ärendeidentitet. En senare fullständig rad för samma inflyttning märktes då
+  som dubblett fast den första raden inte kunde registreras.
+- Ändring: endast rader utan rad- eller parsefel deltar nu i den interna
+  dubblettkontrollen. En korrigerad rad förblir vald och registrerbar, medan en
+  ytterligare giltig upprepning fortfarande spärras. Befintliga dubbletter mot
+  partnerns sparade underlag blockeras oförändrat.
+- Avgränsning: inga fält, bilagor, fullmaktsbedömningar, servicehändelser,
+  avtal, ekonomi eller lagringsnycklar har ändrats. Regeln är fortsatt ett
+  tekniskt demoförslag och använder inga riktiga kunduppgifter.
+- Verifiering: `node --check dist/property-intake.js`,
+  `python -m py_compile qa/property-intake.py` och
+  `node qa/property-intake-dedup.mjs` passerar. Den fokuserade kontrollen
+  reproducerar felaktig → korrigerad → verklig dubblett. Browserregressionen i
+  `qa/property-intake.py` är utökad men kunde inte köras i passet eftersom
+  Chromium/Python Playwright saknas i exekveringsmiljön.
+- Samordning: aktuell `main` var
+  `3387a24101aa3d4c80a1113b37fed520ef63312c` och inga PR:er var öppna före
+  arbetet. Egen gren `codex/pilot03-excel-corrected-row`; kodcheckpoint
+  `9cde5371afba83472e72ce45c28eccef917566b7`. Ingen direkt push till
+  `main`, merge, Sites-ändring eller publicering gjordes.
+- Beslut: inga nya verksamhetsbeslut krävs för denna avgränsade korrigering.
+- Nästa steg: granska PR-kandidaten och kör hela
+  `qa/property-intake.py --suite service` i Chromium före integration och
+  samordnad publicering.
