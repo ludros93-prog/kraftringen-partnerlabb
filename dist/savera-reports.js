@@ -3,10 +3,11 @@
   const P = window.Portal;
   if (!P) return;
   const e = P.e;
-  const partnerId = () => P.selectedPartnerId || 'syd';
+  const partnerId = () => P.role === 'partner' ? P.partner : P.selectedPartnerId || 'syd';
+  const allowed = () => P.role === 'internal' || (P.role === 'partner' && P.getPartner(P.partner) && P.getPartner(P.partner).type !== 'property');
   const partner = () => P.getPartner(partnerId());
   const D = () => P.partnerSalesData?.forPartner(partnerId()) || (partnerId() === 'syd' ? P.saveraData : null);
-  const storageKey = () => `${P.demoMode ? 'partnerlabb.demo' : 'partnerlabb'}.partnerSalesReports.v1.${partnerId()}`;
+  const storageKey = () => `${P.demoMode ? 'partnerlabb.demo' : 'partnerlabb'}.partnerSalesReports.v1.${P.role==='partner'?'own.':''}${partnerId()}`;
   const defaultFilters = () => ({mode: 'year', value: '2026', segment: 'all', product: 'all', seller: 'all', region: 'all', query: '', status: 'all'});
   let current = defaultFilters(), list = 'period', page = 1, activePartner = '', moreFiltersOpen = false;
   const pageSize = 20;
@@ -40,7 +41,7 @@
     page = 1;
   }
   function ensureContext() {
-    if (activePartner !== partnerId()) { activePartner = partnerId(); restore(); }
+    if (activePartner !== P.role + ':' + partnerId()) { activePartner = P.role + ':' + partnerId(); restore(); }
     else current = validFilters(current);
   }
   function save() {
@@ -48,7 +49,7 @@
   }
   function metricsFilters() { return {...current, query: '', status: 'all'}; }
   function repaint(focusId) {
-    if (!['partner-sales', 'partner-insights', 'savera', 'insikter'].includes(P.page) || P.role !== 'internal') return;
+    if (!['partner-sales', 'partner-insights', 'savera', 'insikter'].includes(P.page) || !allowed()) return;
     P.render();
     if (focusId) document.getElementById(focusId)?.focus();
   }
@@ -86,9 +87,11 @@
     return `<div class="sr-selection"><span>${P.icon('calendar')} <strong>${e(period.label)}</strong>${e(partial)}</span><span>${labels.length ? e(labels.join(' · ')) : 'Alla elavtal, säljare och områden'}</span></div>`;
   }
   function heading(insights = false) {
-    const name = partner()?.name || D()?.name || 'Säljpartner';
-    const segments = (partner()?.salesAudiences || D()?.salesAudiences || []).map(segmentLabel).join(' & ');
-    return `<div class="sr-breadcrumb"><button type="button" class="text-button" data-go="partners">${P.icon('arrow')} Partners</button><span aria-hidden="true">/</span><span>${e(name)}</span></div><header class="sr-heading"><div><span class="sr-eyebrow">KRAFTRINGEN / PARTNERUPPFÖLJNING</span><h1>${e(name)}</h1><p>${insights ? 'Förstå kunderna, avtalen och vart försäljningen är på väg.' : 'Avtalen de ger oss. Kunderna som stannar.'}</p></div><div class="sr-page-links"><span class="sr-partner-segments">${e(segments || 'Säljpartner')}</span><button type="button" class="text-button sr-edit-partner" data-sr-configure>${P.icon('settings')} Partnerinställningar</button><span class="sr-demo-label">${D()?.available === false ? 'Rapportunderlag saknas' : `Fiktiva exempel · till ${date(D()?.cutoff || '2026-10-07')}`}</span></div></header><nav class="sr-partner-tabs" aria-label="${e(name)} – partnersidor">${[['partner-sales', 'Kunder & avtal', 'users'], ['partner-insights', 'Insikter', 'chart'], ['partner-detail', 'Partnerprofil', 'briefcase']].map(([route, label, icon]) => `<button type="button" data-go="${route}"${route === (insights ? 'partner-insights' : 'partner-sales') ? ' class="selected" aria-current="page"' : ''}>${P.icon(icon)}${label}</button>`).join('')}</nav>${partnerId() === 'vast' ? '<div class="sr-beest-note">Face2face säljer i Beest. Här följer Kraftringen kunder, avtal och resultat.</div>' : ''}`;
+    const name = partner()?.name || 'Partner', internal = P.role === 'internal';
+    const tabs = [['partner-sales','Kunder & avtal'],['partner-insights','Insikter']];
+    if(internal) tabs.push(['partner-detail','Partnerprofil']);
+    else tabs.push(['product-facts','Avtalsfakta'],['academy','Utbildning']);
+    return `<div class="sr-breadcrumb"><button class="text-button" data-go="${internal?'partners':'overview'}">← ${internal?'Partners':'Min översikt'}</button></div><header class="sr-heading"><div><span class="sr-eyebrow">${internal?'KRAFTRINGEN / PARTNERUPPFÖLJNING':'ERA RESULTAT'}</span><h1>${e(name)}</h1><p>${insights?'Kundtid, avtalsval och scenario vid fortsatt tempo.':'Era kunder och avtal – med samma perioder och mått som Kraftringens uppföljning.'}</p></div><span class="sr-demo-label">Fiktiva exempel · inget verkligt kundutfall</span></header><nav class="sr-partner-tabs" aria-label="Partnersidor">${tabs.map(([route,label])=>`<button data-go="${route}" ${route===(insights?'partner-insights':'partner-sales')?'class="selected" aria-current="page"':''}>${label}</button>`).join('')}</nav>`;
   }
   function metric(key, label, value, note, icon, active = false) {
     const tag = active ? 'button' : 'div';
@@ -109,17 +112,17 @@
     return `<section class="sr-panel sr-customers-panel" aria-labelledby="sr-customers-title"><div class="sr-panel-head"><div><h2 id="sr-customers-title">Kunder & avtal</h2><p>Se kundens elavtal och vem som har sålt det.</p></div><div class="sr-list-tabs" role="group" aria-label="Välj kundlista">${[['period', 'Periodens avtal'], ['active', 'Aktiva kunder']].map(([key, label]) => `<button type="button" data-sr-list="${key}" aria-pressed="${list === key}" class="${list === key ? 'selected' : ''}">${label}</button>`).join('')}</div></div><div class="sr-list-controls"><label class="sr-search" for="sr-search">${P.icon('search')}<span class="sr-only">Sök i kundlistan</span><input id="sr-search" type="search" value="${e(current.query)}" placeholder="Sök kund, avtal eller säljare" maxlength="120" autocomplete="off"></label><label class="sr-list-status" for="sr-status"><span>Status i listan</span><select id="sr-status"${list === 'active' ? ' disabled' : ''}>${[['all', 'Alla statusar'], ['active', 'Aktiv'], ['pending', 'Väntar på start'], ['ended', 'Avslutad'], ['cancelled', 'Bortfall före start']].map(([key, text]) => `<option value="${key}"${(list === 'active' ? 'active' : current.status) === key ? ' selected' : ''}>${text}</option>`).join('')}</select></label></div><p class="sr-list-note">Sökning och status filtrerar kundlistan. Nyckeltalen ovan följer rapportfiltren.</p><div id="sr-table-content">${tableMarkup()}</div></section>`;
   }
   function report() {
-    if (P.role !== 'internal') return guard();
+    if (!allowed()) return guard();
     ensureContext();
     if (!D()) return '<div class="empty">Rapportunderlaget förbereds.</div>';
     if (!hasUnderlag()) return missingData(false, D().available !== false);
     const result = D().summary(metricsFilters());
-    return `<div class="savera-reports partner-sales-reports">${heading()}${filterBar()}${selectionNote(result.period)}<section class="sr-metrics" aria-label="Partnerns nyckeltal">${metric('agreements', 'Nya avtal', number(result.agreements), 'Tecknade under vald period', 'file')}${metric('annualMWh', 'Avtalad årsvolym', `${number(result.annualMWh, 0)} MWh`, 'Årsvolym för periodens nya avtal', 'bolt')}${metric('activeCount', 'Aktiva kunder', number(result.activeCount), `Hos oss ${date(result.period.observedEnd)}`, 'users', true)}</section>${customerTable()}<div class="sr-footer-links"><span>${P.icon('money')} Kickback följs i ett separat underlag.</span><button type="button" class="text-button" data-sr-kickback>Öppna ${e(partner()?.name || 'partnerns')} kickback ${P.icon('arrow')}</button></div>${definitions(false)}</div>`;
+    return `<div class="savera-reports partner-sales-reports">${heading()}${filterBar()}${selectionNote(result.period)}<section class="sr-metrics" aria-label="Partnerns nyckeltal">${metric('agreements', 'Nya avtal', number(result.agreements), 'Tecknade under vald period', 'file')}${metric('annualMWh', 'Avtalad årsvolym', `${number(result.annualMWh, 0)} MWh`, 'Årsvolym för periodens nya avtal', 'bolt')}${metric('activeCount', 'Aktiva kunder', number(result.activeCount), `Hos oss ${date(result.period.observedEnd)}`, 'users', true)}</section>${customerTable()}${P.role==='internal'?`<div class="sr-footer-links"><span>${P.icon('money')} Kickback följs i ett separat underlag.</span><button type="button" class="text-button" data-sr-kickback>Öppna ${e(partner()?.name || 'partnerns')} kickback ${P.icon('arrow')}</button></div>`:''}${definitions(false)}</div>`;
   }
   function missingData(insights, missingSegment = false) {
     const configuredProducts = D()?.productsFor?.(missingSegment ? current.segment : 'all') || D()?.products || [];
     const metrics = insights ? '' : `<section class="sr-metrics" aria-label="Partnerns nyckeltal">${metric('agreements', 'Nya avtal', '—', 'Rapportunderlag saknas', 'file')}${metric('annualMWh', 'Avtalad årsvolym', '—', 'Rapportunderlag saknas', 'bolt')}${metric('activeCount', 'Aktiva kunder', '—', 'Rapportunderlag saknas', 'users')}</section>`;
-    return `<div class="savera-reports partner-sales-reports${insights ? ' savera-insights' : ''}">${heading(insights)}${missingSegment ? `${filterBar()}${selectionNote(D().period(current))}` : ''}${metrics}<section class="sr-panel sr-data-missing"><div class="sr-missing-icon">${P.icon(insights ? 'chart' : 'users')}</div><h2>${missingSegment ? `Underlag saknas för ${e(segmentLabel(current.segment).toLocaleLowerCase('sv-SE'))}` : insights ? 'Insikter börjar med ett underlag' : 'Redo att följa partnerns försäljning'}</h2><p>${missingSegment ? 'Kundsegmentet är valt för partnern. Avtal och kundhistorik saknas ännu för detta segment. Välj alla kunder för att se det underlag som finns.' : 'Partnern är skapad. Avtal och kundhistorik behöver finnas innan vi kan visa resultat, kundtid eller prognoser.'}</p><span class="sr-missing-tag">Underlag saknas</span><div class="sr-configured-products"><h3>${missingSegment ? `${e(segmentLabel(current.segment))} · elavtal` : 'Partnerns elavtal'}</h3><div>${configuredProducts.map(product => `<span>${e(product)}</span>`).join('')}</div></div><button type="button" class="btn btn-secondary" data-sr-configure>${P.icon('settings')} Visa partnerinställningar</button></section></div>`;
+    return `<div class="savera-reports partner-sales-reports${insights ? ' savera-insights' : ''}">${heading(insights)}${missingSegment ? `${filterBar()}${selectionNote(D().period(current))}` : ''}${metrics}<section class="sr-panel sr-data-missing"><div class="sr-missing-icon">${P.icon(insights ? 'chart' : 'users')}</div><h2>${missingSegment ? `Underlag saknas för ${e(segmentLabel(current.segment).toLocaleLowerCase('sv-SE'))}` : insights ? 'Insikter börjar med ett underlag' : 'Redo att följa partnerns försäljning'}</h2><p>${missingSegment ? 'Kundsegmentet är valt för partnern. Avtal och kundhistorik saknas ännu för detta segment. Välj alla kunder för att se det underlag som finns.' : 'Partnern är skapad. Avtal och kundhistorik behöver finnas innan vi kan visa resultat, kundtid eller prognoser.'}</p><span class="sr-missing-tag">Underlag saknas</span><div class="sr-configured-products"><h3>${missingSegment ? `${e(segmentLabel(current.segment))} · elavtal` : 'Partnerns elavtal'}</h3><div>${configuredProducts.map(product => `<span>${e(product)}</span>`).join('')}</div></div>${P.role==='internal'?'<button type="button" class="btn btn-secondary" data-sr-configure>Visa partnerinställningar</button>':''}</section></div>`;
   }
   function productChart(result) {
     const rows = result.products.slice().sort((a, b) => b.agreements - a.agreements || a.product.localeCompare(b.product, 'sv-SE'));
@@ -154,7 +157,7 @@
     return `<section class="sr-projection" aria-labelledby="sr-projection-title"><div class="sr-projection-heading"><span class="sr-eyebrow">PROGNOS / ${e(date(result.horizon))}</span><span class="sr-projection-tag">Vid samma försäljningstakt</span></div><h2 id="sr-projection-title">Om takten håller i sig</h2><div class="sr-projection-values"><div><strong>≈ ${number(result.forecastAgreements, 0)}</strong><span>nya avtal under helåret 2026</span></div><div><strong>≈ ${number(result.forecastAnnualMWh, 0)}</strong><span>MWh avtalad årsvolym</span></div></div><div class="sr-projection-baseline"><span><strong>${number(result.yearToDateAgreements)}</strong> avtal hittills i år</span>${P.icon('arrow')}<span><strong>≈ ${number(result.forecastAdditionalAgreements, 0)}</strong> till under årets återstående ${number(result.remainingDays)} dagar</span></div><p class="sr-projection-note">Takten bygger på ${number(result.basisAgreements)} avtal under ${number(result.basisDays)} observerade dagar (${e(date(result.basisStart))}–${e(date(result.basisEnd))}). Årsutfall till ${e(date(result.asOf))} plus samma dagstakt till årets slut.</p><small>En enkel prognos vid oförändrad takt. Säsong, kommande kampanjer och kundbortfall är inte inräknade.</small></section>`;
   }
   function insights() {
-    if (P.role !== 'internal') return guard();
+    if (!allowed()) return guard();
     ensureContext();
     if (!D()) return '<div class="empty">Rapportunderlaget förbereds.</div>';
     if (!hasUnderlag()) return missingData(true, D().available !== false);
@@ -187,15 +190,15 @@
   }
   function updateTable() {
     const content = document.getElementById('sr-table-content');
-    if (!content || !['partner-sales', 'savera'].includes(P.page) || P.role !== 'internal') return;
+    if (!content || !['partner-sales', 'savera'].includes(P.page) || !allowed()) return;
     content.innerHTML = tableMarkup(); bindTable();
     const reset = document.getElementById('sr-reset');
     if (reset) reset.disabled = !(['segment', 'product', 'seller', 'region'].some(key => current[key] !== 'all') || current.query || current.status !== 'all');
   }
   function bind() {
-    if (P.role !== 'internal' || !D()) return;
+    if (!allowed() || !D()) return;
     document.querySelector('.sr-more-filters')?.addEventListener('toggle', event => {if (!event.currentTarget.isConnected) return; moreFiltersOpen = event.currentTarget.open; save();});
-    document.querySelectorAll('[data-sr-configure]').forEach(button => button.addEventListener('click', () => P.partnerSetup?.open(partnerId())));
+    (P.role==='internal'?document.querySelectorAll('[data-sr-configure]'):[]).forEach(button => button.addEventListener('click', () => P.partnerSetup?.open(partnerId())));
     document.querySelectorAll('[data-sr-segment]').forEach(button => button.addEventListener('click', () => {
       const segment = button.dataset.srSegment;
       setFilters({segment}, false); repaint();
@@ -230,6 +233,7 @@
       current.status = event.target.value; page = 1; save(); updateTable();
     });
     document.querySelector('[data-sr-kickback]')?.addEventListener('click', () => {
+      if(P.role!=='internal')return;
       if (typeof P.kickback?.selectPartner === 'function') P.kickback.selectPartner(partnerId());
       else if (typeof P.partnerKickback?.selectPartner === 'function') P.partnerKickback.selectPartner(partnerId());
       else P.go('kickback');
