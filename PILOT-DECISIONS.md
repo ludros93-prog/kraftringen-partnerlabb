@@ -5,11 +5,16 @@ frontendförbättringar med fiktiva data. De är blockerare för att sätta verk
 kundärenden i drift. Dokumentera faktiskt svar och källa i PILOT-FACTS när
 beslut finns; antag inte att tid utan svar är ett godkännande.
 
+Registreringsvägen är beslutad: fastighetsbolaget använder Excel med
+fullmaktsbilagor eller fyller i manuellt. Hyresgästen har inga aktiva
+portalsteg. Fråga inte på nytt om direkt hyresgästlänk eller QR.
+Nödvändiga produktionsuppgifter och dokumentkrav återstår däremot.
+
 | ID | Beslut / underlag från Ludwig eller utsedd verksamhetsansvarig | Agentens förberedelse | Öppnar för |
 | --- | --- | --- | --- |
 | D-01 | Vilket fastighetsbolag och vilken Kraftringen-handläggare deltar? Lämna ett representativt anonymiserat fall via godkänd kanal. | Sammanhängande fiktivt testscenario och kort observation: var uppstår dubbelarbete, väntan och oklarhet? | Förankrat flöde och verklig användaråterkoppling. |
-| D-02 | Vilka uppgifter behövs faktiskt? Vilken godkänd fullmakt och befintlig identifierings-/signeringsprocess gäller? Ska partnern förmedla, eller godkänns direktlänk till Kraftringen? | Kartlägg befintlig demo och föreslå minsta underlag; skilj serviceval, behörighet och elhandelsavtal. | Godkänd kravspecifikation, formulär och återkoppling. |
-| D-03 | Vilken godkänd driftmiljö och identitetstjänst ska användas för delade ärenden? Vem får se vad? Vilka lagrings-/raderingsregler gäller? Lämna separat mandat för genomförandet. | Beskriv ett litet alternativ med gemensam ärendelagring, autentisering, serverstyrd partneravgränsning och historik. Ange behov och verifieringsplan, utan att aktivera externa tjänster. | Backend och faktisk pilotdrift efter uttryckligt beslut. |
+| D-02 | Vilka uppgifter och Excelkolumner behövs faktiskt? Vilken godkänd befintlig fullmakt, dokumentkontroll och identifierings-/signeringsprocess gäller? Hur verifieras partnerns uppdrag och hur hanteras saknade eller felaktiga bilagor? | Förbered liten fiktiv Excelmall, manuell motsvarighet, radfel/dubblettkontroll och dokumentkoppling. Skilj bifogad fil, verifierat uppdrag och elhandelsavtal. | Godkänd kravspecifikation, formulär och återkoppling. |
+| D-03 | Vilken godkänd driftmiljö och identitetstjänst ska användas för delade ärenden? Vem får se vad? Vilka lagrings-/raderingsregler gäller för ärenden, original-Excel och fullmaktsfiler? Lämna separat mandat för genomförandet. | Beskriv ett litet alternativ med gemensam ärendelagring, autentisering, serverstyrd partneravgränsning och historik. Ange behov och verifieringsplan, utan att aktivera externa tjänster. | Backend och faktisk pilotdrift efter uttryckligt beslut. |
 | D-04 | Vilka verifierade källor och definitioner används för avtal, års-MWh, hjälpta inflyttare, förstartsbortfall, churn och kickback? Lämna godkända ersättningsregler per kanal. | Fiktiv liten import-/avstämningsmall med källreferens, partner, period och separata händelser. Börja med faktiskt redovisade kickbackposter när underlag finns. | Korrekt kommersiell uppföljning utan uppfunna beräkningsregler. |
 
 Nästa återkoppling ska visa ett färdigt underlag och de få beslut som öppnar

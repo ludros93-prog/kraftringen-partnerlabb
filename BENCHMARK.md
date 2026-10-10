@@ -20,7 +20,7 @@ Plattformarnas funktioner ovan är dokumenterade av respektive leverantör. Kolu
 - **Mer plats för arbetet:** kortare introduktionsytor och mindre fokus på stora marknadsföringsbilder i arbetsvyerna.
 - **Kommersiella fakta först internt:** resultatbidrag före partnerkostnad, partnerkostnad och nettobidrag samt tydliga perioder och definitioner. Manuella ekonomiska exempel hålls åtskilda från operativa demostatusar.
 - **Komplettera själva underlaget:** fastighetspartnern ska kunna rätta uppgifter som saknas eller behöver korrigeras och sedan förmedla kompletteringen. En kommentar ensam ersätter inte en felaktig uppgift.
-- **Frivillighet redan vid start:** hyresgästen kan avstå innan personuppgifter lämnas. Att avstå skapar inget serviceärende. Fullmaktssteget är fortsatt en demomarkering utan rättsverkan.
+- **Tydligt ansvar och komplett underlag:** enligt Ludwigs förtydligande den 10 oktober 2026 sköter fastighetsbolaget hela portalflödet via Excel eller manuell registrering och bifogar befintliga fullmakter. Hyresgästen har inga aktiva portalsteg. Filens förekomst bevisar inte giltig fullmakt, samtycke eller avtalsval; serviceärendet är separat från elhandelsavtalet. Detta ersätter den tidigare hyresgäststyrda demoanpassningen.
 
 ## Turordning och gränser
 

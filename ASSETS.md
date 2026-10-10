@@ -1,5 +1,18 @@
 # Bildkällor
 
+## Excel-import
+
+`dist/vendor/exceljs-4.4.0.min.js` är ExcelJS 4.4.0, hämtad den 10 oktober
+2026 från https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js.
+Den serveras lokalt och läser/skapar `.xlsx` i webbläsaren. Inga filer skickas
+till en extern importtjänst. Projektkälla: https://github.com/exceljs/exceljs.
+MIT-licensen sparas i `dist/vendor/exceljs-license.txt` från samma versionspaket.
+
+`dist/assets/inflyttning-testbilaga.pdf` skapades i detta projekt den 10 oktober
+2026 med ReportLab. Det är en tydligt märkt fiktiv fil för uppladdningsprov,
+utan underskrift, personuppgifter, fullmaktsvillkor eller rättsverkan.
+Dokumentet är ingen föreslagen eller godkänd fullmaktsmall.
+
 ## Typografi
 
 `dist/assets/inter-variable.woff2` är Inter Variable från projektets officiella

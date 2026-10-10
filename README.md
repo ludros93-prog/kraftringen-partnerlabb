@@ -2,7 +2,7 @@
 
 En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för aktiva säljpartners och fastighetsbolag. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
 
-Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Face2face använder Beest; prototypen prioriterar nu intern resultatuppföljning och har ingen integration med Beest. Saveras eventuella användning av partnerarbetsytan kan utvecklas senare. Befintliga arbetsflöden bevaras som lokala testvyer. Fastighetspartners erbjuder frivillig inflyttningsservice vid hyresavtal och förmedlar hyresgästens underlag till Kraftringen. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
+Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Face2face använder Beest; prototypen prioriterar nu intern resultatuppföljning och har ingen integration med Beest. Saveras eventuella användning av partnerarbetsytan kan utvecklas senare. Befintliga arbetsflöden bevaras som lokala testvyer. Fastighetspartners erbjuder inflyttningsservice vid hyresavtal och sköter allt aktivt arbete i portalen: Excel-import eller manuell registrering, fullmaktsbilagor och förmedling till Kraftringen. Hyresgästen har inga aktiva portalsteg. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
 
 Denna etapp omfattar frontend med exempeldata. Flöden, pipelinesteg, fyra demoutbildningar och partnerresan är förslag att testa. Elakademin är en färdig innehållskurs, tillagd i båda säljpartnernas arbetsytor på användarens uppdrag. Backend och integrationer ingår inte nu; ingen byggplattform är vald.
 
@@ -22,28 +22,30 @@ kundärenden i drift; frontendens data är fortfarande lokala och fiktiva.
 Öppna https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning#demo
 eller välj **Visa kunddemot** i portalens övre demolist. Samma privata
 Sites-åtkomst gäller. Demot använder befintliga funktioner och fiktiva
-uppgifter i fem perspektiv:
+uppgifter med fastighetsbolaget som ansvarig aktör. Den senaste arbetsmodellen
+är två registreringsvägar; test-/publiceringskvittens för aktuell kandidat
+finns i WORKLOG.md och GITHUB-STATUS.md.
 
-1. Fastighetsbolaget erbjuder inflyttningsservice och visar hyresgästens sida.
-2. Hyresgästen fyller exempeluppgifter, väljer tjänsten/fullmaktsdemot och
-   granskar underlaget innan ett serviceärende registreras.
-3. Partnern öppnar det registrerade underlaget och väljer att förmedla det.
+1. Fastighetsbolaget väljer **Excel-import** eller **Fyll i själv**.
+2. Partnern granskar hyresgästuppgifterna och bifogar befintliga fullmakter
+   till rätt rad eller ärende. Hyresgästen gör inget i portalen.
+3. Partnern förmedlar det kompletta underlaget till Kraftringen.
 4. Kraftringen handlägger elhandel och elnät separat, begär vid behov
    komplettering och dokumenterar återkoppling.
-5. Partnern följer återkopplingen. Kraftringens kommersiella resultat och
-   kickback är separata exempelunderlag; serviceärendet ändrar inte ekonomin.
+5. Partnern följer återkopplingen. Kommersiellt resultat och kickback är
+   separata exempelunderlag; serviceärendet ändrar inte ekonomin.
 
-Guidens knappar byter perspektiv. Registrering, förmedling och återkoppling
-kräver sina egna handlingar i respektive befintligt flöde. **Öppna ditt
-testunderlag** tar fram den faktiskt registrerade posten, utan en dubblett.
-Savera och Face2face har egna ingångar till sin interna partneruppföljning.
+Guidens knappar byter moment/perspektiv. Registrering, bifogning, förmedling
+och återkoppling kräver sina egna handlingar; navigation skapar inget ärende.
+Savera och Face2face behåller sina ingångar till intern partneruppföljning.
 
 **Börja om** i guiden återställer endast kunddemots exempeldata efter ett
-uttryckligt val. `partnerlabb.customerDemo.v1` är en separat localStorage-nyckel
-och `partnerlabb.demo.moveinDraft.v1.<partner-id>` sparar dess flikutkast.
-Ordinarie `partnerlabb.portal.v2`, v1-migrering och vanliga inflyttningsutkast
-bevaras. Kopierade hyresgästlänkar från demot behåller demoläget. Detta är
-lokal dataisolering, ingen delad kundlagring eller riktig behörighetsstyrning.
+uttryckligt val. `partnerlabb.customerDemo.v1` håller demoärenden separat
+från `partnerlabb.portal.v2`. Nya partnerutkast använder
+`partnerlabb.demo.partnerIntake.v1.<partner-id>:<läge>` i sessionStorage,
+medan normala utkast använder `partnerlabb.partnerIntake.v1.<partner-id>:<läge>`.
+Bilagor har motsvarande scope i IndexedDB. Ordinarie labbdata och äldre
+utkast bevaras; omstart är ingen delad kundlagring eller riktig behörighetsstyrning.
 
 Portalen har gemensam lokalt serverad Inter-typografi, större text och
 kontroller, en tydligare fastighetsyta, läsbara ärendekort på mobil och en
@@ -63,7 +65,7 @@ python -m http.server 8000 --directory dist
 
 [BENCHMARK.md](BENCHMARK.md) jämför officiellt dokumenterade arbetssätt hos Salesforce, Impartner, ZINFI, PartnerStack och impact.com, kontrollerade 7 oktober 2026. Det är inspirationsunderlag, ingen världsrankning eller vald plattform.
 
-Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och direktlänk till befintligt ärende. Listan härleds från aktuell lokal data; den skapar eller sparar inga separata uppgifter. Turordningen och handlingarna är testförslag utifrån status och sparat nästa steg, inte fastställda befogenheter eller tidslöften. Internt ligger kommersiella fakta och måttdefinitioner först. Fastighetsspåret låter partnern rätta underlaget vid komplettering och hyresgästen avstå redan i första steget. När en komplettering förmedlas på nytt avslutas partnerns tidigare kompletteringsplan i aktivitetshistoriken; Kraftringens arbetslista visar därefter en ny mottagningsinsats utan att ärva partnerns datum.
+Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och direktlänk till befintligt ärende. Listan härleds från aktuell lokal data; den skapar eller sparar inga separata uppgifter. Turordningen och handlingarna är testförslag utifrån status och sparat nästa steg, inte fastställda befogenheter eller tidslöften. Internt ligger kommersiella fakta och måttdefinitioner först. Fastighetsspåret låter partnern registrera via Excel eller manuellt, koppla fullmaktsbilagor och rätta underlaget vid komplettering. När en komplettering förmedlas på nytt avslutas partnerns tidigare kompletteringsplan i aktivitetshistoriken; Kraftringens arbetslista visar därefter en ny mottagningsinsats utan att ärva partnerns datum.
 
 ## Arbetsplatsens vyer
 
@@ -84,12 +86,12 @@ Arbetsvyerna får en kort lista med nästa handling, vem som behöver agera och 
 | Resultatrapport, internt | Ekonomiska nyckeltal och tabell för vald period och partnerurval samt CSV-export av exempelutfall. |
 | Rapporter, säljpartner | Antal kunder och affärer per steg, aktivitetslogg och JSON-export av kunddata, offertutkast och kundsidor för vald demovy. |
 | Partnerresan, endast internt | Följ varje partner separat genom åtta föreslagna steg: Rekrytera, Onboarda, Certifiera, Aktivera, Sälja, Leverera, Utveckla och Behålla. Två interna testaktiviteter per steg och exempelplacering kan sparas lokalt. |
-| Fastighetsbolagets arbetsyta | Anpassa inflyttningssidans välkomstrubrik och introduktion, kopiera förhandsvisningslänk och sök eller öppna lokala serviceärenden. Förmedla underlag, lämna komplettering och följ Kraftringens delade återkoppling. |
+| Fastighetsbolagets arbetsyta | Välj Excel-import eller manuell registrering, bifoga befintliga fullmakter och sök eller öppna lokala serviceärenden. Förmedla komplett underlag, lämna komplettering och följ Kraftringens delade återkoppling. |
 | Inflyttningsärenden, internt | Filtrera på partner och ärendestatus. Följ elhandel, elnät och erbjudandeval separat, tilldela ansvarig, begär komplettering och skriv delad återkoppling eller intern anteckning. |
-| Hyresgästens inflyttningssida | Fyra steg: **Inflyttning → Kontakt → Tjänst & fullmakt → Granska**. Ange fiktiv adress, inflyttningsdatum, namn och e-post med `.example`; lägenhetsnummer och telefon är valfria. Registrera ett fiktivt serviceunderlag med uttryckligt tjänsteval och demomarkering för fullmakt. Hämta TXT-testkvitto; partnern förmedlar underlaget i ett separat demosteg. |
+| Partnerns inflyttningsregistrering | **Excel:** ladda upp .xlsx, granska radfel och dubbletter, koppla fullmakter och registrera uttryckligt. **Manuellt:** ange fiktiv kontakt, bostad och inflyttningsdatum, bifoga befintlig fullmakt och registrera underlaget. Hyresgästen har inga aktiva steg. Avtal och ekonomi skapas inte från registreringen. |
 | Hjälp & support / Test & beslut | FAQ, lokala testförfrågningar, öppna beslut, dataexport och återställning av exempeldata. |
 
-Vid vanlig öppning visas den interna Kraftringen-vyn först. En inflyttningslänk öppnar i stället hyresgästförhandsvisningen. Partnerns meny anpassas efter partnertyp. Interna testanteckningar döljs i partnervyerna. Varningen för identiska kundnamn är en testhjälp; regler för dubbla registreringar är inte beslutade.
+Vid vanlig öppning visas den interna Kraftringen-vyn först. En äldre inflyttningslänk öppnar partnerns registreringsyta. Partnerns meny anpassas efter partnertyp. Interna testanteckningar döljs i partnervyerna. Varningen för identiska kundnamn är en testhjälp; regler för dubbla registreringar är inte beslutade.
 
 | Partner i registret | Hur namnet används |
 | --- | --- |
@@ -103,7 +105,7 @@ Vid vanlig öppning visas den interna Kraftringen-vyn först. En inflyttningslä
 1. Börja i Kraftringens resultatöversikt och jämför alla partners med en vald partner. Anteckna exempelvärdena för avtal och nettobidrag samt period och urval.
 2. Öppna Savera i partneröversikten och gå till säljpartnerns arbetsyta. Registrera en fiktiv företags- eller BRF-dialog, dokumentera kontakt och förbered ett offertutkast genom studions fyra steg.
 3. Återgå till Kraftringen för intern ansvarstilldelning och återkoppling. Kontrollera att partnerresan finns internt och att markeringar följer vald partner.
-4. Öppna ett av fastighetsbolagen och dess inflyttningssida. Prova att avstå i första steget och kontrollera att inget ärende skapas. Börja sedan om, använd **Fyll med exempeluppgifter** och gå igenom Inflyttning, Kontakt, Tjänst & fullmakt och Granska. Välj frivilligt tjänsten och fullmaktsdemot innan det fiktiva underlaget registreras.
+4. Öppna ett fastighetsbolag och välj **Fyll i själv**. Ange fiktiva kontakt-, bostads- och inflyttningsuppgifter och bifoga ett fiktivt fullmaktsdokument. Registrera underlaget uttryckligt. Prova också **Excel-import**: hämta exempelmall, ladda upp filen, granska rader/fel/dubbletter och koppla befintliga fullmakter före registrering. Avbruten granskning ska inte skapa ärenden.
 5. Återgå till fastighetsbolagets **Inflyttningsärenden** och förmedla det nya underlaget till Kraftringen. Öppna Kraftringens interna **Inflyttningsärenden**, prova separat handläggning för elhandel och elnät samt dokumentera erbjudandeval och återkoppling. Kontrollera återkopplingen från partnersidan och ladda om för att kontrollera lokal lagring.
 6. Kontrollera att avtal och nettobidrag är oförändrade för samma period och urval. Serviceanmälan, förmedling och slutförd demohandläggning skapar inga verkliga kunder, avtal eller intäkter.
 
@@ -113,7 +115,22 @@ Säljpartnerns befintliga offertstudio, dokumentdemosteg, kundsidor, Academy och
 
 Använd enbart påhittade kund- och hyresgästuppgifter. Sparad testdata ligger i `localStorage` för aktuell webbplats och webbläsare under `partnerlabb.portal.v2`. `commercial.management` sparar intern partneruppföljning och partnerresans markeringar, `moveins` sparar serviceunderlag och äldre intresseanmälningar och `propertySettings` sparar fastighetsbolagets presentation. Dessa kompletterar tidigare kunddata. Gamla `journey`-markeringar bevaras i datan men visas inte i den nya interna partnerresan.
 
-Pågående hyresgästunderlag sparas separat i flikens `sessionStorage` under `partnerlabb.moveinDraft.v1.<partner-id>`. Fält och steg kan återupptas efter omladdning eller återöppning för samma partner i samma flik. **Börja om**, avstående, lyckad slutregistrering och återställning av exempeldata rensar utkastet. Utkast är inte registrerade serviceärenden. Sparstatusen visar om webbläsaren inte tillåter lagring eller rensning. Ett stängt flikutkast är ingen delad eller beständig kundlagring; använd fortsatt bara fiktiva uppgifter.
+Manuella partnerutkast och Excelgranskningen är inte registrerade
+serviceärenden. Utkast för lägena `manual` och `import` använder flikens
+sessionStorage: `partnerlabb.partnerIntake.v1.<partner-id>:<läge>`, eller
+`partnerlabb.demo.partnerIntake.v1.<partner-id>:<läge>` i kunddemot. Registrera först efter ett uttryckligt val. Utkast, bilagor
+och registrerade poster ska knytas till rätt partner och aktuell demo-/labbyta.
+Sparmeddelanden ska beskriva vad som faktiskt sparats eller misslyckats.
+Äldre `partnerlabb.moveinDraft.v1.<partner-id>` och
+`partnerlabb.demo.moveinDraft.v1.<partner-id>` bevaras utan att tolkas om
+till ny fullmakt eller färdig förmedling. Lokal lagring delas inte mellan
+personer eller datorer; använd fortsatt endast fiktiva uppgifter.
+
+Fullmaktsfilernas innehåll lagras lokalt i IndexedDB-databasen
+`partnerlabb.moveinAttachments.v1`, store `files`, med scope `demo` eller
+`normal`. Ärendet sparar bara filmetadata och dokumentkoppling. JSON-exporten
+innehåller inte filernas innehåll och är ingen fullständig dokumentbackup.
+Bifogning innebär inte juridiskt giltig fullmakt eller verifierat samtycke.
 
 Om giltig v2-data saknas läses tidigare kunddata från `partnerlabb.active.v1` på samma webbplats; kunder utan pipelinesteg får **Kunddialog**. Den gamla v1-posten raderas inte. Återställning tar bort lokala teständringar och laddar portalens exempeldata igen.
 
@@ -143,19 +160,25 @@ Demovyerna styr visningen utan inloggning eller åtkomstskydd; även interna ant
 
 Den privata Sites-testlänken delas med Håkans två e-postidentiteter som externa besökare (**viewers**). Det ger visningsåtkomst, inte rätt att redigera byggprojektet. Sites-delningen och appens demovyer är olika saker; demovyerna skapar inga säkerhetsgränser i appen.
 
-Hyresgästflödet är en förhandsvisning bakom samma privata testlänk. Det är ingen publik inflyttningssida i drift.
+Partnerns inflyttningsregistrering (`#property-intake`,
+`#property-manual` och `#property-import`) ligger bakom samma
+privata testlänk. Hyresgästen använder inte portalen; någon publik
+hyresgästsida sätts inte i drift.
 
 ## Filer
 
 - `dist/app.js`: gemensam navigation, lokal data, kunder, pipeline, översikt och rapporter.
 - `dist/design.css`: gemensam typografi, kontrast, knappar och portalens visuella standard.
-- `dist/demo.js` och `dist/demo.css`: kunddemots fem perspektiv och guidade navigation.
+- `dist/demo.js` och `dist/demo.css`: kunddemots guidade moment och perspektivbyten.
 - `dist/studio.js`: offertstudio och simulerade dokumentsteg.
 - `dist/academy.js`: Elakademin, bevarade demokurser och lokala utbildningsframsteg/självtest.
 - `dist/elakademin-data.js`: sex slutliga kapitelfilmer, kapiteltexter, filmmanus, tolv originalfrågor och publika kundkällor.
 - `dist/partner.js`: säljpartnerns kundsidor, material och support.
 - `dist/commercial.js`: intern resultatöversikt och partneruppföljning med ekonomisk exempeldata.
-- `dist/property.js`: fastighetsbolagens arbetsyta och hyresgästens frivilliga serviceanmälan.
+- `dist/property.js`: fastighetsbolagens arbetsyta och ingång till partnerregistrering.
+- `dist/property-intake.js` och `.css`: valet mellan registrering, manuellt underlag och Excelgranskning.
+- `dist/movein-attachments.js` och `.css`: lokal bilagelagring och dokumentkoppling.
+- `dist/vendor/exceljs-4.4.0.min.js`: lokalt paketerad ExcelJS för .xlsx-läsning och mall; MIT-licens följer med.
 - `dist/movein-service.js`: gemensam ärendedata, förmedling, kompletteringar och Kraftringens interna handläggningsvy.
 - `dist/business.js`: Saveras översikt och affärsunderlag för företagskunder.
 - `dist/consumer.js`: Face2faces konsumentaffärer, återkoppling, säljstöd och försäljningsrapport.
@@ -218,11 +241,51 @@ Testa: Savera → Affärsunderlag → spara nästa steg → kontrollera samma ku
 
 ## Inflyttningsservice
 
-Den bekräftade affärsmodellen är att fastighetsbolag, BRF:er och förvaltare erbjuder service vid hyresavtal/inflyttning. Hyresgästen väljer tjänsten, lämnar uppgifter och behövlig fullmakt. Partnern förmedlar underlaget. Kraftringen står för elkompetensen, hanterar elhandelsavtal och nödvändig hantering gentemot elnätsbolaget samt återkopplar med bekräftelser. Hyresgästens val av elhandelserbjudande är separat från själva serviceanmälan. Partnerns egen elförbrukning är en separat B2B-affär.
+Fastighetsbolag, BRF:er och förvaltare erbjuder service vid hyresavtal och
+sköter allt aktivt arbete i portalen. De väljer mellan Excel-import och
+manuell registrering och bifogar befintliga fullmakter. Hyresgästen fyller
+inte i portalformulär. Partnern förmedlar underlaget; Kraftringen står för
+elkompetensen, elhandelsavtal, nödvändig elnätshantering och återkoppling.
+Partnerns egen elförbrukning är en separat B2B-affär.
 
-Frontendflödet går att testa som: hyresgästunderlag → partnerns förmedling → Kraftringens Inflyttningsärenden → handläggning/komplettering → återkoppling. Elhandel, elnät och erbjudandeval har separata demostatusar. Fullmaktsmarkeringen är en UI-simulering utan rättsverkan; godkänd fullmaktsmall, omfattning, identifiering och signeringsprocess återstår att lämna underlag för. Inga verkliga avtal eller externa utskick görs.
+### Två registreringsvägar
 
-`dist/movein-service.js` är gemensam ärendedata och intern handläggningsvy. Den kompletterar `moveins` med `serviceRequested`, `authorityDemo`, `handoverStatus`, `processing` och `events`. Tidigare intresseanmälningar behålls men får inte automatiskt samtycke, fullmakt eller förmedlingsstatus. Nya fiktiva serviceexempel är uttryckligt markerade. Efter omladdning kan den senaste registreringen för vald fastighetspartner återöppnas från hyresgästsidans första steg. Den återanvänder den sparade `moveins`-posten, visar aktuell teststatus och skapar inget nytt ärende.
+- **Manuellt:** fyll i en hyresgästs fiktiva namn, e-post, adress, postnummer,
+  ort och inflyttningsdatum. Lägenhetsnummer och telefon är valfria demofält.
+  Bifoga befintlig fiktiv fullmakt och registrera underlaget uttryckligt.
+- **Excel:** använd en liten lokal .xlsx-mall eller en fil med dess kolumner.
+  Granska radfel och dubbletter före registrering. Koppla varje fullmakt till
+  rätt rad/ärende och välj uttryckligt att registrera. En förhandsgranskning
+  eller avbruten import skapar inga ärenden.
+
+Mallens kolumner är **Adress, Lägenhet, Postnummer, Ort, Inflyttningsdatum,
+Namn, E-post, Telefon**. Alla utom Lägenhet och Telefon är obligatoriska
+demofält. Filgränsen är 5 MB och högst 200 rader. Mallfält, gränser och
+valideringsregler är demoförslag, inte en godkänd verksamhetsmall.
+Importen sker lokalt med paketerad ExcelJS; inga filer laddas upp till
+Kraftringen eller externa parsertjänster i denna frontendprototyp.
+
+### Fullmakter och ärenden
+
+PDF/PNG/JPEG kan bifogas som lokala testfiler; högst tre dokument per ärende
+och högst 5 MB per fil är tekniska demogränser. Filtyp/signatur kontrolleras,
+men innehållet juridiskt verifieras inte. En bilaga innebär aldrig automatiskt
+samtycke, giltigt uppdrag, signering eller elhandelsavtal. Faktisk fullmaktsmall,
+omfattning och kontrollprocess behöver godkänt verksamhetsunderlag.
+
+`dist/movein-service.js` ger den gemensamma ärendekedjan: registrering →
+förmedling → intern handläggning/komplettering → återkoppling. Nya partnerposter
+har `intakeSource` (`manual`/`excel`), importreferens/filnamn och
+`authorityFiles`-metadata. `serviceRequested` är partnerns servicebegäran;
+`authorityDemo` är fortsatt separat och sätts inte av en filbilaga. Nya
+partnerunderlag visar **Fullmakt saknas** eller **Klart att förmedla**;
+förmedling kräver en faktiskt lagrad fullmaktsbilaga enligt demoregeln.
+
+Äldre intressen, registreringar, tjänsteval och fullmaktsdemomarkeringar
+bevaras utan fabricerade bilagor, nytt samtycke eller nya befogenheter.
+Återöppning använder samma post och aktuella status, aldrig automatisk
+dubblett. Elhandel, elnät och erbjudandeval följs separat; registrering,
+förmedling och slutförd service skapar inga avtal eller ekonomiska utfall.
 
 Kommersiellt resultat visas fortfarande först på den interna partnerprofilen. Ärendeantal, underlag, kompletteringar och demobekräftelser är operativ uppföljning för alla datum. Ekonomiska fixtures för vald period är fristående och ändras inte när ett serviceärende registreras, förmedlas eller bekräftas.
 
@@ -252,20 +315,27 @@ och [WORKLOG.md](WORKLOG.md) faktiskt resultat. Arbetsminnet följer GitHub;
 dessa rotfiler ingår inte i den statiska deploymenten. Varje molnpass ska
 därför hämta aktuell GitHub-main och läsa instruktionerna där.
 
-Den befintliga länkade Sites-molnuppgiften **Partnerlivs pilotagent** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Det senaste uppdraget prioriterar en snygg, enkel kunddemo utan att invänta en faktisk kund. Agenten använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
+Den befintliga länkade Sites-molnuppgiften **Partnerlivs pilotagent** har oförändrat timschema i Europe/Stockholm från 8 oktober 2026 kl. 23.00. Det avsedda aktuella uppdraget prioriterar fastighetsbolagets Excel-/manuella registrering med fullmaktsbilagor, snygg och enkel demo utan att invänta faktisk kund. Hyresgästen har inga aktiva portalsteg. Native återläsning i WORKLOG kvitterar faktisk promptuppdatering. Agenten använder aktuell GitHub-main, egen `agent/`-gren och pull request. Aktuell aktivering redovisas i GITHUB-STATUS.md; sparat schema, påbörjad körning och utförd/publicerad förbättring är separata resultat. Oavbruten processdrift, hårda tids-/kostnadsgränser eller garanterad återstart har inte verifierats. Schema och faktisk leveranskvittens finns i WORKLOG.md.
 
-Första förbättringen gäller återupptagbart pågående inflyttningsunderlag per partner i samma flik. Utkastet är åtskilt från registrerade serviceärenden och ekonomiskt exempelutfall. Testa: fyll delvis i första steget → ladda om → fortsätt till Kontakt → lämna sidan → öppna samma partners hyresgästvy igen. Prova därefter **Börja om** och kontrollera att ett tomt, frivilligt flöde visas utan att något serviceärende skapats.
+Tidigare leveranser av utkast och kvittoåteröppning är återanvändbara
+byggstenar, men deras hyresgäststyrda gränssnitt ersätts nu av partnerns två
+registreringsvägar. Återinför inte äldre tenantsteg för att passa gamla tester.
 
 ### Återkörbara webbläsarkontroller
 
-`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/customer-demo.py` kontrollerar de fem guidade perspektiven, separat lagring, registrering, mobil, omladdning och omstart utan att radera ordinarie labbdata. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. `qa/movein-receipt.mjs` kontrollerar återöppning, partnerisolering, aktuell status och att inget dubblettärende skapas. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
+`qa/property-intake.py` samlar aktuella browserkontroller för manuellt/Excel,
+validering, dubbletter, fullmaktsfiler, ärendekedja och isolerad kunddemo.
+Äldre browseringångar (`movein-drafts.py`, `movein-service.py` och
+`customer-demo.py`) ska följa det nya arbetssättet eller hänvisa till den
+aktuella regressionen. `qa/movein-next-action.mjs` och
+`qa/movein-receipt.mjs` bevarar modulregressioner för ansvarsskifte och samma
+ärendereferens. Exakt körd revision och utfall redovisas i WORKLOG.md;
+historiska version 12-resultat verifierar inte de nya registreringsvägarna.
 
 Med servern ovan igång, Python Playwright och Chromium tillgängliga:
 
 ```sh
-python qa/movein-drafts.py
-python qa/movein-service.py
-python qa/customer-demo.py
+python qa/property-intake.py
 ```
 
 `PARTNERLABB_QA_URL` kan ange en annan lokal testserver. Frontendappen behöver fortsatt inga paket eller byggsteg; Playwright behövs enbart för utvecklingskontrollerna.

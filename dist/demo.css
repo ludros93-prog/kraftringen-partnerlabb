@@ -1,5 +1,6 @@
 /* Optional customer demonstration. Every phase opens the real local workflow. */
 .customer-demo-mode .demo-launch-link { display: none; }
+.customer-demo-mode #view[tabindex="-1"]:focus { outline: none; }
 .demo-intro { max-width: 1320px; margin: 0 auto; }
 .demo-intro-hero { display: grid; grid-template-columns: 1.08fr 1fr; gap: 36px; align-items: stretch; }
 .demo-intro-copy { padding: 34px 8px 26px 2px; align-self: center; }
@@ -150,14 +151,14 @@
   .demo-guide-help-brief { display: inline; }
   .demo-guide-actions { max-width: none; margin-top: 7px; justify-content: flex-start; gap: 7px 15px; }
   .demo-guide-next { font-size: 12px; padding: 10px 12px; }
-  /* The resident's own form explains each choice. Keep the perspective controls compact. */
-  .property-resident-preview .demo-guide { padding: 7px 16px 4px; }
-  .property-resident-preview .demo-guide-heading { flex-wrap: nowrap; gap: 9px; margin-bottom: 0; }
-  .property-resident-preview .demo-guide-home { min-width: 44px; justify-content: center; }
-  .property-resident-preview .demo-guide-home > span { display: none; }
-  .property-resident-preview .demo-guide-perspective { order: initial; width: auto; margin-right: auto; white-space: nowrap; }
-  .property-resident-preview .demo-guide-options { margin-left: 0; }
-  .property-resident-preview .demo-guide-exit, .property-resident-preview .demo-guide-bottom { display: none; }
+  /* Keep the company registration controls close to the form on a phone. */
+  .customer-demo-intake .demo-guide { padding: 7px 16px 4px; }
+  .customer-demo-intake .demo-guide-heading { flex-wrap: nowrap; gap: 9px; margin-bottom: 0; }
+  .customer-demo-intake .demo-guide-home { min-width: 44px; justify-content: center; }
+  .customer-demo-intake .demo-guide-home > span { display: none; }
+  .customer-demo-intake .demo-guide-perspective { order: initial; width: auto; margin-right: auto; white-space: nowrap; }
+  .customer-demo-intake .demo-guide-options { margin-left: 0; }
+  .customer-demo-intake .demo-guide-exit, .customer-demo-intake .demo-guide-bottom { display: none; }
 }
 @media (max-width: 390px) {
   .demo-intro h1 { font-size: 41px; }
@@ -187,3 +188,9 @@
 @media (prefers-reduced-motion: reduce) {
   .demo-intro *, .demo-guide * { transition: none !important; animation: none !important; }
 }
+
+.demo-intro-entry-actions { display: flex; flex-wrap: wrap; gap: 9px 17px; }
+.demo-intro-entry-actions > button { background: transparent; border: 0; display: inline-flex; align-items: center; gap: 7px; color: #2d716c; font-size: 12px; font-weight: 600; min-height: 44px; padding: 0 2px; }
+.demo-intro-entry-actions > button:hover { color: #004e49; }
+.demo-intro-entry-actions > button .icon { width: 16px; height: 16px; }
+@media (max-width: 760px) { .demo-intro-entry-actions { gap: 3px 17px; } }

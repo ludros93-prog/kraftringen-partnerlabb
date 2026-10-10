@@ -9,24 +9,35 @@ inte ett stoppvillkor för en färdig fungerande demo.
 Detta styr prioriteringen före generell funktionsutbyggnad i MISSION.md.
 AGENTS.md:s affärs-, data- och samarbetsregler gäller fortfarande.
 
+Senaste förtydligandet ersätter den tidigare hyresgäststyrda demon:
+fastighetsbolaget gör allt aktivt arbete i portalen, via Excel-import med
+befintliga fullmaktsbilagor eller manuell registrering med bilaga.
+Hyresgästen fyller inte i, signerar inte och navigerar inte i portalen.
+Godkänt uppdrag/fullmakt och avtalsval måste fortfarande hanteras enligt
+verksamhetens process; en filuppladdning bevisar inte deras giltighet.
+
 Den schemalagda uppgiftens avsedda prompt finns i PILOT-AGENT-PROMPT.txt.
 WORKLOG.md kvitterar faktisk konfiguration först efter verktygets återläsning.
 
 ## Mål och leveransordning
 
-Hyresgästen ska förstå erbjudandet och sitt frivilliga val. Fastighetsbolaget
-ska enkelt kunna erbjuda tjänsten, förmedla komplett underlag och följa
-återkopplingen. Kraftringens handläggare ska se vad som behöver göras, vem
-som ansvarar och vad som saknas. Börja med ett tydligt sammanhängande flöde.
+Fastighetsbolaget ska enkelt kunna registrera en eller flera inflyttningar,
+bifoga befintliga fullmakter, förmedla komplett underlag och följa
+återkopplingen. Hyresgästen har inga aktiva portalsteg. Kraftringens
+handläggare ska se vad som behöver göras, vem som ansvarar och vad som
+saknas. Börja med ett tydligt sammanhängande flöde.
 
-1. Slutför en sammanhängande fiktiv generalrepetition: partner → hyresgäst
-   → förmedling → Kraftringen → återkoppling. Gör varje nästa handling tydlig,
-   med lugn visuell hierarki, lättläst svenska och få konkurrerande val.
+1. Slutför båda vägarna i en sammanhängande fiktiv generalrepetition:
+   fastighetsbolag → manuell registrering eller Excel-granskning →
+   fullmaktsbilagor → förmedling → Kraftringen → återkoppling. Gör varje
+   nästa handling tydlig med lugn visuell hierarki, lättläst svenska och få konkurrerande val.
    Visuella riktlinjer är våra designval; verkligt användarbeteende är ännu
    inte verifierat. Ta vid befintliga förslag och undvik dubbelarbete.
 2. Verifiera mobil, tangentbord, utkast och återfinnande av samma kvitto.
    Generalrepetitionen ska kunna startas om och upprepas med fiktiva data
-   utan att ändra labbets ordinarie lokala data eller andra partners utkast.
+   utan att ändra labbets ordinarie lokala data, utkast eller bilagor.
+   Kontrollera radvalidering, dubbletter, avbruten import, dokumentkoppling
+   och misslyckad lagring. En bifogad fil ska gå att återöppna efter omladdning.
    En separat demoyta via `?demo=inflyttning`, egna lagringsnycklar och guidad
    navigation är implementationsval, inte en ny backend eller behörighetsgräns.
 3. Förbered delad ärendelagring och verklig behörighetsstyrning som ett
@@ -60,9 +71,9 @@ funktioner. Färre steg och tydligt ansvar väger tyngre än fler menyer.
   konkret PR-underlag. Ingen direkt main-push, merge eller Sites-publicering
   från ett schemalagt pass. Ludwig/Codex samordnar integrationen.
 - Högst två färdiga pilotförslag får samtidigt vänta på granskning. Räkna
-  befintliga öppna, färdiga PR:er före ny leverans; PR #1 ingår tills dess
-  status ändras. När två väntar, förbättra verifiering och befintliga
-  beslutsunderlag. Öppna inte fler färdiga förslag eller parallella kopior.
+  befintliga öppna, färdiga PR:er före ny leverans. PR #1 är redan merged
+  via PR #4; räkna inte historiska PR:er som öppna. När två väntar,
+  förbättra verifiering och befintliga beslutsunderlag. Öppna inte fler färdiga förslag eller parallella kopior.
 
 Gränsen på två är en arbetsregel, inte ett tekniskt processlås. Kontrollera
 aktuellt arbete igen före push. Vid överlapp, återuppta eller samordna den
@@ -86,13 +97,19 @@ med oberoende tillåtet arbete. Fråga inte samma sak på nytt utan ny informati
 Parkera bara den uppgift som faktiskt beror på ett saknat beslut. Slutför
 övrig demo, tester och visuell kvalitet utan att invänta en verklig kund.
 
-Partnerns förmedling av underlaget är bekräftad. En direktlänk eller QR där
-hyresgästen skickar direkt till Kraftringen är ett förenklingsförslag som
-behöver förankras; behandla det inte som ett redan beslutat arbetssätt.
+Partnerns registrering och förmedling av underlaget är nu uttryckligen
+bekräftad. Direktlänk eller QR för hyresgästens registrering ingår inte i
+det beslutade flödet och ska inte återinföras som förbättringsmål.
+Excelkolumner, filgränser och valideringsregler i demon är tekniska
+demoförslag tills godkänt verksamhetsunderlag har lämnats.
 
 ## Mandat och datagränser
 
 Nuvarande produkt är en statisk frontendprototyp med lokal webbläsardata.
+Befintliga fullmakter kan bifogas som fiktiva binära testfiler i IndexedDB,
+med skilda demo-/normalscope. Det är ingen gemensam dokumentlagring och
+JSON-exporten innehåller inte filernas innehåll. En filbilaga innebär inte
+att fullmakten eller samtycket har juridiskt verifierats.
 Agenten får förbättra den, skapa fiktiva testfall och förbereda specifikation,
 datamodell och godkännandekriterier för nästa etapp. Nya backendtjänster,
 verkliga integrationer, riktiga kunduppgifter, bindande avtal och betalningar

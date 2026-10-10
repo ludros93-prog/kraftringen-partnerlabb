@@ -1,87 +1,88 @@
-# PILOT-01 — Acceptanspaket för inflyttningsservice
+# PILOT-01 — Acceptanspaket för partnerns inflyttningsservice
 
-Mål: ett fastighetsbolag och en utsedd handläggare på Kraftringen ska kunna
-följa samma inflyttningsärende från frivilligt tjänsteval till återkoppling.
-Detta är ett föreslaget acceptanspaket, inte ett fastställt arbetssätt eller
+Mål: fastighetsbolaget ska registrera inflyttningar via Excel eller manuellt,
+bifoga befintliga fullmakter och följa samma ärende genom Kraftringens
+handläggning och återkoppling. Hyresgästen har inga aktiva steg i portalen.
+Detta följer Ludwigs senaste arbetssätt och ersätter den tidigare aktiva
+hyresgästdemon. Det är ett acceptanspaket för en fiktiv frontenddemo, inte
 en kvittens på att Partnerlabb kan ta emot riktiga ärenden.
-Nyare användarstyrning: slutför en mycket snygg, enkel och intuitiv kunddemo
-utan att invänta en faktisk kund. Testfallen nedan kan genomföras med helt
-fiktiva ärenden; verkliga pilotförutsättningar redovisas separat sist.
+
+Slutför en mycket snygg, enkel och intuitiv demo utan att invänta faktisk
+kund. Verkliga pilotförutsättningar redovisas separat sist.
 
 ## Testunderlag och gräns
 
 Använd två fiktiva partners, `Exempelfastigheter AB` och `Exempelbo
-Förvaltning`, samt hyresgästen `Test Hyresgäst` med kontaktadressen
-`hyresgast@inflyttning.example`. Även bostadsuppgifter ska vara påhittade.
+Förvaltning`, samt `Test Hyresgäst` med `hyresgast@inflyttning.example`.
+Bostadsuppgifter, Excelrader och bifogade dokument ska vara påhittade.
 Ett testdatum är inte en svarstid eller ett leveranslöfte.
 
-Fält i nuvarande demo används enbart för att testa befintlig kod. De
-bekräftar inte vilka person-, bostads- eller avtalsuppgifter verksamheten
-behöver. Fullmaktsmarkeringen är en simulering utan rättsverkan.
-
-Den bekräftade affärsidén omfattar partnerns förmedling till Kraftringen.
-En direktlänk där hyresgästen lämnar underlaget direkt till Kraftringen är
-ett separat förslag; byt inte förmedlingssätt innan beslut finns.
+Demofält, filgränser och radvalidering är tekniska testförslag. De bekräftar
+inte vilka person-, bostads- eller avtalsuppgifter verksamheten faktiskt
+behöver. En bifogad fullmaktsfil visar endast ett lokalt dokument; den
+bevisar inte juridisk giltighet, verifierat samtycke eller avtalsval.
+Filer lagras lokalt i IndexedDB, med skilda scope för ordinarie labb och
+kunddemo. JSON-exporten omfattar inte filinnehållet. Ingen delad backend
+eller riktig behörighetskontroll finns.
 
 ## Fiktiva testfall
 
-Kör fallen i ordning mot en isolerad testprofil. Anteckna källrevision,
-testfall, faktiskt resultat och eventuellt fel. Ett fall utan genomförd
-verifiering märks `Ej testat`; en saknad beslutad förutsättning märks
-`Blockerat` endast för den uppgift som faktiskt kräver beslutet. Saknad
-pilotkund blockerar inte frontend-, test- eller demoarbete.
+Kör fallen mot isolerade testprofiler. Anteckna källrevision, faktiskt
+resultat och eventuellt fel. Ett fall som inte körts märks `Ej testat`.
+En saknad beslutad förutsättning märks `Blockerat` bara för den uppgift
+som behöver beslutet. Saknad pilotkund blockerar inte frontendarbete.
 
 | Fall | Handling | Godkänt resultat i lokal demo |
 |---|---|---|
-| A1 — Frivilligt val | Öppna ett nytt underlag och avstå från tjänsten. | Inget nytt serviceärende, kundrecord, avtal eller ekonomiskt utfall skapas. Tjänsteval och fullmaktsmarkering är inte förvalda i ett nytt underlag. Återupptagna egna val ska vara möjliga att ändra före registrering. |
-| A2 — Registrering | Lämna fiktivt underlag, gör uttryckliga demoval, granska och registrera en gång. | Exakt ett serviceunderlag får en referens och tillhör rätt partner. Det är ännu inte förmedlat. Kvittot beskriver registreringen utan att påstå giltig fullmakt eller elavtal. |
-| A3 — Förmedling | Partnern väljer att förmedla det registrerade underlaget. | Samma ärende får förmedlingsstatus och en historikhändelse. Den interna arbetslistan visar Kraftringens nästa insats. Ett partnerperspektiv får inte redigera interna handläggningsfält. |
-| A4 — Handläggning | Kraftringen tar upp ärendet och anger nästa steg. | Elhandel, elnätshantering och hyresgästens erbjudandeval följs separat. Angivet nästa steg sparas och återfinns efter omladdning. En intern anteckning återges inte i partnerns vy eller testkvitto. |
-| A5 — Komplettering | Kraftringen begär en konkret komplettering. Partnern korrigerar tillåtet bostadsunderlag och förmedlar igen. | Ändringen behåller samma referens och historik. Partnern ändrar inte hyresgästens tjänsteval eller fullmaktsmarkering. Kraftringen får en mottagningsinsats; partnerns gamla kompletteringsplan/datum tillskrivs inte automatiskt Kraftringen. En senare uttrycklig intern plan behålls. |
-| A6 — Återkoppling utan elavtal | Slutför den simulerade hjälpen med hyresgästens erbjudandeval satt till avstående. | Ärendet kan få återkoppling om hjälpen enligt demots föreslagna statusregler. Avstående förblir synligt och inget kundrecord, elavtal, intäkt eller kickback skapas. Slutförd service är inte bevis på ett elhandelsavtal. |
-| A7 — Avbrott och befintlig registrering | Avbryt ett utkast, ladda om och registrera färdigt. Ladda sedan om efter registreringen. | Utkast återupptas inom samma partner/flik, utan nytt ärende före slutregistrering. Återfinnande av ett registrerat underlag ska använda samma post och aktuell status, utan dubblett. Den sista delen är ett förslag i öppet PR #1 och ska verifieras på vald kandidat. |
-| A8 — Avgränsning och fel | Byt exempelpartner, prova felande lagring och genomför relevanta steg på mobil och med tangentbord. | Partner B:s vy visar inte partner A:s testärende. Misslyckad lagring ger begripligt fel och ingen falsk sparbekräftelse. Berörda steg kan genomföras vid 320/390 px och med tangentbord. Befintliga poster och kommersiella exempelvärden bevaras. |
+| A1 — Manuell registrering | Fastighetsbolaget fyller en fiktiv hyresgästs kontakt-, bostads- och inflyttningsuppgifter, granskar och registrerar. | Exakt ett serviceunderlag får en referens och rätt partner. Ingen aktiv hyresgästvy krävs. Det är inte automatiskt förmedlat, ett kundrecord eller ett avtal. Avbrutet utkast skapar inget ärende. |
+| A2 — Excelgranskning | Hämta fiktiv .xlsx-mall, ladda upp flera rader och granska före registrering. Prova tomma nödvändiga fält, felaktig e-post/datum och oläsbar fil. | Begripliga fil- och radfel visas. Läsning/förhandsgranskning skapar inga ärenden. Endast uttryckligt val registrerar validerade rader enligt granskningens tydliga urval. Inga påhittade fält eller ekonomiska värden skapas. |
+| A3 — Dubbletter och upprepning | Prova identiska rader i filen och samma rad igen efter registrering inom samma partner. Prova också annan partner. | Dubbletter upptäcks och redovisas före en okontrollerad dubbelregistrering. Ny registrering knyts till rätt partner och unik inflyttning. Namn ensamt används inte som säker personidentifiering. Partneravgränsning och vald regel dokumenteras som demoförslag. |
+| A4 — Bifogad fullmakt | Bifoga fiktiv PDF/PNG/JPEG och koppla den uttryckligt till rätt manuell post eller importerad rad. Prova fel filtyp/signatur och överskriden filgräns. | Tillåten fil går att återöppna efter omladdning. Filnamn, storlek och rätt ärende syns. Otillåten fil får korrekt fel. Filen ger inte verifierat samtycke, juridiskt godkänd fullmakt eller ny `authorityDemo`-markering. Äldre poster får inga fabricerade bilagor. |
+| A5 — Saknad bilaga och förmedling | Registrera utan fullmakt och prova att förmedla; bifoga sedan korrekt fiktiv fil och förmedla uttryckligt. | Saknad fullmakt är synlig och nya partnerunderlag kan inte beskrivas som klara eller förmedlas utan faktiskt lagrad bilaga. Efter förmedling behåller samma ärende referens och historik. Kraftringens arbetslista visar nästa insats; partnern får inte redigera interna handläggningsfält. Äldre ärenden behandlas enligt sitt dokumenterade ursprung. |
+| A6 — Handläggning och komplettering | Kraftringen anger nästa steg, begär konkret komplettering och partnern rättar underlag/bifogar dokument innan ny förmedling. | Referens och historik består. Elhandel, elnät och erbjudandeval följs separat. Intern anteckning visas inte i partnerns vy eller testkvitto. Partnerns tidigare kompletteringsplan/datum tillskrivs inte automatiskt Kraftringen; en uttrycklig senare intern plan behålls. Historiska tjänsteval ändras inte av ny bilaga. |
+| A7 — Återkoppling utan avtal | Slutför den simulerade hjälpen utan ett accepterat elhandelserbjudande. | Slutförd service och delad återkoppling kan följas utan nytt kundrecord, avtal, intäkt eller kickback. Erbjudandevalet förblir separat och finansfixtures är oförändrade. Sparad återkoppling är inget faktiskt utskick. |
+| A8 — Avbrott, fel och äldre data | Ladda om manuellt utkast/registrerat ärende/bilaga. Avbryt import. Prova felande localStorage/IndexedDB och ofullständig gammal data. | Utkast eller samma post återfinns utan dubblett där den aktuella lagringen stöder det. Importavbrott skapar inget ärende. Misslyckad lagring ger begripligt besked och ingen falsk sparad/förmedlad status. Äldre poster/utkast bevaras utan nya val eller befogenheter; giltig tidigare portaldata har företräde. |
+| A9 — Mobil, tangentbord och visningsroller | Genomför båda inmatningsvägarna och berörda ärendesteg vid 320/390/1440 px och med tangentbord. Byt partner och intern/partnerdemovy. | Etiketter, fokus och centrala handlingar fungerar utan sidöverskjutning. Partner B:s vy blandar inte ihop partner A:s ärenden/bilagor. Äldre inflyttningslänkar öppnar partnerregistrering. Ingen direktlänk eller QR kräver hyresgästens arbete. Savera/Face2face och kommersiella exempel bevaras. |
 
-A8 verifierar endast demots visningslogik. Perspektivbyte i samma
-webbläsare är inte ett test av riktig autentisering eller åtkomstkontroll.
+A9 verifierar bara demots visningslogik. Perspektivbyte i en webbläsare
+bevisar inte riktig autentisering eller serverstyrd åtkomstkontroll.
 
 ## Reproducerbar kunddemo utan riktig kund
 
-Den separata demoytan via `?demo=inflyttning` är ett implementationsval.
-Verifiera den på levererad kandidat; denna lista påstår inte att den redan
-är publicerad eller testad.
+Den separata demoytan via `?demo=inflyttning` ska återanvändas. Kontrollera
+leveransstatus i WORKLOG/GITHUB-STATUS innan implementation eller publicering
+beskrivs som genomförd. Historiska version 12-tester är inte bevis för det
+nyare Excel-/manuella flödet.
 
 | Fall | Godkänt när |
 |---|---|
-| G1 — Fem sammanhängande moment | Partner → hyresgäst → förmedling → Kraftringen → återkoppling kan genomföras i ordning. Varje moment visar perspektiv, aktuell status och begriplig nästa handling. Guidade hopp skapar inte själva tjänsteval, förmedling eller bekräftelse. |
-| G2 — Visuell kvalitet | Valda vyer har konsekvent hierarki, lättläst text, tydliga knappar och fungerande fel-/sparbesked. Vid 320/390/1440 px täcks inga centrala handlingar; tangentbord, etiketter och synlig fokus fungerar. Detta är en verifiering av gränssnittet, ingen undersökning av verkliga användare. |
-| G3 — Ett ärende genom avbrott | Omladdning och återöppning behåller rätt utkast eller samma registrerade post. Kvittot visar aktuell status; generalrepetitionen skapar ingen dubblett eller automatisk affär. A1–A8 gäller även när guidningen används. |
-| G4 — Lokal isolering | Ärenden och utkast i demon använder separata lagringsnycklar. Registrering, navigation och återställning i demon ändrar inte ordinarie labbdata, andra partners utkast eller kommersiella exempelvärden. Återgång till ordinarie labbet visar bevarad data. |
-| G5 — Upprepning och kvittens | Starta om endast demoytan och genomför samma generalrepetition igen med fiktiv provdata. Dokumentera kandidat-SHA, faktiska kontroller och kvarvarande fel. Ingen verklig signering, kontakt med elnätsbolag eller skickad återkoppling påstås. |
+| G1 — Sammanhängande partnerresa | Fastighetsbolaget → Excel eller manuellt underlag → fullmakter → förmedling → Kraftringen → återkoppling kan genomföras. Guidens moment visar rätt aktör och begriplig nästa handling; inget moment påstår att hyresgästen fyller i portalen. Navigation skapar inga ärendehändelser. |
+| G2 — Visuell kvalitet | Hierarki, text, knappar och fel-/sparbesked är konsekventa. Vid 320/390/1440 px täcks inga centrala handlingar; tangentbord, etiketter och synlig fokus fungerar. Designgranskning är inte uppmätt verklig användarnytta. |
+| G3 — Ärende genom avbrott | Samma ärende och rätt fullmaktsbilaga kan följas efter omladdning. Kvitto och status återanvänder sparade poster. Excelupprepning skapar inga okontrollerade dubbletter. Relevanta A-fall gäller även när guidningen används. |
+| G4 — Lokal isolering och omstart | Kunddemots ärenden, utkast och bilagor hålls åtskilda från ordinarie labbdata. Bekräftad demo-omstart återställer bara demoytan; avbruten omstart bevarar den. Normaldata, normala utkast/bilagor och kommersiella exempel är oförändrade. Felande bilagerensning redovisas. |
+| G5 — Upprepning och kvittens | Börja om och kör båda vägarna med fiktiv provdata igen. Dokumentera kandidat-SHA, faktiskt körda kontroller och kvarvarande fel. Ingen verklig signering, extern filöverföring, elnätskontakt eller utskickad återkoppling påstås. |
 
 Godkänn G1–G5 tillsammans med relevanta A-fall för en fungerande demo.
-Verklig användarrespons, godkända produktionsfält och driftberedskap kräver
-andra belägg. Frånvaron av dessa belägg är inget skäl att lämna demoflödet
-halvfärdigt.
+Verklig användarrespons, produktionsfält och driftberedskap kräver andra
+belägg; deras frånvaro är inget skäl att lämna fiktiva flöden halvfärdiga.
 
-## Befintlig kodverifiering att återanvända
+## Kodverifiering att återanvända och anpassa
 
-- `qa/movein-service.py`: tjänsteval, registrering, förmedling,
-  komplettering, separata handläggningsdelar, återkoppling utan accepterat
-  erbjudande, vyavgränsning, oförändrade affärsvärden och responsivitet.
-- `qa/movein-drafts.py`: utkast, avbrott, partnerisolering, felande lagring,
-  omladdning, tangentbord och mobil.
-- `qa/movein-next-action.mjs`: avslutad kompletteringsplan, historik och
-  Kraftringens nästa insats efter återförmedling.
-- PR #1, `codex/inflytt-03-kvitto`: föreslaget återfinnande av registrerat
-  testunderlag samt `qa/movein-receipt.mjs`. PR:en är öppen och var inte
-  integrerad vid kontrollen den 10 oktober 2026. Aktuell verifiering ska
-  knytas till PR:ens dåvarande HEAD, inte en äldre commit.
+- `qa/property-intake.py`: aktuella browserkontroller för manuellt/Excel,
+  validering, dubbletter, bilagor, handläggning, isolering och responsivitet.
+- `qa/customer-demo.py`: guidning och separat demoyta; kontrollera att
+  aktuell revision använder partnerregistrering och relevanta G-fall.
+- `qa/movein-drafts.py` och `qa/movein-service.py`: tidigare browseringångar;
+  efter verksamhetsändringen måste de följa det nya arbetssättet eller
+  hänvisa till aktuella kontroller. Återinför inte gamla tenantsteg för att
+  få äldre testförväntningar att passera.
+- `qa/movein-next-action.mjs`: ansvarsskiftet efter kompletterad förmedling.
+- `qa/movein-receipt.mjs`: befintlig kvittoåteröppning utan dubblett.
+  PR #1 är redan merged via PR #4. Bevara återanvändbar logik och uppdatera
+  förväntningar när den nya partneringången ersätter den gamla vyn.
 
-PR #1 redovisar körda syntax-/modulkontroller och att browser-QA återstår.
-Denna dokumentation är ingen ny testkörning eller kvittens på att alla
-acceptansfall passerar. Uppdatera förväntningar och tester tillsammans om
-verksamheten senare beslutar ett annat flöde.
+Detta är en verifieringsplan, ingen ny testkörning eller publiceringskvittens.
+Körda kontroller och faktisk revision redovisas i WORKLOG.md.
 
 ## Innan samma paket kan användas i en riktig pilot
 
@@ -90,14 +91,14 @@ Lokal demodata eller tester i ett enda webbläsarkonto uppfyller inte kraven.
 
 | Förutsättning | Bevis som behövs |
 |---|---|
-| Arbetssätt och ansvar | Namngiven pilotpartner och handläggare; beslutad förmedlingsväg, nödvändiga uppgifter, fullmakts-/avtalsprocess och definition av slutförd hjälp. De föreslagna enkla statusarna fastställs eller ändras. |
-| Gemensamt ärende | Partner och handläggare i separata sessioner ser samma verkliga pilotärende och dess uppdateringar från godkänd lagring. Referens och historik består efter avbrott; upprepad inskickning skapar inte okontrollerade dubbletter. |
-| Riktiga behörigheter | Separata testidentiteter visar att endast avsedda ärenden och uppgifter är åtkomliga, även vid direkt åtkomstförsök. Interna anteckningar skyddas i tjänsten, inte bara genom dolda gränssnitt. |
-| Verklig återkoppling | Beslutad mottagare får den beslutade återkopplingen genom godkänd kanal. Utebliven eller misslyckad återkoppling går att upptäcka och åtgärda; sparad text räknas inte automatiskt som skickat meddelande. |
-| Service, avtal och ekonomi | Slutförd service och ett aktiverat elhandelsavtal kan beläggas var för sig. Kickback stäms av mot godkänt underlag. Saknade ekonomiska uppgifter redovisas som saknade, utan uppskattade ersättningsregler. |
-| Pilotbeslut | Ansvariga accepterar genomfört flödestest, kvarvarande avvikelser och hur ett ärende tas om hand vid driftproblem, innan riktiga hyresgästuppgifter tas emot. |
+| Arbetssätt och ansvar | Namngiven pilotpartner och handläggare; nödvändiga manuella/Exceluppgifter, godkänd fullmakts- och avtalsprocess, dokumentkontroll och definition av slutförd hjälp. Föreslagna statusar fastställs eller ändras. Partnerns ansvar för registrering är redan bekräftat. |
+| Gemensamt ärende och dokument | Partner och handläggare i separata sessioner ser samma verkliga pilotärende och rätt dokument från godkänd lagring. Referens och historik består; upprepad inskickning hanterar dubbletter. Dokumentlivscykel, radering och återhämtning är verifierade. |
+| Riktiga behörigheter | Separata identiteter visar att endast avsedda ärenden och dokument är åtkomliga, även direkt. Interna anteckningar skyddas i tjänsten. |
+| Verklig återkoppling | Beslutad mottagare får återkoppling genom godkänd kanal. Misslyckad återkoppling upptäcks och hanteras; sparad text är inte ett skickat meddelande. |
+| Service, avtal och ekonomi | Slutförd service och aktiverat elhandelsavtal beläggs var för sig. Kickback stäms av mot godkänt underlag. Saknade uppgifter redovisas utan uppskattade ersättningsregler. |
+| Pilotbeslut | Ansvariga accepterar flödestest, avvikelser och driftrutin innan riktiga hyresgästuppgifter eller dokument tas emot. |
 
-Vid en liten överenskommen serie pilotinflyttningar följs faktiskt
-genomförda steg, kompletteringar, handläggning och återkoppling. Anteckna
-var användarna fastnar och vilka manuella insatser som krävs. Ange ingen
-utlovad tidsbesparing eller konvertering innan den har mätts.
+Följ faktiskt genomförda steg, kompletteringar, handläggning och återkoppling
+vid en liten överenskommen pilotserie. Anteckna var användarna fastnar och
+vilka manuella insatser som krävs. Utlova ingen tidsbesparing eller
+konvertering innan den har mätts.

@@ -365,3 +365,53 @@
 - Denna efterhandskvittens ändrar bara dokumentation. dist/ och
   hostingmanifest är identiska med publicerad version 12. Ingen extra
   frontendpublicering behövs för kvittensen.
+
+## 2026-10-10 — Fastighetsbolaget sköter inflyttningsregistreringen
+
+- Ludwig förtydligade att hyresgästen inte gör något aktivt i portalen.
+  Fastighetsbolaget arbetar på två sätt: Excel-import med befintliga
+  fullmaktsbilagor eller manuell registrering med fullmakt. Detta ersätter
+  tidigare antaganden om hyresgästformulär, aktivt tjänsteval i portalen och
+  hyresgästlänkdelning; samtycke eller fullmaktens giltighet har inte därmed
+  blivit automatiskt godkända.
+- Ny arbetsgren codex/property-intake bygger på färsk GitHub-main
+  b5deb0231a76764247eb6dd166d38f10f2770469. Sites-källan öppnades och
+  fjärrverifierades på c956ab385493df4479338cec6a60ccfed1f69bc3 före redigering.
+  Samma timuppgift pausades tillfälligt under samordnad utveckling.
+- Registreringsytan får två tydliga ingångar, .xlsx-mall och förhandsgranskning
+  före registrering. Befintliga fullmakter kopplas uttryckligen till rätt
+  ärende. Ett underlag utan fullmakt kan sparas för komplettering; förmedling
+  kräver en faktiskt tillgänglig bilaga i de nya partnerärendena.
+- Nytt partnerunderlag och befintliga historiska demomarkeringar skiljs åt.
+  Filnamn eller bifogad fil bevisar inte giltig fullmakt, samtycke eller avtal.
+  Äldre ärenden och utkast bevaras utan att bli tillskrivna nya bilagor.
+- ExcelJS 4.4.0 (MIT) serveras lokalt för .xlsx-läsning och mallgenerering.
+  Testbilagornas faktiska filer sparas i IndexedDB, separat för kunddemo och
+  ordinarie labb. Detta är en lokal frontendfunktion, ingen delad lagring
+  eller verklig filöverföring till Kraftringen.
+- Agentens instruktioner, aktuell affärsbeskrivning och acceptansfall ändras
+  till samma arbetssätt. Färdig QA, GitHub-integration, Sites-publicering och
+  återaktivering kvitteras efter faktisk verifiering.
+
+- Implementationen är färdig och fryst för integration. Nya webbläsarsviten
+  qa/property-intake.py passerar i fyra fokuserade körningar: service 61,
+  utkast 13, demo 30 och integritet 5 — totalt 109 faktiska kontroller.
+  Äldre Python-entrypoints använder relevanta delar av denna nya svit;
+  tidigare aktiva hyresgäststeg finns inte längre i testförväntningarna.
+- Kontrollerna omfattar manuell registrering utan/med fullmakt, riktiga
+  XLSX-filer och mallnedladdning, rätt skilda PDF-bilagor per rad,
+  identisk filnedladdning efter omladdning, rad-/filfel, dubbletter,
+  förmedling, komplettering, handläggning, återkoppling, lagringsfel,
+  partnerbyte under filinläsning, äldre data, tangentbord och 1440/390/320 px.
+  Vanliga labbdata, utkast och faktiska PDF-filer bevaras efter demoomstart.
+  Berörda Savera-/Face2face-flöden och fristående ekonomi verifierades också.
+- Node-kontrollerna passerar: movein-receipt.mjs 3 och
+  movein-next-action.mjs 2. Separat slutgranskning körde sex riktade
+  browserkontroller av atomisk validering, uteblivna fabricerade tjänsteval,
+  partnerbyte, förmedlingsrollback, faktisk fil och oförändrade affärsdata.
+  Två hittade async-/rollbackfel korrigerades och återtestades utan blocker.
+- JavaScript-syntax, Python-AST, dokumentlänkar och diffkontroll passerar.
+  Desktop/mobil granskades visuellt i Chromium. Testbilagan
+  inflyttning-testbilaga.pdf kan hämtas från båda registreringsvägarna för
+  filprov; den är tydligt märkt och är ingen fullmaktsmall. Båda länkarna
+  laddar ned identiska bytes och saknar mobilöverflöde.

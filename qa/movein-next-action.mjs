@@ -18,7 +18,7 @@ const P = {
   save: () => true, toast() {}, register() {}, e: value => String(value ?? ''), icon: () => '', date: value => value,
 };
 const document = { addEventListener() {}, querySelector: () => null, querySelectorAll: () => [] };
-const context = vm.createContext({ window: { Portal: P }, document, console, Date, Object, Array, String, Number });
+const context = vm.createContext({ window: { Portal: P }, document, console, Date, Object, Array, String, Number, structuredClone });
 for (const file of ['dist/movein-service.js', 'dist/workspace.js']) vm.runInContext(fs.readFileSync(file, 'utf8'), context, { filename: file });
 
 assert.equal(P.moveinService.forward(row.id), true);
