@@ -559,3 +559,42 @@
   ändringar skrevs över; uppföljningskoden utvecklades oberoende. Den
   kombinerade kandidaten verifieras efter integration, inklusive den
   uppdaterade servicekedjan som version 14-kvittensen saknade browserbelägg för.
+
+
+## 2026-10-10 — Samlad Savera-/Insikter-kandidat verifierad
+
+- Kodkandidat efter integration med aktuell huvudkälla:
+  0329c3c48570aff8e7cddf5c8051491400b48e16. Ny intern Savera-sida och
+  separat Insikter delar period-/produkt-/säljar-/områdesfilter. Sökning
+  och status gäller bara kundlistan. Aktiva kunder är hela beståndet vid
+  observerat periodslut, inte antalet nya avtal i perioden.
+- Ny fiktiv kundledger stämmer exakt mot alla tidigare månads- och
+  dimensionsceller för försäljning och års-MWh. Exempel till 7 oktober:
+  207 nya avtal, 8 175 års-MWh och 305 aktiva kunder. Vecka 1 observeras
+  från 1 januari och senaste vecka till 7 oktober. Ny service skapar
+  inga kunder, avtal, MWh eller kickback i denna uppföljning.
+- Insikter håller avslutad kundtid separat från aktiva kunders tid hittills.
+  Scenariot adderar vald periods observerade dagstakt över årets återstående
+  85 dagar till samma urvals årsutfall hittills. Detta är ett villkorat
+  räkneexempel; ingen prognos för kundstock, intäkt eller kickback.
+- Fastighetspartnern får Kunder & kickback för sina egna månads-/årsutfall,
+  separata hjälpta inflyttningar och manuella avstämnings-/betalningsposter.
+  Saknat underlag är fortsatt saknat; ett nytt avtal motsvarar en kund
+  endast i den uttryckligt beskrivna exempelmodellen.
+- Faktiskt körda browserkontroller efter integration:
+  - qa/savera-insights.py: 104 passerar; inga JavaScript-fel.
+  - qa/property-intake.py --suite service: 62 passerar, inklusive
+    regressionen från PR #8 för felaktig → korrigerad Excel-rad.
+  - qa/property-intake.py --suite integrity: 5 passerar.
+  - Desktop 1440 och mobil 390/320 px är visuellt granskade, utan overflow.
+- Node-kontroller: qa/savera-data.mjs 13 passerar,
+  qa/property-intake-dedup.mjs 1 passerar, qa/movein-receipt.mjs 3 passerar
+  och qa/movein-next-action.mjs 2 passerar. JS-syntax, Python-AST och
+  diffkontroll passerar på den frysta kandidaten.
+- Oberoende granskning hittade fel i intern partnerselektion och fokus vid
+  sidbläddring. Båda är korrigerade och browserverifierade; mobilens viktiga
+  förklaringar är minst 12 px, formulärfält 16 px och knappar 44 px.
+- Samma timuppgift har fått exakt nya PILOT-AGENT-PROMPT.txt medan pausad;
+  schema och tidszon är oförändrade. Återaktivering och native publicering
+  kvitteras separat efter faktisk leverans. Verklig drift/data och
+  besluten D-01–D-04 är fortfarande inte införda av denna demoförbättring.
