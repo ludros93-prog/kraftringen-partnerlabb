@@ -203,6 +203,8 @@ async def property_checks(test):
     await page.locator('[data-property-results-mode="month"]').click()
     await page.locator('#property-results-month').select_option('2026-09')
     test.good('månadsfilter visar rätt nya kunder, hjälp och avstämning', await page.locator('[data-property-result="customers"]').inner_text() == '24' and await page.locator('[data-property-result="helped"]').inner_text() == '36' and num_text(await page.locator('[data-property-result="settled"]').inner_text()) == '6100' and num_text(await page.locator('[data-property-result="paid"]').inner_text()) == '2500')
+    await page.reload(wait_until='networkidle')
+    test.good('fastighetspartnerns periodval återkommer efter omladdning', await page.locator('[data-property-results-mode="month"]').get_attribute('aria-pressed') == 'true' and await page.locator('#property-results-month').input_value() == '2026-09' and await page.locator('[data-property-result="customers"]').inner_text() == '24')
     same = await page.evaluate('Portal.propertyResults.outcomeFor("estate1",["2026-09"])')
     test.good('partner och Kraftringen använder samma månadsavtal och manuella kickbackposter', same['result']['agreements'] == 24 and same['kickback']['settled'] == 6100 and same['kickback']['paid'] == 2500)
     baseline = await test.finance()
