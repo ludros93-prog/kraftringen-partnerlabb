@@ -7,6 +7,7 @@
   const monthNames = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober'];
   const monthShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt'];
   const selections = new Map();
+  const storagePrefix = P.demoMode ? 'partnerlabb.demo.propertyResults.v1' : 'partnerlabb.propertyResults.v1';
   const count = value => new Intl.NumberFormat('sv-SE', {maximumFractionDigits:0}).format(value);
   const money = value => `${count(value)} kr`;
   const months = () => P.partnerResultsData?.months || [];
@@ -16,9 +17,23 @@
     if (P.role === 'internal' && allowed(P.selectedPartnerId)) return P.selectedPartnerId;
     return allowed(P.partner) ? P.partner : null;
   }
+  function validSelection(value) {
+    const input = value && typeof value === 'object' ? value : {};
+    return {
+      mode: ['year','month'].includes(input.mode) ? input.mode : 'year',
+      month: months().includes(input.month) ? input.month : '2026-09'
+    };
+  }
   function selection(id) {
-    if (!selections.has(id)) selections.set(id, {mode:'year', month:'2026-09'});
+    if (!selections.has(id)) {
+      let saved = null;
+      try { saved = JSON.parse(sessionStorage.getItem(`${storagePrefix}.${id}`)); } catch {}
+      selections.set(id, validSelection(saved));
+    }
     return selections.get(id);
+  }
+  function saveSelection(id) {
+    try { sessionStorage.setItem(`${storagePrefix}.${id}`, JSON.stringify(selection(id))); } catch {}
   }
   function periodFor(id) {
     const selected = selection(id);
@@ -97,6 +112,7 @@
     document.querySelectorAll('[data-property-results-mode]').forEach(button => button.addEventListener('click', () => {
       if (selectedPartner() !== id || !['year','month'].includes(button.dataset.propertyResultsMode)) return;
       selection(id).mode = button.dataset.propertyResultsMode;
+      saveSelection(id);
       const mode = button.dataset.propertyResultsMode;
       P.render();
       document.querySelector(`[data-property-results-mode="${mode}"]`)?.focus();
@@ -104,6 +120,7 @@
     document.querySelector('#property-results-month')?.addEventListener('change', event => {
       if (selectedPartner() !== id || !months().includes(event.target.value)) return;
       selection(id).month = event.target.value;
+      saveSelection(id);
       P.render();
       document.querySelector('#property-results-month')?.focus();
     });
