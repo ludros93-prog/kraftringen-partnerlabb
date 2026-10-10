@@ -39,27 +39,32 @@ Sites är publiceringsmål för det befintliga projektet
 åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
 Sites-inloggningen.
 
-Senast verifierade lyckade publicering är version 17 med SHA
-`3ca57eb96816a5eae16f4dd9d96e8f7289361807` på
+Senast verifierade lyckade publicering är version 18 med SHA
+`19f7a08063fc516bd9ee7fc954ffcd1f063353c7` på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
-PR #13 samlar säljpartners under Partners med valbara kundsegment,
-gemensam avtalsöversikt/Insikter och fem konsumentprodukter. Den parallellt
-sammanslagna PR #12 om fastighetspartnerns rapportperiod bevarades.
+PR #16 lägger till lyckade B2C-samtal i Partner Academy med lokal ljudlagring,
+utbildningsanteckningar, uppspelning och redigering. Funktionen följer
+partnerns konfigurerade konsumentsegment. Version 17:s generiska Partners,
+avtalsöversikt/Insikter och fastighetspartnerns rapportperiod bevaras.
 GitHub-main överfördes fast-forward till Sites utan force-push.
 
-Native deployment `appgdep_6acaac334bcc8191aab0aadc92004c4f` bekräftade
-`succeeded` den 10 oktober 2026 kl. 21:21:08 UTC. Version-ID:
-`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_cd98ef6a3bd481918dd7ea256e03d789`.
-Färsk metadata bekräftade version 17 och oförändrad custom-delning,
+Native deployment `appgdep_6acaaefde7d48191b08c65d53e558673` bekräftade
+`succeeded` den 10 oktober 2026 kl. 21:33:01 UTC. Version-ID:
+`appgprj_6ac600ecf7d48191923687550810c1d4~appgver_d067e7e584ac81919c7c04c6c16df6db`.
+Färsk metadata bekräftade version 18 och oförändrad custom-delning,
 policyrevision 4. Paketet är byggt från och pushat med samma SHA.
 
-Verifiering: 105 generiska browserkontroller, 23 data- och åtta
-registerkontroller; inflyttningskedjans 62 service- och fem
-integritetskontroller samt riktade befintliga regressioner passerade.
-Efter merge av PR #12 passerade fastighetsperiodens Node-kontroll och
-20 browserkontroller. Mobil 320/390 och desktop, perpartnerfilter,
-blandade segment, datum, sparfel, migration och reset är kontrollerade.
+Verifiering av samtalsbiblioteket: 69 oberoende browserkontroller, fyra
+fokuserade ljudformatkontroller och 13 kontroller på den faktiskt
+publicerade privata sidan passerar. Befintliga register- (8), rapportdata-
+(23) och sparad fastighetsperiodkontroller passerar. Publikt anonymt anrop
+kan fortfarande inte läsa portalen eller den nya scriptfilen. Ljud,
+anteckningar, avbrott, reset, mobil, tangentbord och lokal isolering är
+kontrollerade. Tidigare versioners breda verifiering finns i WORKLOG.
 
+Samtalsexempel finns via `?workspace=vast#academy` för Face2face och i
+Utbildning för andra konfigurerade B2C-/blandade säljpartners. Ljud och
+anteckningar sparas lokalt och delas inte mellan användare.
 Öppna Partners och välj Savera eller Face2face. Direktlänkar:
 `?partner=syd#partner-sales`, `?partner=vast#partner-insights`.
 Äldre `#savera` och `#insikter` öppnar samma Savera-underflöden.

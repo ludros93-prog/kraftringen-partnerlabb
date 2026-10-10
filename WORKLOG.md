@@ -846,3 +846,32 @@ inklusive periodval efter omladdning, normal-/demoisolering och mobil.
   Befintliga registerkontroller (8), säljpartnerdata (23) och regression
   för fastighetspartnerns sparade rapportperiod passerar. Faktisk
   PR-integration och Sites-publicering kvitteras separat efter utförandet.
+
+## 2026-10-10 — Publiceringskvittens: lyckade B2C-samtal
+
+- [PR #16](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/16)
+  med HEAD `9a2259c4b43641a4fe8396004750202243b4a2d6` integrerades som
+  `19f7a08063fc516bd9ee7fc954ffcd1f063353c7`. Kandidat och merge har
+  identiska `dist/`-filer och hostingmanifest. Inga nya Daniel-ändringar
+  ingår. Codex samordnade integrationen inom Ludwigs direkta bygguppdrag.
+- Exakt GitHub-main överfördes fast-forward till samma Sites-källa;
+  fjärr-SHA verifierades före arkivering. Arkiv:
+  `/workspace/b2c-calls/partnerlabb-b2c-calls-v18.tar.gz`.
+- Native save gav version **18**, ID
+  `appgprj_6ac600ecf7d48191923687550810c1d4~appgver_d067e7e584ac81919c7c04c6c16df6db`,
+  arkivhash `sha256:cd6eca5e41e7d0238fab508b222560b139a9a9c70a92353bccad310a6e1ad226`.
+- Deployment `appgdep_6acaaefde7d48191b08c65d53e558673` bekräftade
+  **succeeded** 2026-10-10 kl. 21:33:01 UTC på
+  https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+- Färsk metadata bekräftade version 18 och exakt bevarad custom-publik,
+  policyrevision 4 och samma besökar-/grupptilldelningar. Ingen åtkomst
+  eller automation ändrades.
+- Kontroller på den publicerade privata sidan: **13/13 passerar**.
+  Anonym åtkomst fortsatt skyddad, fem kurser kvar, syntetisk ljudfil
+  sparad och återöppnad efter omladdning, uppspelning, dialogstängning,
+  mobil utan överflöde, bekräftad radering, separat B2B-vy och inga
+  scriptfel. Testet använder en tillfällig separat browserprofil; inga
+  riktiga samtal eller gemensamt lagrade data skapades.
+- Denna efterhandskvittens ändrar enbart dokumentation. `dist/` och
+  hostingmanifest är identiska med publicerad version 18. Gemensam
+  lagring/hantering av verkliga inspelningar återstår som separat beslut.
