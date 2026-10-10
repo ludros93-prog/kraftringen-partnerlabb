@@ -598,3 +598,37 @@
   schema och tidszon är oförändrade. Återaktivering och native publicering
   kvitteras separat efter faktisk leverans. Verklig drift/data och
   besluten D-01–D-04 är fortfarande inte införda av denna demoförbättring.
+
+
+## 2026-10-10 — Savera, Insikter och partnerresultat publicerade
+
+- Kandidat-HEAD 4f6e1353a02e652dcc0e0f4c0cba2d5b89f4cbbe öppnades som PR #10:
+  https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/10.
+  GitHub bekräftade merge kl. 20:50:54 UTC till
+  3e1b873f5a2fdacf1dbd14e733155a226d53f5ed. Inga nya Daniel-bidrag,
+  skenbara mänskliga godkännanden eller administrativ bypass ingår.
+- Färsk Sites-fjärrkälla b05a5d5863852349ea372e089f34b679bb10f728 öppnades
+  och förenades fast-forward med exakt GitHub-main. dist/ och hostingmanifest
+  är identiska med kodkandidaten vars 104+62+5 browserkontroller passerade.
+  Rent källträd, fjärrverifierad push och oförändrat arkiv användes.
+- Native publiceringskvittens bekräftade succeeded kl. 20:52:37 UTC:
+  - Version: 15.
+  - Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_948b364251f08191a24280bf34cc0866.
+  - Deployment-ID: appgdep_6acaa585ed088191b855c17684a773c3.
+  - SHA: 3e1b873f5a2fdacf1dbd14e733155a226d53f5ed.
+  - URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Savera: https://kraftringen-partnerlabb.rosen123.chatgpt.site/#savera.
+  - Insikter: https://kraftringen-partnerlabb.rosen123.chatgpt.site/#insikter.
+  - Fastighetspartner: https://kraftringen-partnerlabb.rosen123.chatgpt.site/?workspace=estate1#property-results.
+- Färsk Sites-läsning efter publicering bekräftade version 15, samma
+  custom-åtkomst och policyrevision 4. Ingen åtkomstpolicy har ändrats.
+- Samma Automation_e03c6b2fc3448191a58c63c969a090c0 återaktiverades efter
+  publicering. Privat återläsning kl. 20:53 UTC bekräftade enabled=true
+  och exakt uppdaterad PILOT-AGENT-PROMPT.txt. Schema:
+  RRULE:FREQ=HOURLY, DTSTART;TZID=Europe/Stockholm:20261008T230000;
+  default_timezone Europe/Stockholm. Ingen extra automation skapades.
+  Senaste registrerade körning är fortfarande 20:06:42 UTC och next_run_time
+  saknar värde; ingen utförd körning med den nya prompten påstås.
+- Efterhandskvittensen uppdaterar endast dokumentation. dist/ och
+  hostingmanifest ändras inte och behöver ingen extra publicering.
+  D-01–D-04, verkliga kommersiella källor och ersättningsregler består.
