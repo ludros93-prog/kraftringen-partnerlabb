@@ -3,8 +3,9 @@
 ## Aktivt pilotuppdrag – 10 oktober 2026
 
 Ludwig har bett oss skapa agenten för nästa pilotetapp. [PILOT-MISSION.md](PILOT-MISSION.md)
-styr nu prioriteringen: ett enkelt inflyttningsflöde för ett fastighetsbolag
-och en Kraftringen-handläggare, verifiering före utbyggnad och högst två
+styr nu prioriteringen tillsammans med Ludwigs senaste uppföljningskrav:
+ett enkelt inflyttningsflöde, enkel Savera-uppföljning och Insikter,
+verifiering före utbyggnad och högst två
 färdiga förslag som väntar på granskning. [PILOT-FACTS.md](PILOT-FACTS.md)
 skiljer fakta från förslag och saknat underlag; [PILOT-DECISIONS.md](PILOT-DECISIONS.md)
 anger besluten före verklig drift. [PILOT-ACCEPTANCE.md](PILOT-ACCEPTANCE.md)
@@ -15,6 +16,15 @@ vägar ska finnas: Excel-import med bifogade befintliga fullmakter eller
 manuell registrering med fullmaktsbilaga. Hyresgästen har inga aktiva steg
 i portalen. Det ersätter äldre antaganden om en hyresgäststyrd demoresa.
 Fortsätt göra demon snygg och enkel utan att invänta en faktisk kund.
+
+Ludwigs senare förtydligande samma dag: fastighetspartnern ska se kunderna
+samarbetet gett och sin kickback. Kraftringen ska kunna följa Savera med
+år/månad/vecka, kundernas avtalstyper och aktiva kunder. En separat sida
+**Insikter** visar kundtid, populära avtal och prognos vid fortsatt tempo med
+begripliga filter. Detta är ett nytt uttryckligt frontenduppdrag som ska
+utvecklas tillsammans med det bevarade inflyttningsflödet; det behöver
+inte invänta verklig pilotkund. Datakällor och måttmodeller är fortfarande
+fiktiva förslag tills verksamhetsunderlag finns.
 
 Samma befintliga timuppgift återanvänds. Den lämnar egna grenar och PR:er;
 Ludwig/Codex samordnar integration och publicering. Befintliga affärs-, data-
@@ -76,7 +86,10 @@ följ GITHUB-STATUS.md för faktisk behörighets- och skyddsstatus.
 **Savera** säljer elhandelsavtal till företagskunder. Utbudet är Rörligt pris,
 Kvartspris, Poolportfölj Trygg, Poolportfölj Offensiv, Individuell portfölj och
 Kraftringen Stabil. Följ stängda avtal, avtalad årsvolym i MWh, produkter,
-säljare, månadsutfall, årsutfall och kickback. Framtida användning av portalen
+säljare, månadsutfall, årsutfall och kickback. Den enkla interna vyn ska också
+ha veckofilter, per-kund-avtal och ett separat aktivt kundbestånd. Insikter
+visar observerad kundtid, avtalspopularitet och ett tydligt scenario vid
+fortsatt tempo. Framtida användning av portalen
 som säljverktyg är möjlig men ännu inte beslutad.
 
 **Face2face** säljer Opti och kvartspris till konsumenter och arbetar i Beest.
@@ -96,6 +109,10 @@ händelser. Partnerns egen elförbrukning är en separat företagsaffär.
 
 Kickback följs för samtliga partnerkanaler. Faktiska ersättningsregler måste
 komma från Kraftringen och får inte uppfinnas.
+
+Fastighetspartnerns egen resultatvy skiljer nya elhandelskunder från
+serviceärenden och hjälpta inflyttare. Kickback är separat redovisat
+exempelunderlag och får inte räknas fram från ett registrerat ärende.
 
 ## Lärande och enkelhet
 
@@ -133,7 +150,11 @@ Testa berörda flöden och relevanta mobil-, tangentbords- och underlagsfall.
 Håll exempeldata, verkligt utfall och potential åtskilda. MWh betyder i nuvarande
 rapporter avtalad årsvolym för periodens nya avtal. Churn och förstartsbortfall
 har olika baser; summera inte månadsprocentsatser eller öppningskohorter till
-årschurn. Ett registrerat underlag får inte automatiskt skapa avtal, intäkt
+årschurn. Aktiva kunder är bestånd vid vald periods observerade slut, inte
+periodens nya avtal. Aktiva kunders observerade ålder är inte färdig
+kundlivslängd. En prognos vid fortsatt tempo är ett villkorat scenario med
+synlig bas, brytdatum och horisont, ingen garanterad försäljning.
+Ett registrerat underlag får inte automatiskt skapa avtal, intäkt
 eller kickback. Hitta inte på priser, villkor, mandat eller regelkrav.
 
 Nuvarande leverans är en frontendprototyp. Verkliga integrationer, bindande

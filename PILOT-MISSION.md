@@ -9,6 +9,14 @@ inte ett stoppvillkor för en färdig fungerande demo.
 Detta styr prioriteringen före generell funktionsutbyggnad i MISSION.md.
 AGENTS.md:s affärs-, data- och samarbetsregler gäller fortfarande.
 
+Senare samma dag utökade Ludwig det konkreta uppföljningsuppdraget:
+fastighetspartnern ska se kundinflöde och kickback; Kraftringen ska ha en
+mycket enkel Savera-vy med avtal per år/månad/vecka, kundernas avtalstyper
+med filter och aktivt kundbestånd. En separat **Insikter** visar kundtid,
+populära avtal och prognos vid fortsatt tempo med tydliga filter. Detta är
+bekräftad nästa prioritet inom frontendmandatet, inte generell utbyggnad.
+Bevara samtidigt det fungerande inflyttningsflödet.
+
 Senaste förtydligandet ersätter den tidigare hyresgäststyrda demon:
 fastighetsbolaget gör allt aktivt arbete i portalen, via Excel-import med
 befintliga fullmaktsbilagor eller manuell registrering med bilaga.
@@ -19,7 +27,7 @@ verksamhetens process; en filuppladdning bevisar inte deras giltighet.
 Den schemalagda uppgiftens avsedda prompt finns i PILOT-AGENT-PROMPT.txt.
 WORKLOG.md kvitterar faktisk konfiguration först efter verktygets återläsning.
 
-## Mål och leveransordning
+## Mål och aktuella leveranser
 
 Fastighetsbolaget ska enkelt kunna registrera en eller flera inflyttningar,
 bifoga befintliga fullmakter, förmedla komplett underlag och följa
@@ -27,26 +35,32 @@ bifoga befintliga fullmakter, förmedla komplett underlag och följa
 handläggare ska se vad som behöver göras, vem som ansvarar och vad som
 saknas. Börja med ett tydligt sammanhängande flöde.
 
-1. Slutför båda vägarna i en sammanhängande fiktiv generalrepetition:
-   fastighetsbolag → manuell registrering eller Excel-granskning →
-   fullmaktsbilagor → förmedling → Kraftringen → återkoppling. Gör varje
-   nästa handling tydlig med lugn visuell hierarki, lättläst svenska och få konkurrerande val.
-   Visuella riktlinjer är våra designval; verkligt användarbeteende är ännu
-   inte verifierat. Ta vid befintliga förslag och undvik dubbelarbete.
-2. Verifiera mobil, tangentbord, utkast och återfinnande av samma kvitto.
-   Generalrepetitionen ska kunna startas om och upprepas med fiktiva data
-   utan att ändra labbets ordinarie lokala data, utkast eller bilagor.
-   Kontrollera radvalidering, dubbletter, avbruten import, dokumentkoppling
-   och misslyckad lagring. En bifogad fil ska gå att återöppna efter omladdning.
-   En separat demoyta via `?demo=inflyttning`, egna lagringsnycklar och guidad
-   navigation är implementationsval, inte en ny backend eller behörighetsgräns.
-3. Förbered delad ärendelagring och verklig behörighetsstyrning som ett
-   konkret beslutsunderlag. Implementera dem först när godkänd driftmiljö,
-   nödvändiga verksamhetsregler och separat mandat har lämnats.
-4. Förbered kommersiell uppföljning från kontrollerade underlag för alla tre
-   partnerkanalerna. Börja med en liten importmall och fiktiv provdata;
-   faktisk data och kickbackregler måste godkännas och lämnas av Kraftringen.
-5. Anpassa verklig pilotdrift efter verksamhetsbeslut och användaråterkoppling.
+1. Gör Savera-uppföljningen lätt att läsa och filtrera: år/månad/vecka,
+   nya avtal, kundens avtalstyp, avtalad års-MWh och aktiva kunder. Bestånd
+   och periodinflöde är olika mått. Kundtabellen ska visa rätt avtal, datum
+   och säljare utan att ändra sparade kunddialoger eller kommersiella regler.
+2. Leverera separat **Insikter** med samma begripliga period-/produkturval:
+   kundtid för avslutade kunder, observerad ålder för aktiva kunder,
+   populära avtal och ett scenario om valda periodens försäljningstakt
+   fortsätter. Ange urval, observerade dagar, datadatum och horisont.
+   Historik och prognos är exempelunderlag; verkligt underlag saknas.
+3. Ge fastighetspartnern en egen, avgränsad uppföljning av kunder som
+   samarbetet gett Kraftringen och manuellt redovisad kickback. Håll nya
+   elhandelskunder, registrerade serviceärenden och slutförd hjälp isär.
+   Visa inte Kraftringens interna kostnad eller nettobidrag för partnern.
+4. Bevara och verifiera fastighetsbolag → manuell registrering eller
+   Excel-granskning → fullmaktsbilagor → förmedling → Kraftringen →
+   återkoppling. Nästa handling, bilagekoppling, radfel och dubbletter ska
+   vara tydliga. Återställning och avbrott får inte förlora normaldata,
+   utkast eller bilagor; hyresgästen har inga aktiva portalsteg.
+5. Kontrollera relevanta mobil-, tangentbords-, lagrings- och filterfall.
+   Kund- och avtalsfixtures ska kunna stämmas av mot sina rapportbaser,
+   utan att serviceärenden skapar avtal eller ersättning. Slutför varje
+   vald avgränsad ändring och dokumentera faktiskt körd verifiering.
+6. Förbered delad ärendelagring, verklig behörighet och kontrollerade
+   datakällor som konkreta beslutsunderlag. Genomför verklig pilotdrift,
+   integrationer eller nya ersättningsregler först efter godkänd miljö,
+   verksamhetsunderlag och separat mandat.
 
 En demo är färdig när dess fiktiva huvudflöde, avbrott och återställning kan
 genomföras och verifieras. Faktiska kunder behövs för verkliga användarutfall
@@ -62,7 +76,8 @@ funktioner. Färre steg och tydligt ansvar väger tyngre än fler menyer.
   PILOT-ACCEPTANCE, BACKLOG och senaste WORKLOG. Kontrollera öppna PR:er,
   uppgiftsrapporter och parallellt arbete innan en uppgift väljs.
 - Fortsätt en befintlig egen uppgift när det är möjligt. Välj annars högsta
-  genomförbara pilotuppgift och dokumentera problem och avgränsning.
+  genomförbara uppgift i Savera/Insikter, partnerresultat eller stabil
+  inflyttning och dokumentera problem och avgränsning.
 - Arbeta i egen agent/-gren eller isolerad worktree. Återanvänd en egen gren
   för fortsättningsarbete, bevara andras commits och hämta nya basändringar.
 - Implementera endast en motiverad avgränsad ändring och kör relevanta
@@ -110,6 +125,11 @@ Befintliga fullmakter kan bifogas som fiktiva binära testfiler i IndexedDB,
 med skilda demo-/normalscope. Det är ingen gemensam dokumentlagring och
 JSON-exporten innehåller inte filernas innehåll. En filbilaga innebär inte
 att fullmakten eller samtycket har juridiskt verifierats.
+Rapporternas kund- och avtalsrader får vara fiktiva fixtures. Förklara
+brytdatum, period och kohort. Aktiva kunder är ett bestånd; aktiva kunders
+ålder är ännu inte deras slutliga kundlivslängd. Försäljningsprognosen är
+villkorad av fortsatt takt från vald period, inte en sannolikhetsbedömning
+eller ett löfte om framtida utfall. Kickback har separat källa/period.
 Agenten får förbättra den, skapa fiktiva testfall och förbereda specifikation,
 datamodell och godkännandekriterier för nästa etapp. Nya backendtjänster,
 verkliga integrationer, riktiga kunduppgifter, bindande avtal och betalningar

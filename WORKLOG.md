@@ -449,3 +449,25 @@
   hostingmanifest är identiska med publicerad version 13. Verklig
   fullmaktsgiltighet, gemensam lagring och produktionsprocess har inte
   verifierats eller införts genom frontenddemon.
+
+
+## 2026-10-10 — Enklare Savera-uppföljning och partnerns resultat
+
+- Ny användarstyrning: fastighetspartnern ska kunna följa kunder som den gett
+  Kraftringen samt kickback. Kraftringens Savera-uppföljning ska visa nya
+  avtal per år, månad och vecka, kundernas avtalstyper med filter och aktiva
+  kunder. En egen sida Insikter ska visa kundtid, populära avtal och en
+  villkorad prognos om försäljningstakten fortsätter. Tydlighet och enkelhet
+  prioriteras; fastighetsbolagets Excel-/manuella inflyttning kvarstår.
+- Färsk GitHub-main 3387a24101aa3d4c80a1113b37fed520ef63312c användes som bas
+  i codex/savera-insights. Timagentens separata PR #8, korrigerad Excel-rad,
+  var öppen och är inte inblandad i rapportimplementationen. Dess filer
+  lämnas orörda. Samma timuppgift pausades under samordningen, utan nytt
+  schema; återaktivering och exakt uppdrag kvitteras efter faktisk kontroll.
+- Sites-källan öppnades autentiserat och fjärrverifierat på publicerad
+  revision eaa303f8f09df2e9ed4ab74324b799607877729e. Samma projekt och custom-
+  åtkomst bevaras. GitHub är fortsatt huvudkälla; ingen separat Sites-
+  implementation och ingen import av Daniels ändringar ingår.
+- Implementation, verifiering och publicering redovisas när de faktiskt
+  är genomförda. Exempeldata, faktisk ersättning och framtidsprognos är
+  fortfarande skilda underlag; nya serviceärenden skapar inget utfall.
