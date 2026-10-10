@@ -1,5 +1,9 @@
 # Kraftringen Partnerportal – frontendprototyp
 
+## Bekräftad inriktning: resultat och utbildning (2026-10-11)
+
+Källa: Ludwigs direkta förtydligande i uppgiften. Säljpartnernas affärer och nästa aktiviteter hanteras utanför Partnerlabb. Kraftringen följer resultat, Kunder & avtal, Insikter och villkorade scenarier under Partners. Säljpartners använder utbildning och stöd. Detta ersätter äldre mål om aktiv kundregistrering, pipeline, offertarbete och återkopplingsflöden för Savera/Face2face i portalen. Äldre lokala underlag och utkast bevaras; de blir inte resultathistorik. Fastighetsbolagens registrering, fullmaktsbilagor, förmedling och handläggning behåller operativa nästa steg. Ingen ny verksamhetsregel eller integration införs.
+
 En klickbar partnerportal med **Kraftringens interna resultatöversikt som huvudvy** och separata arbetsytor för aktiva säljpartners och fastighetsbolag. Designen följer referensbildernas marinblå och petrolfärgade uttryck.
 
 Savera säljer Kraftringens elhandelsavtal till företagskunder och Face2face till konsumenter, enligt användarens bekräftelse. Face2face använder Beest; prototypen prioriterar nu intern resultatuppföljning och har ingen integration med Beest. Saveras eventuella användning av partnerarbetsytan kan utvecklas senare. Befintliga arbetsflöden bevaras som lokala testvyer. Fastighetspartners erbjuder inflyttningsservice vid hyresavtal och sköter allt aktivt arbete i portalen: Excel-import eller manuell registrering, fullmaktsbilagor och förmedling till Kraftringen. Hyresgästen har inga aktiva portalsteg. Kraftringen hanterar elhandel, nödvändig elnätshantering och återkoppling. Partnerns egen elförbrukning är en separat affär. Fiber och andra produktområden ingår inte.
@@ -228,13 +232,13 @@ Vid vanlig öppning visas den interna Kraftringen-vyn först. En äldre inflyttn
 ## Testa ett sammanhängande flöde
 
 1. Börja i Kraftringens resultatöversikt och jämför alla partners med en vald partner. Anteckna exempelvärdena för avtal och nettobidrag samt period och urval.
-2. Öppna Savera i partneröversikten och gå till säljpartnerns arbetsyta. Registrera en fiktiv företags- eller BRF-dialog, dokumentera kontakt och förbered ett offertutkast genom studions fyra steg.
-3. Återgå till Kraftringen för intern ansvarstilldelning och återkoppling. Kontrollera att partnerresan finns internt och att markeringar följer vald partner.
+2. Öppna Savera eller Face2face under Partners. Kontrollera Kunder & avtal och Insikter med period- och segmentfilter; öppna partnerns utbildning och stöd.
+3. Kontrollera att säljpartnerns gamla affärslänkar går till översikten och att inga kunddialoger blir nästa-steg-uppgifter. Partnerresan avser samarbetet, inte partnerns affärsaktiviteter.
 4. Öppna ett fastighetsbolag och välj **Fyll i själv**. Ange fiktiva kontakt-, bostads- och inflyttningsuppgifter och bifoga ett fiktivt fullmaktsdokument. Registrera underlaget uttryckligt. Prova också **Excel-import**: hämta exempelmall, ladda upp filen, granska rader/fel/dubbletter och koppla befintliga fullmakter före registrering. Avbruten granskning ska inte skapa ärenden.
 5. Återgå till fastighetsbolagets **Inflyttningsärenden** och förmedla det nya underlaget till Kraftringen. Öppna Kraftringens interna **Inflyttningsärenden**, prova separat handläggning för elhandel och elnät samt dokumentera erbjudandeval och återkoppling. Kontrollera återkopplingen från partnersidan och ladda om för att kontrollera lokal lagring.
 6. Kontrollera att avtal och nettobidrag är oförändrade för samma period och urval. Serviceanmälan, förmedling och slutförd demohandläggning skapar inga verkliga kunder, avtal eller intäkter.
 
-Säljpartnerns befintliga offertstudio, dokumentdemosteg, kundsidor, Academy och materialbibliotek kan fortfarande testas från arbetsytan.
+Säljpartnerns Academy och stöd är aktiva. Äldre offertstudio, dokumentdemosteg och kundsidor finns kvar i källan för databevarande, men öppnas inte som aktiva arbetsflöden.
 
 ## Lokal data och demosteg
 
