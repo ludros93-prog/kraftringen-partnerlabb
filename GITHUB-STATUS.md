@@ -38,15 +38,16 @@ Sites är publiceringsmål för det befintliga projektet
 åtkomst enligt samma delningspolicy. GitHub-repots publika kod ändrar inte
 Sites-inloggningen.
 
-Senast verifierade lyckade publicering är version 13 med SHA
-`eaa303f8f09df2e9ed4ab74324b799607877729e` på
+Senast verifierade lyckade publicering är version 14 med SHA
+`b05a5d5863852349ea372e089f34b679bb10f728` på
 https://kraftringen-partnerlabb.rosen123.chatgpt.site.
-Kunddemot öppnas via `?demo=inflyttning#demo`. PR #6 integrerades i GitHub-main,
+Kunddemot öppnas via `?demo=inflyttning#demo`. PR #8 integrerades i GitHub-main,
 fördes fast-forward till Sites-källan och publicerades från exakt samma SHA.
-Native deployment `appgdep_6aca929a5bc081919ed8eae49a118b38` bekräftade
-`succeeded` den 10 oktober 2026 kl. 19:31 UTC. Custom-åtkomst, policyrevision 4
-och tre externa visningsanvändare bevarades. Verifiering och versions-ID
-finns i WORKLOG.md. Efterhandskvittensen ändrar endast dokumentation.
+Native deployment `appgdep_6acaa273de2c8191a9b7a0c0baf051fa` bekräftade
+`succeeded` den 10 oktober 2026 kl. 20:39 UTC. Custom-åtkomst, policyrevision 4
+och tre externa visningsanvändare bevarades. Riktade Node-kontroller passerade;
+full browserregression kunde inte köras om i aktuell miljö. Verifiering och
+versions-ID finns i WORKLOG.md. Efterhandskvittensen ändrar endast dokumentation.
 
 För över GitHub-main med bibehållen historik och fast-forward enligt RUNBOOK.
 Första överföringen är verifierad med gemensam SHA
