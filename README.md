@@ -258,13 +258,14 @@ Första förbättringen gäller återupptagbart pågående inflyttningsunderlag 
 
 ### Återkörbara webbläsarkontroller
 
-`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. `qa/movein-receipt.mjs` kontrollerar återöppning, partnerisolering, aktuell status och att inget dubblettärende skapas. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
+`qa/movein-drafts.py` kontrollerar utkast, partnerisolering, lagringsfel, frivillighet, återställning, tangentbord och mobil. `qa/movein-service.py` kontrollerar den befintliga inflyttningskedjan, legacy-data, fristående ekonomi och berörda Savera/Face2face-vyer. `qa/customer-demo.py` kontrollerar de fem guidade perspektiven, separat lagring, registrering, mobil, omladdning och omstart utan att radera ordinarie labbdata. `qa/movein-next-action.mjs` är en beroendefri modulregression för ansvarsskiftet efter en kompletterad överlämning. `qa/movein-receipt.mjs` kontrollerar återöppning, partnerisolering, aktuell status och att inget dubblettärende skapas. Webbläsarkontrollerna använder isolerade kontexter och fiktiv data; bilder och resultat hamnar i en tillfällig katalog.
 
 Med servern ovan igång, Python Playwright och Chromium tillgängliga:
 
 ```sh
 python qa/movein-drafts.py
 python qa/movein-service.py
+python qa/customer-demo.py
 ```
 
 `PARTNERLABB_QA_URL` kan ange en annan lokal testserver. Frontendappen behöver fortsatt inga paket eller byggsteg; Playwright behövs enbart för utvecklingskontrollerna.

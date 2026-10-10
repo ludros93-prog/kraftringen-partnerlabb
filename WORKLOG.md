@@ -324,3 +324,44 @@
   är tillfälligt pausad under samordnad integration/publicering. Faktisk
   GitHub-merge, Sites-publicering och återaktivering kvitteras separat.
   All ärende- och resultatinformation är fortfarande fiktiv och lokal.
+
+## 2026-10-10 — Kunddemot publicerat och timagenten återaktiverad
+
+- Kunddemokandidaten c0be93d1084f516c604d3a461024ff58356aabba öppnades som
+  PR #4: https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/4.
+  GitHub bekräftade merge till main c956ab385493df4479338cec6a60ccfed1f69bc3
+  kl. 19:05:23 UTC. Ingen admin-bypass eller skenbar mänsklig granskning
+  användes. Leveransen innehåller inget nytt Daniel-arbete.
+- PR #1 ingår med bevarad historik. Färsk native GitHub-läsning bekräftade
+  merged kl. 19:05:25 UTC; kvittouppgiften är inte längre ett väntande förslag.
+- Sites-fjärrkällan öppnades åter på 347f02a1a1cdfe47e2abb33793e9f24b1575f758.
+  GitHub-main överfördes fast-forward till exakt c956ab385493df4479338cec6a60ccfed1f69bc3,
+  pushades till samma Sites-källa och fjärrverifierades. Rent arbetsutrymme
+  användes för arkivet med endast dist/ och .openai/hosting.json.
+- Native Sites-publicering bekräftade succeeded kl. 19:06:58 UTC:
+  - Version: 12.
+  - Version-ID: appgprj_6ac600ecf7d48191923687550810c1d4~appgver_2315b6a9b218819183b7e40c5ee7ced0.
+  - Deployment-ID: appgdep_6aca8cc17318819186048a8a728e1ed9.
+  - Publicerad SHA: c956ab385493df4479338cec6a60ccfed1f69bc3.
+  - URL: https://kraftringen-partnerlabb.rosen123.chatgpt.site.
+  - Kunddemo: https://kraftringen-partnerlabb.rosen123.chatgpt.site/?demo=inflyttning#demo.
+- Färsk Sites-läsning kl. 19:07 UTC bekräftade version 12, samma URL och
+  custom-åtkomst med policyrevision 4 och tre externa visningsanvändare.
+  Site-identitet och delning ändrades inte.
+- Samma Automation_e03c6b2fc3448191a58c63c969a090c0 uppdaterades medan pausad
+  med exakt PILOT-AGENT-PROMPT.txt och återaktiverades efter publicering.
+  Privat återläsning kl. 19:07 UTC bekräftade enabled=true, titel
+  Partnerlivs pilotagent, exakt prompt samt bevarat schema:
+  DTSTART;TZID=Europe/Stockholm:20261008T230000 och RRULE:FREQ=HOURLY.
+  default_timezone är fortsatt Europe/Stockholm. Ingen extra uppgift skapades.
+- Senaste registrerade körning är fortfarande 18:03:50 UTC och next_run_time
+  saknar värde. Uppdaterad konfiguration och aktivering är verifierade;
+  en redan genomförd körning med det nya uppdraget påstås inte.
+- Slutgranskningen fann inga publiceringshinder. En mindre orienteringsdetalj
+  kvarstår: omladdning av steg 5 visar rätt underlag men markerar steg 3.
+  DEMO-03 dokumenterar en konkret nästa uppgift; data eller ärenden påverkas
+  inte. Själva kunddemot, serviceflödet och omstarten är verifierade enligt
+  föregående arbetslogg.
+- Denna efterhandskvittens ändrar bara dokumentation. dist/ och
+  hostingmanifest är identiska med publicerad version 12. Ingen extra
+  frontendpublicering behövs för kvittensen.

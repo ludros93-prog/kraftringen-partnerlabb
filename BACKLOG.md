@@ -15,10 +15,11 @@ blockerar verkliga användarutfall, inte en fungerande fiktiv kunddemo.
 
 | Prioritet / ID | Nästa leverans | Status och godkänt när |
 | --- | --- | --- |
-| Levererad kandidat / DEMO-01 | Fem guidade moment: partner → hyresgäst → förmedling → Kraftringen → återkoppling. | Implementerad och browserverifierad kunddemokandidat; faktisk integration/publicering kvitteras i WORKLOG. Navigationshopp skapar inga tjänsteval eller ärendehändelser. Bygg inte en ny kopia. |
-| Levererad kandidat / DEMO-02 | Visuellt sammanhållen kunddemo. | Gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Mobil/desktop och relevanta tangentbordsflöden kontrollerade. Designval är inte uppmätt verklig användarnytta. |
-| Levererad kandidat / INFLYTT-03 | Kvittoåterupptagning från befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR-koden är införlivad i kunddemokandidaten och browserverifierad. Samma post återfinns med aktuell status utan dubblett. Kontrollera main/WORKLOG innan nytt kvittoarbete. |
-| Levererad kandidat / PILOT-01 | Fiktiv generalrepetition. | 75 befintliga flödeskontroller, utkastregression och 34 nya demokontroller passerar. Omladdning/omstart bevarar ordinarie labbdata och ekonomi. Ny verifiering behövs när ändringar eller nya fynd motiverar den. |
+| Publicerad / DEMO-01 | Fem guidade moment: partner → hyresgäst → förmedling → Kraftringen → återkoppling. | Implementerad, browserverifierad och publicerad i version 12 via PR #4; kvittens i WORKLOG. Navigationshopp skapar inga tjänsteval eller ärendehändelser. Bygg inte en ny kopia. |
+| Publicerad / DEMO-02 | Visuellt sammanhållen kunddemo. | Version 12: gemensam Inter-typografi, tydliga knappar, bostadsillustration och responsiva ärendekort. Mobil/desktop och relevanta tangentbordsflöden kontrollerade. Designval är inte uppmätt verklig användarnytta. |
+| Publicerad / INFLYTT-03 | Kvittoåterupptagning från befintligt [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1). | PR #1 ingår i PR #4 och är merged. Samma post återfinns med aktuell status utan dubblett. Publicerad i version 12; skapa ingen ny kvittokopia. |
+| Genomförd / PILOT-01 | Fiktiv generalrepetition. | 75 befintliga flödeskontroller, utkastregression och 34 nya demokontroller passerar. Omladdning/omstart bevarar ordinarie labbdata och ekonomi. Version 12 publicerad. Ny verifiering behövs när ändringar eller nya fynd motiverar den. |
+| 5 / DEMO-03 | Behåll guidens markering för steg 5 efter omladdning. | Slutgranskningen reproducerade att rätt partnerunderlag visas men guiden markerar steg 3. Endast orientering påverkas. Bevara aktuellt perspektiv utan att skapa ärendehändelser eller ändra vanliga data; kontrollera omladdning och omstart. |
 | 5 / PILOT-03 | Åtgärda återstående reproducerad friktion i inflyttning eller handläggning. | Konkret före/efter, relevant kontroll, bevarad data och tydlig användarnytta. Samordna med öppna PR:er. |
 | 6 / PILOT-00 | Håll fakta, beslut och källor uppdaterade. | Första inventering finns. Nästa ändring kräver nytt belägg; D-01–D-04 är inte besvarade och behöver inte stoppa oberoende demoarbete. |
 | 7 / PILOT-02 | Förbered minsta fiktiva ärende-/importmall och definiera mätetalens källor. | Service, avtal, årsvolym och kickback har skilda händelser och källreferenser. Inga nya verkliga satser eller automatiska beräkningar. |
@@ -69,22 +70,23 @@ leveranshistorik.
 
 ## INFLYTT-03 — Hitta redan registrerat testkvitto efter omladdning
 
-- Status: öppet [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1), HEAD `feff078d6eb797ce0226071b855227d443a29f00` vid inventeringen 10 oktober 2026. Inte integrerat eller publicerat; kontrollera färsk PR-status varje pass.
+- Status: klar och publicerad i version 12. [PR #1](https://github.com/ludros93-prog/kraftringen-partnerlabb/pull/1), HEAD `feff078d6eb797ce0226071b855227d443a29f00`, införlivades genom PR #4 och GitHub bekräftade merged den 10 oktober 2026 kl. 19:05 UTC.
 - Belägg: receipt ligger modullokalt; serviceposten sparas redan i moveins.
 - Möjlig nytta: hitta befintligt underlag utan att registrera samma sak igen.
 - Avgränsning: återanvänd faktiskt sparad post och dess aktuella status.
   Skapa inte automatisk dubblett, kund, avtal eller hypotetisk bekräftelse.
 - Verifiering i förslaget: `qa/movein-receipt.mjs`, befintlig nästa-insatsregression,
-  syntax-/AST- och diffkontroller. Browser-QA återstår; använd aktuell PR för
-  fortsättningen och skapa inte en konkurrerande implementation.
+  syntax-/AST- och diffkontroller. Browser-QA slutfördes den 10 oktober 2026
+  i kunddemoleveransen; återanvänd implementationen.
 - Lösning: första steget visar den senaste lokalt registrerade posten för vald
   fastighetspartner, med referens och aktuell ärendestatus. Användaren kan öppna
   samma post och hämta ett uppdaterat testkvitto. Seedade exempel, äldre
   intressen och andra partners poster erbjuds inte som återställbara kvitton.
 - Verifiering: beroendefria `qa/movein-receipt.mjs`, befintliga
   `qa/movein-next-action.mjs`, JavaScript-syntax, Python-AST för den utökade
-  webbläsarregressionen och diffkontroll passerar. Browser-QA kunde inte köras
-  utan den föreskrivna browserkontrollen i detta pass.
+  webbläsarregressionen och diffkontroll passerar. Browser-QA slutfördes
+  den 10 oktober 2026 med 75 servicekontroller, utkastregression och 34
+  demokontroller i den portabla förhandsvisningen.
 
 ## RESEARCH-01 — Identifiera Saleshub och tillämpa en relevant princip
 
