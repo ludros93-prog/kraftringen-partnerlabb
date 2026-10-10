@@ -281,6 +281,37 @@ Testa: Savera → Utbildning → Elakademin → se en kapitelfilm → kontroller
 
 Demovyerna styr visningen utan inloggning eller åtkomstskydd; även interna anteckningar finns i webbläsaren. Inga riktiga kunduppgifter eller anslutningar till Dynamics, Oneflow eller B2B Veckokollen används.
 
+## Lyckade B2C-samtal i Utbildning
+
+Partners med konsumenter som valt kundsegment får ett samtalsbibliotek i
+**Utbildning**. Lägg till en ljudinspelning med rubrik, kategori och en kort
+anteckning om vad som fungerade bra. Lyssna i portalen, sök eller filtrera
+exemplen, redigera anteckningarna och ta bort ett exempel efter bekräftelse.
+MP3, M4A, WAV, OGG och WebM stöds när webbläsaren kan spela ljudformatet;
+högst 50 MB per fil. Filtyp och uppspelning kontrolleras före sparande.
+Biblioteket börjar tomt; inga verkliga kundsamtal eller påstådda resultat
+har lagts in. Använd fiktiva eller anonymiserade utbildningsexempel som får
+användas i utbildningen.
+
+Ljud och anteckningar sparas tillsammans i lokal IndexedDB, separat per
+partner och mellan ordinarie portal och kunddemo. De finns kvar efter
+omladdning i samma webbläsarprofil på samma webbplats. De delas inte mellan
+datorer eller användare och ingår inte i portalens JSON-export. Rensning av
+webbläsardata eller bekräftad återställning av den aktuella demoytan tar
+bort dess lokala exempel. Delad lagring och hantering av verkliga
+kundinspelningar behöver ett separat driftbeslut.
+
+Den befintliga Elakademin, klarmarkeringar, självtest, kunder och
+rapportunderlag bevaras. Ett samtalsexempel är utbildningsmaterial och
+skapar inga kunder, avtal, certifieringar eller ekonomiska utfall.
+
+Med en lokal server och Playwright/Chromium i utvecklingsmiljön kan
+`node qa/b2c-calls.cjs` kontrollera uppladdning, uppspelning, filfel,
+omladdning, partnerbyte, avbrott, återställning, mobil och tangentbord.
+`PARTNERLABB_QA_URL` anger servern (standard `http://127.0.0.1:4183`);
+`PARTNERLABB_QA_OUTPUT` anger valfri katalog för testresultat och bilder.
+Testet använder en syntetisk WAV-ton, inga kundinspelningar.
+
 ## Den privata testlänken
 
 Den privata Sites-testlänken delas med Håkans två e-postidentiteter som externa besökare (**viewers**). Det ger visningsåtkomst, inte rätt att redigera byggprojektet. Sites-delningen och appens demovyer är olika saker; demovyerna skapar inga säkerhetsgränser i appen.
@@ -297,6 +328,7 @@ hyresgästsida sätts inte i drift.
 - `dist/demo.js` och `dist/demo.css`: kunddemots guidade moment och perspektivbyten.
 - `dist/studio.js`: offertstudio och simulerade dokumentsteg.
 - `dist/academy.js`: Elakademin, bevarade demokurser och lokala utbildningsframsteg/självtest.
+- `dist/b2c-calls.js` och `.css`: lokalt ljudbibliotek med utbildningsanteckningar för konsumentpartners.
 - `dist/elakademin-data.js`: sex slutliga kapitelfilmer, kapiteltexter, filmmanus, tolv originalfrågor och publika kundkällor.
 - `dist/partner.js`: säljpartnerns kundsidor, material och support.
 - `dist/commercial.js`: intern resultatöversikt och partneruppföljning med ekonomisk exempeldata.

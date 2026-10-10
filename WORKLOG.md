@@ -813,3 +813,36 @@ inklusive periodval efter omladdning, normal-/demoisolering och mobil.
   kickbackurval, sparfel, reset, migration och mobil är kontrollerade.
 - Denna efterhandskvittens ändrar enbart dokumentation. dist/ och
   hostingmanifest förblir identiska med den publicerade versionen.
+
+## 2026-10-10 — Lyckade B2C-samtal i Partner Academy
+
+- Direktuppdrag från Ludwig i utbildningschatten: möjlighet att lägga till
+  lyckade telefonsamtal som B2C-utbildningsexempel. Kandidaten utgår från
+  färsk GitHub-main `1f68c67185c26aaa8793ff4904a9af28f24d59f3`, med Sites
+  version 17:s funktioner bevarade. Egen gren: `codex/b2c-call-examples`.
+- Konsument- och blandade säljpartners får ett bibliotek i Utbildning.
+  Titel, fokusområde och utbildningsanteckning följer inspelningen; stöd
+  för uppladdning, förhandslyssning, uppspelning, sökning, filter,
+  metadataredigering och bekräftad radering. Biblioteket börjar tomt.
+- Ljud och metadata sparas atomiskt i lokal IndexedDB, separat per partner
+  och mellan ordinarie portal och kunddemo. Ingen delad backend, verklig
+  kundinspelning, Beest-integration eller ny Sites-åtkomst tillkommer.
+  Portalens JSON-export omfattar inte samtalsbiblioteket.
+- Återställning nämner samtalsexempel uttryckligen, rensar bara aktuell
+  demoyta och redovisar filfel. Misslyckad localStorage-sparning före
+  återställning behåller inspelningarna. Avbrott stoppar spelare och
+  metadataavläsning; fördröjda åtgärder hålls till rätt arbetsyta.
+- Oberoende browser-QA `qa/b2c-calls.cjs`: **69/69 kontroller passerar** på
+  fryst implementation. Syntetisk WAV, byteidentisk lagring efter
+  omladdning, uppspelning, fil-/lagringsfel och återförsök, edit/delete,
+  avbrott, reset, partner-/demoisolering, bevarad kurs- och kunddata,
+  tangentbord och mobil kontrollerade. Inga oväntade JavaScript- eller
+  konsolfel. Fryst `b2c-calls.js` sha256:
+  `0847192e0943ea15a68fcd80f76b59fb0a34bedfc1717025adc27a62c8e6a05b`.
+- Oberoende kodgranskning, JavaScript-syntax och `git diff --check` passerar.
+  Fyra kompletterande formatkontroller passerar: syntetisk MP3, M4A/AAC,
+  OGG/Opus och WebM/Opus går att ladda upp, spela, spara och återöppna
+  byteidentiskt efter omladdning. Inga webbläsarfel.
+  Befintliga registerkontroller (8), säljpartnerdata (23) och regression
+  för fastighetspartnerns sparade rapportperiod passerar. Faktisk
+  PR-integration och Sites-publicering kvitteras separat efter utförandet.

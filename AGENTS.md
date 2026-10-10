@@ -87,6 +87,14 @@
 - Klarmarkering och självtest lagras lokalt och separat per exempelpartner i portalens befintliga modell. Ingen backend, identitetskontroll eller synkronisering med den fristående Elakademin ingår. Länken dit erbjuder dess räkneverktyg, slutprov och lokala utbildningsintyg; intyget är ingen partnercertifiering.
 - Befintlig Sites-åtkomst ska bevaras. Att lägga in en kurs eller byta demovy ger ingen ny användare åtkomst till den privata testportalen.
 
+## Lyckade B2C-samtal – användaruppdrag 10 oktober 2026
+
+- Användaren har uttryckligen bett att kunna lägga upp lyckade telefonsamtal som B2C-utbildningsexempel. Detta avgränsade uppdrag gäller trots att generell Academy-utbyggnad ligger senare i pilotkön.
+- Samtalsbiblioteket ligger i Academy för säljpartners vars konfigurerade kundsegment omfattar konsumenter, inklusive Face2face och blandade/framtida B2C-partners. Partnernamnet avgör inte funktionen. Ingen Beest-integration tillkommer.
+- Ljudfil och utbildningsanteckningar sparas tillsammans lokalt i IndexedDB, avskilda per partner och mellan normal labbyta och kunddemo. Visa att de sparas i samma webbläsare och inte delas mellan användare. JSON-exporten innehåller inte samtalsbiblioteket.
+- Lägg inte in verkliga kundinspelningar eller påstådda lyckade exempel utan underlag. Utveckling och verifiering använder syntetiskt ljud och fiktiva uppgifter. Funktionen ersätter inte beslut om gemensam lagring, åtkomst och hantering av verkliga inspelningar.
+- Bevara befintlig kursdata och övriga moduler. Redigering ändrar samtalets utbildningsanteckningar, inte kundunderlag, avtal eller ekonomi. Radering och återställning av lokala samtal ska vara uttryckliga val och lagringsfel redovisas.
+
 ## Enkel uppföljning och Insikter – förtydligat 10 oktober 2026
 
 - Bekräftat behov: fastighetspartnerns egen översikt över förmedlade kunder och kickback; gemensam intern säljpartneruppföljning under **Partners** för Savera, Face2face och framtida partners. **Kunder & avtal** visar år/månad/vecka, kundens produkt och aktiva kunder; **Insikter** är den valda partnerns sida för kundtid, populära avtal, separata churn-/förstartsbortfallsmått och scenario vid fortsatt tempo. Båda sidorna delar begripligt partner-, segment- och rapporturval. Användaren vill ha inspiration från Saleshub; leverantören är fortfarande inte säkert identifierad.

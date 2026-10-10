@@ -85,14 +85,16 @@
   let resetInProgress=false;
   P.resetScope=async(customerDemo=false)=>{
     if(resetInProgress)return false;
-    const message=customerDemo?'Börja om kunddemot? Endast kunddemots fiktiva ärenden, utkast och bilagor återställs. Dina vanliga testdata behålls.':'Återställa portalens exempeldata? Lokala teständringar, utkast och bilagor i denna yta tas bort.';
+    const message=customerDemo?'Börja om kunddemot? Endast kunddemots fiktiva ärenden, utkast, bilagor och samtalsexempel återställs. Dina vanliga testdata behålls.':'Återställa portalens exempeldata? Lokala teständringar, utkast, bilagor och samtalsexempel i denna yta tas bort.';
     if(!confirm(message))return false;
     resetInProgress=true;
     try{
       const previous=P.state;P.state=seed();
-      if(!P.save()){P.state=previous;P.toast('Webbläsaren kunde inte spara omstarten. Ärenden, utkast och bilagor har behållits.');return false;}
+      if(!P.save()){P.state=previous;P.toast('Webbläsaren kunde inte spara omstarten. Ärenden, utkast, bilagor och samtalsexempel har behållits.');return false;}
       let filesCleared=true;
       try{filesCleared=await P.moveinAttachments?.clearScope?.()!==false;}catch{filesCleared=false;}
+      let callsCleared=true;
+      try{callsCleared=await P.b2cCalls?.clearScope?.()!==false;}catch{callsCleared=false;}
       const draftsCleared=P.propertyIntake?.clearDrafts?.()!==false;
       const legacyCleared=P.propertyDrafts?.clearAll?.()!==false;
       P.syncPartnerRegistry?.();
@@ -102,8 +104,8 @@
       selectedId=undefined;customerQuery='';customerFilter='all';
       const url=new URL(location.href);url.searchParams.delete('demoStep');history.replaceState(null,'',url);
       if(customerDemo){P.role='internal';P.partner='estate1';P.go('demo');}else if(removedPartner&&P.role==='internal')P.go('partners');else if(P.role==='partner')P.go('overview');else P.render();
-      P.toast(filesCleared&&draftsCleared&&legacyCleared?(customerDemo?'Kunddemot är redo för nästa visning.':'Portalens exempeldata återställda.'):'Exempeldata återställda. Webbläsaren kunde inte rensa alla utkast eller bilagor.');
-      return filesCleared&&draftsCleared&&legacyCleared;
+      P.toast(filesCleared&&callsCleared&&draftsCleared&&legacyCleared?(customerDemo?'Kunddemot är redo för nästa visning.':'Portalens exempeldata återställda.'):'Exempeldata återställda. Webbläsaren kunde inte rensa alla utkast, bilagor eller samtalsexempel.');
+      return filesCleared&&callsCleared&&draftsCleared&&legacyCleared;
     }finally{resetInProgress=false;}
   };
   if(demoMode)P.resetDemo=()=>P.resetScope(true);
