@@ -9,8 +9,9 @@ användarbeteende. Bekräftade affärsfakta finns i AGENTS.md.
 Aktuellt direktuppdrag i utbildningschatten: **B2C-SAMTAL-01**, möjlighet att
 lägga till lyckade telefonsamtal som utbildningsexempel. Avgränsad lokal
 Academy-funktion för konsumentpartners; ingen delad lagring eller verkliga
-inspelningar införs. Kandidat i `codex/b2c-call-examples`, verifiering och
-publiceringsstatus kvitteras i WORKLOG innan den beskrivs som levererad.
+inspelningar införs. Publicerad i version **18** via PR #16: 69
+browserkontroller, fyra ljudformatkontroller och 13 kontroller på den
+privata publicerade sidan passerar. Kvittens finns i WORKLOG.
 
 PILOT-MISSION.md styr prioriteringen. Uppgifter nedan använder fiktiva data
 inom nuvarande frontendmandat. Högst två färdiga pilotförslag väntar på
