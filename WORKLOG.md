@@ -895,3 +895,15 @@ Ludwigs direkta uppdrag ”Publicera” följde presentationen av PR #18. Oberoe
 - Befintlig custom-delning revision 4 bevarad; inget åtkomst- eller schemaarbete.
 - Alla sju qa/*.mjs samt syntaxkontroll av alla dist/*.js passerade på överföringskandidaten; mergeträdet är identiskt. Webbläsar-/mobil-/tangentbordskontroll kunde inte köras med miljöns tillgängliga kapabiliteter och är fortfarande en verifieringsbegränsning. Ingen verklig kund- eller produktionsvalidering påstås.
 - PARTNER-04 är integrerad och publicerad. Tidigare kandidatstatus ovan är historik. Denna efterhandskvittens ändrar enbart dokumentation; dist/ är oförändrad och kräver ingen ny publicering.
+
+## 2026-10-11 · PARTNER-05 · Egna resultat, avtalsfakta och grundval
+
+Ludwigs direkta korrigering: säljpartners ska också se sina egna resultat. Utbildning och Avtalsfakta ska vara separata ingångar för B2B/B2C. Fastighetsbolag väljer grundval mellan Opti, Kvartspris och Rörligt månadspris; Kvartspris är initialt grundval. Detta är uttryckligt frontendmandat, ingen automatisk avtalsteckning eller ny ersättningsregel.
+
+Implementering på codex/partner-results-product-facts från f30f86739bf5fb60ccc7e09e2f9fca5545b2c7e2: gemensamma kund-/avtalsrapporter och Insikter avgränsas till P.partner i partnervy, oavsett intern vald partner. Inga interna kostnader, nettobidrag eller partnerinställningar exponeras i dessa vyer. Rapportfilter bevaras separat per perspektiv/partner. Lokal visningsavgränsning är inte autentisering.
+
+Avtalsfakta har sex B2B- och fem B2C-kort, källdatum och officiella produkt-/villkorslänkar. Befintliga Elakademin-filmer länkas som principutbildning, inte kompletta produktspecifika genomgångar. Verifierat exakt produktblad saknas för Kraftringen Stabil och företagets Kvartspris; Individuell portfölj har bara allmän portföljkälla. Saknade detaljer markeras, inga priser eller bindningstider gissas.
+
+Grundval sparas i propertyDefaults i befintlig normal-/demoisolerad state. Nya manuella/Excel-utkast får en ögonblicksbild som går att ändra; importens val gäller valda nya rader. Äldre utkast utan val förblir utan val. Registrerad desiredProduct är ett önskemål; fullmakt och offerChoice förändras inte. Dubbletter skriver inte om tidigare val; sparfel återställer data.
+
+Verifiering: samtliga åtta qa/*.mjs och JS-syntaxkontroller passerar. Nytt test täcker egna rapporter/filter, segment/faktakort/video, partnerisolerade grundval, manuella och Excel-utkast, gamla utkast, dubbletter och återställning efter lagringsfel. Ingen browser-kapabilitet finns i denna managed-miljö; visuell mobil-/tangentbordskontroll inte körd. Nästa steg: samordnad integration/publicering av denna korrigering; inga andra PR:er öppna vid start.
